@@ -108,7 +108,7 @@ func renderedName(role config.Role) string { return string(role) + "-rendered.ya
 // the same reviewed change.
 var allowedTemplates = map[string]struct{ name, sha256 string }{
 	"gateway": {"mihomo-gateway.yaml.tmpl",
-		"720c30efca0e6f60ba47e353b9ebdb7cb6cf3fc4f2e3f79a5ea354fd76c678a4"},
+		"04b6e52fd0c95cf70d3f9f7caa71e2a748e5529470c720d39d81d60f5a3e2f0f"},
 	"egress": {"hysteria-egress.yaml.tmpl",
 		"7164721b0c1e3204b70937c6bf1e994f7c2d0587a05c1db6cb08376bb90b2e5e"},
 }

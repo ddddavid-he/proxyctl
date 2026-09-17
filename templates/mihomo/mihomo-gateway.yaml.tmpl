@@ -39,10 +39,11 @@ listeners:
     private-key: /run/private-proxy/gateway.key
   - name: gateway-https-in
     type: http
-    listen: 0.0.0.0
-    port: 8444
+    # Public TLS/SNI is terminated by the audited OpenResty stream edge on
+    # TCP/8444. Plain HTTP CONNECT is never public and is accepted only from
+    # the loopback edge on this fixed backend port.
+    listen: 127.0.0.1
+    port: 18444
     users:
       - username: ${HTTPS_USER_1}
         password: ${HTTPS_PASSWORD_1}
-    certificate: /run/private-proxy/gateway.crt
-    private-key: /run/private-proxy/gateway.key

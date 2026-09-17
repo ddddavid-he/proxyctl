@@ -43,6 +43,14 @@ default implementation performs no live lookup and reports evidence as
 unavailable. A future probe can be injected without allowing caller-supplied
 targets or changing the evaluation rules.
 
+For the Guangzhou gateway, the public HTTPS CONNECT edge is OpenResty
+TCP/8444. OpenResty terminates TLS with an allowlisted SNI/certificate mapping
+and forwards decrypted bytes to the authenticated Mihomo HTTP listener on the
+fixed loopback address `127.0.0.1:18444`. Proxyctl reserves and validates the
+loopback backend, while the external edge remains an independently reviewed
+configuration transaction. Ordinary HTTP `proxy_pass` is not equivalent to
+this stream contract and is not supported.
+
 ## Consequences
 
 - The `gateway` role renders a Mihomo configuration and may publish gateway

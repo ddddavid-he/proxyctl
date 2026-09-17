@@ -167,7 +167,10 @@ remove residue manually.
 Preflight reports two **independent** evidence checks, `dns-evidence`
 and `certificate-evidence`, over a **closed** set of targets declared in
 code (`mihomo-gateway` 8443/tcp and `native-gateway` 8444/tcp for `gateway`;
-`proxy-egress` 443/udp for `egress`).
+`proxy-egress` 443/udp for `egress`). Public HTTPS CONNECT stays on TCP/8444
+at the OpenResty stream TLS edge. Mihomo accepts the decrypted, authenticated
+CONNECT stream only on the fixed `127.0.0.1:18444` backend; that backend must
+never be exposed by a cloud rule or host firewall.
 
 - **No live name or certificate access is implemented.** No DNS
   resolution, no ACME or provider call, no certificate issuance or

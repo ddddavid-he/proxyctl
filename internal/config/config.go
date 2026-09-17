@@ -291,6 +291,11 @@ func (d *Document) validateNetworkPosture(role Role) error {
 		if port := d.scalars["egress-port"]; port != "" && port != "443" {
 			return safex.New(safex.CodeConfigRejected, "gateway upstream port must be fixed to UDP 443")
 		}
+		if listeners := d.sections["listeners"]; len(listeners) > 0 {
+			if err := validateGatewayListeners(listeners); err != nil {
+				return err
+			}
+		}
 	}
 	if role == RoleEgress {
 		if user := d.scalars["gateway-node-user"]; !isMachineUser(user) {
@@ -360,6 +365,44 @@ func (d *Document) validateNetworkPosture(role Role) error {
 		if usernames == 0 && items != nil {
 			return safex.New(safex.CodeConfigRejected, "users section has no username entries")
 		}
+	}
+	return nil
+}
+
+// validateGatewayListeners binds the reviewed input document to the two fixed
+// runtime edges. Public HTTPS CONNECT TLS belongs to OpenResty TCP/8444; the
+// Mihomo listener behind it must stay on loopback TCP/18444. This prevents a
+// config-only edit from turning the decrypted HTTP backend into a public
+// listener or silently moving either listener away from the release template.
+func validateGatewayListeners(items [][2]string) error {
+	expected := map[string]map[string]string{
+		"gateway-trojan-in": {
+			"type": "trojan", "listen": "0.0.0.0", "port": "8443",
+		},
+		"gateway-https-in": {
+			"type": "http", "listen": "127.0.0.1", "port": "18444",
+		},
+	}
+	seen := map[string]bool{}
+	var current string
+	for _, kv := range items {
+		if kv[0] == "name" {
+			if _, ok := expected[kv[1]]; !ok || seen[kv[1]] {
+				return safex.New(safex.CodeConfigRejected, "gateway listener identity is invalid or duplicated")
+			}
+			current = kv[1]
+			seen[current] = true
+			continue
+		}
+		if current == "" {
+			return safex.New(safex.CodeConfigRejected, "gateway listener field appears before its identity")
+		}
+		if want, ok := expected[current][kv[0]]; ok && kv[1] != want {
+			return safex.New(safex.CodeConfigRejected, "gateway listener network posture does not match the fixed contract")
+		}
+	}
+	if len(seen) != len(expected) {
+		return safex.New(safex.CodeConfigRejected, "gateway listener set is incomplete")
 	}
 	return nil
 }

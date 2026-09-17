@@ -49,6 +49,12 @@ func TestRuntimePortsAreFixed(t *testing.T) {
 	if _, err := Parse(strings.Replace(string(gateway), "egress-port: 443", "egress-port: 444", 1), RoleGateway); err == nil {
 		t.Fatal("gateway upstream port other than 443 accepted")
 	}
+	if _, err := Parse(strings.Replace(string(gateway), "listen: 127.0.0.1\n    port: 18444", "listen: 0.0.0.0\n    port: 18444", 1), RoleGateway); err == nil {
+		t.Fatal("public decrypted HTTPS CONNECT backend accepted")
+	}
+	if _, err := Parse(strings.Replace(string(gateway), "port: 18444", "port: 8444", 1), RoleGateway); err == nil {
+		t.Fatal("Mihomo accepted the OpenResty-owned public HTTPS CONNECT port")
+	}
 	egress, err := os.ReadFile(fixture(t, "egress-valid.yaml"))
 	if err != nil {
 		t.Fatal(err)
