@@ -114,6 +114,7 @@ class WorkflowTests(unittest.TestCase):
         unit = (ROOT / "deploy/systemd/private-proxy-mihomo.service").read_text()
         self.assertIn("RuntimeDirectory=private-proxy\n", unit)
         self.assertIn("Environment=HOME=/run/private-proxy\n", unit)
+        self.assertIn("Environment=SAFE_PATHS=/run/private-proxy\n", unit)
         self.assertIn("ProtectHome=yes\n", unit)
 
 

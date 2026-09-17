@@ -13,6 +13,7 @@ UMask=0077
 RuntimeDirectory=private-proxy
 RuntimeDirectoryMode=0700
 Environment=HOME=/run/private-proxy
+Environment=SAFE_PATHS=/run/private-proxy
 LoadCredential=GATEWAY_EGRESS_PASSWORD_1:/etc/private-proxy/secrets/GATEWAY_EGRESS_PASSWORD_1
 LoadCredential=TROJAN_USER_1:/etc/private-proxy/secrets/TROJAN_USER_1
 LoadCredential=TROJAN_PASSWORD_1:/etc/private-proxy/secrets/TROJAN_PASSWORD_1
