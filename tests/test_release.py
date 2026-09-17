@@ -110,6 +110,12 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("(cd dist && shasum -a 256 ./*.tar.gz > SHA256SUMS)", workflow)
         self.assertNotIn("shasum -a 256 dist/*.tar.gz", workflow)
 
+    def test_mihomo_unit_uses_writable_runtime_home(self):
+        unit = (ROOT / "deploy/systemd/private-proxy-mihomo.service").read_text()
+        self.assertIn("RuntimeDirectory=private-proxy\n", unit)
+        self.assertIn("Environment=HOME=/run/private-proxy\n", unit)
+        self.assertIn("ProtectHome=yes\n", unit)
+
 
 class BundleVerificationTests(unittest.TestCase):
     def make_bundle(self, directory, *, wrong_checksum=False):
