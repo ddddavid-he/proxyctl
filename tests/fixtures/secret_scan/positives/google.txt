@@ -1,0 +1,2 @@
+SYNTHETIC FIXTURE - EXPECTED SECRET DETECTION
+google-api-key: AIzaSyA1234567890abcdefghijklmnopqrstuv

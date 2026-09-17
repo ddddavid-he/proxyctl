@@ -1,0 +1,10 @@
+# ALLOWED PLACEHOLDER FIXTURE - must stay clean
+auth:
+  type: userpass
+  userpass:
+    gateway-node-01: "${GATEWAY_EGRESS_PASSWORD_1}"
+
+tls:
+  cert: /run/private-proxy/egress.crt
+  key: /run/private-proxy/egress.key
+  sniGuard: strict

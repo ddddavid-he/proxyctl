@@ -1,0 +1,19 @@
+# Hysteria2 v2.9.2 egress server runtime configuration.
+listen: ${LISTEN}
+
+tls:
+  cert: /run/private-proxy/egress.crt
+  key: /run/private-proxy/egress.key
+  sniGuard: strict
+
+auth:
+  type: userpass
+  userpass:
+    ${GATEWAY_NODE_USER}: ${GATEWAY_EGRESS_PASSWORD_1}
+
+bandwidth:
+  up: 50 mbps
+  down: 120 mbps
+
+ignoreClientBandwidth: false
+disableUDP: false

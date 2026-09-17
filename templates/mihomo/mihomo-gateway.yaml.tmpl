@@ -1,0 +1,48 @@
+# Mihomo v1.19.30 gateway runtime configuration. Every route terminates at the
+# locked egress Hysteria2 proxy; no direct fallback is present.
+mixed-port: ${MIXED_PORT}
+bind-address: ${BIND_ADDRESS}
+external-controller: ${CONTROLLER_LISTEN}
+allow-lan: false
+mode: rule
+log-level: info
+ipv6: false
+
+proxies:
+  - name: egress-hy2
+    type: hysteria2
+    server: ${EGRESS_SERVER}
+    port: ${EGRESS_PORT}
+    password: ${GATEWAY_EGRESS_AUTH}
+    sni: ${EGRESS_SNI}
+    up: "50 Mbps"
+    down: "120 Mbps"
+
+proxy-groups:
+  - name: controlled-egress
+    type: select
+    proxies:
+      - egress-hy2
+
+rules:
+  - MATCH,controlled-egress
+
+listeners:
+  - name: gateway-trojan-in
+    type: trojan
+    listen: 0.0.0.0
+    port: 8443
+    users:
+      - username: ${TROJAN_USER_1}
+        password: ${TROJAN_PASSWORD_1}
+    certificate: /run/private-proxy/gateway.crt
+    private-key: /run/private-proxy/gateway.key
+  - name: gateway-https-in
+    type: http
+    listen: 0.0.0.0
+    port: 8444
+    users:
+      - username: ${HTTPS_USER_1}
+        password: ${HTTPS_PASSWORD_1}
+    certificate: /run/private-proxy/gateway.crt
+    private-key: /run/private-proxy/gateway.key

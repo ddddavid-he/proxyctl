@@ -1,0 +1,9 @@
+# Negative fixture: insecure TLS (egress role; must reject).
+schema: private-proxy/v1
+role: egress
+listen-address: 0.0.0.0
+port: 443
+sni: proxy-egress.<domain>
+gateway-node-user: gateway-node-01
+gateway-node-password: ${GATEWAY_NODE_PASSWORD_1}
+insecure: true

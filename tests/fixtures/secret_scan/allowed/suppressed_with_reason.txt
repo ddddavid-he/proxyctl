@@ -1,0 +1,4 @@
+# ALLOWED SUPPRESSION FIXTURE - directive carries a reason, scan stays clean
+# The synthetic token below is a fixture covered by an explicit allow-line
+# directive with a reason, per GOVERNANCE.md suppression policy.
+deploy-token: ghp_0123456789abcdefghijklmnopqrstuvwxyzAB  # secret-scan:allow-line synthetic fixture token, tracked in tests/fixtures/secret_scan/README.md

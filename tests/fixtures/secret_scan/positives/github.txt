@@ -1,0 +1,2 @@
+SYNTHETIC FIXTURE - EXPECTED SECRET DETECTION
+github-token: ghp_0123456789abcdefghijklmnopqrstuvwxyzAB
