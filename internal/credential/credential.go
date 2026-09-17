@@ -10,9 +10,10 @@
 //     LoadSystemd(role) with the fixed /run/credentials root.
 //   - The production source rejects unset/relative/traversal/outside
 //     roots, symlinked root/intermediate/final components, non-regular
-//     files, group/world-accessible files, duplicate/ambiguous names,
-//     oversize values/assets, NUL/control bytes in scalar secrets and
-//     empty required credentials.
+//     files, unsafe ownership/permission combinations, duplicate/ambiguous
+//     names, oversize values/assets, NUL/control bytes in scalar secrets and
+//     empty required credentials. Private modes and systemd's root:root
+//     read-only credential mount are accepted; world access is never accepted.
 //   - Path traversal is descriptor-relative (openat-style): the allowed
 //     root and every directory component are held open with
 //     O_NOFOLLOW|O_DIRECTORY and files are opened relative to those

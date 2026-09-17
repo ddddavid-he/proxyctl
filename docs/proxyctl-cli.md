@@ -62,6 +62,10 @@ name allowlist.
 - A missing, duplicate, malformed, oversized, multiline,
   control-bearing, wrong-role or inaccessible credential **fails
   closed**: nothing is published.
+- Credential inode permissions accept private `0700`/`0600` material and the
+  root-owned `0550`/`0440` mount produced by Debian 13's systemd 257. The
+  root-group exception is read-only and never permits world access; equivalent
+  modes owned by a non-root user or group are rejected.
 - A bundle whose role differs from the requested role is refused, and
   render independently enforces the per-role asset allowlist, so a `gateway`
   render can never publish `egress.crt`/`egress.key`.

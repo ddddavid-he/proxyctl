@@ -2,11 +2,7 @@
 
 package credential
 
-import (
-	"os"
-
-	"proxyctl/internal/safex"
-)
+import "proxyctl/internal/safex"
 
 // dirFD is the unsupported-target stub. The descriptor-relative
 // traversal used by the production target (Linux) is not available
@@ -25,8 +21,8 @@ func openDirNoFollow(dirfd int, path string) (*dirFD, error) {
 	return nil, errUnsupported
 }
 
-func (d *dirFD) mode() (os.FileMode, error) {
-	return 0, errUnsupported
+func (d *dirFD) metadata() (credentialMetadata, error) {
+	return credentialMetadata{}, errUnsupported
 }
 
 func (d *dirFD) readNames() ([]string, error) {

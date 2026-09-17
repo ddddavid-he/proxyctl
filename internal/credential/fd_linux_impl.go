@@ -58,14 +58,17 @@ func openDirNoFollow(dirfd int, path string) (*dirFD, error) {
 	return d, nil
 }
 
-// mode returns the permission bits of the open directory (for the
-// unit-dir group/world-access policy).
-func (d *dirFD) mode() (os.FileMode, error) {
+// metadata returns content-free inode metadata for the open directory.
+func (d *dirFD) metadata() (credentialMetadata, error) {
 	var st syscall.Stat_t
 	if err := syscall.Fstat(d.fd, &st); err != nil {
-		return 0, safex.New(safex.CodeIO, "credentials directory cannot be inspected")
+		return credentialMetadata{}, safex.New(safex.CodeIO, "credentials directory cannot be inspected")
 	}
-	return os.FileMode(st.Mode & 0o777), nil
+	return credentialMetadata{
+		mode: os.FileMode(st.Mode & 0o777),
+		uid:  st.Uid,
+		gid:  st.Gid,
+	}, nil
 }
 
 // readNames lists the entry names of the open directory. It uses a
@@ -135,8 +138,13 @@ func (d *dirFD) readFile(name string) ([]byte, error) {
 	if st.Mode&syscall.S_IFMT != syscall.S_IFREG {
 		return nil, safex.New(safex.RenderUnsafe, "credential is not a regular file")
 	}
-	if st.Mode&0o077 != 0 {
-		return nil, safex.New(safex.CodePermission, "credential is group/world-accessible")
+	meta := credentialMetadata{
+		mode: os.FileMode(st.Mode & 0o777),
+		uid:  st.Uid,
+		gid:  st.Gid,
+	}
+	if !secureCredentialMetadata(meta, false) {
+		return nil, safex.New(safex.CodePermission, "credential permissions are unsafe")
 	}
 	if st.Size > maxAssetBytes {
 		return nil, safex.New(safex.CodeConfigRejected, "credential exceeds size limit")

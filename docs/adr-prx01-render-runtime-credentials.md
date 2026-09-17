@@ -16,6 +16,12 @@ The CLI exposes no flag for a credential root, credential filename, environment
 variable, URL, or standard-input source. Tests inject synthetic bundles through
 an in-process loader interface.
 
+Credential metadata accepts either private `0700`/`0600`-style material or the
+root-owned systemd credential mount used by Debian 13 / systemd 257 (`0550`
+directory and `0440` files). The latter exception requires `root:root`, forbids
+group write/execute on files, forbids group write on the directory, and always
+forbids world access. Non-root group-readable material still fails closed.
+
 The rendered configuration and allowlisted certificate assets are validated in
 memory before the first write. Output names are fixed per role, paths are checked
 component by component, existing targets are never replaced, and files are

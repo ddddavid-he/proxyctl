@@ -90,18 +90,45 @@ func (s *systemdSource) open() error {
 	return nil
 }
 
-// checkUnitDirMode rejects a group/world-accessible unit credential
-// directory: it holds private material, so its permission bits must
-// not allow group or other access (systemd provisions it 0700).
+// checkUnitDirMode accepts either a private directory or systemd's
+// root:root credential mount. systemd 257 on Debian 13 presents the latter as
+// 0550; group access is safe only because the group is root and is never
+// writable. World access and non-root group access remain fail-closed.
 func (s *systemdSource) checkUnitDirMode() error {
-	m, err := s.dir.mode()
+	meta, err := s.dir.metadata()
 	if err != nil {
 		return err
 	}
-	if m&0o077 != 0 {
-		return safex.New(safex.CodePermission, "credentials directory is group/world-accessible")
+	if !secureCredentialMetadata(meta, true) {
+		return safex.New(safex.CodePermission, "credentials directory permissions are unsafe")
 	}
 	return nil
+}
+
+// credentialMetadata contains only security-relevant inode metadata. It is
+// deliberately content-free so validation and diagnostics can never expose a
+// credential value.
+type credentialMetadata struct {
+	mode os.FileMode
+	uid  uint32
+	gid  uint32
+}
+
+// secureCredentialMetadata permits the traditional 0700/0600-style contract
+// for any owner. It additionally permits systemd's root:root 0550 directory
+// and 0440 credential files. Root-group access must be read/execute-only for a
+// directory and read-only for a file; world access is never accepted.
+func secureCredentialMetadata(meta credentialMetadata, directory bool) bool {
+	if meta.mode&0o077 == 0 {
+		return true
+	}
+	if meta.uid != 0 || meta.gid != 0 {
+		return false
+	}
+	if directory {
+		return meta.mode&0o027 == 0
+	}
+	return meta.mode&0o037 == 0
 }
 
 // close releases the held directory descriptor. Idempotent.

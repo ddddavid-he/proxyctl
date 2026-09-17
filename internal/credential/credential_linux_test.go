@@ -147,6 +147,37 @@ func TestFSUnitDirGroupWorldAccessibleRejected(t *testing.T) {
 	}
 }
 
+func TestSystemd257RootOwnedCredentialModesAccepted(t *testing.T) {
+	if !secureCredentialMetadata(credentialMetadata{mode: 0o550, uid: 0, gid: 0}, true) {
+		t.Fatal("systemd 257 root:root 0550 credential directory rejected")
+	}
+	if !secureCredentialMetadata(credentialMetadata{mode: 0o440, uid: 0, gid: 0}, false) {
+		t.Fatal("systemd 257 root:root 0440 credential file rejected")
+	}
+}
+
+func TestSystemdCredentialModeExceptionsRemainFailClosed(t *testing.T) {
+	tests := []struct {
+		name      string
+		meta      credentialMetadata
+		directory bool
+	}{
+		{"non-root directory group", credentialMetadata{mode: 0o550, uid: 1000, gid: 1000}, true},
+		{"root directory group writable", credentialMetadata{mode: 0o570, uid: 0, gid: 0}, true},
+		{"root directory world accessible", credentialMetadata{mode: 0o555, uid: 0, gid: 0}, true},
+		{"non-root file group readable", credentialMetadata{mode: 0o440, uid: 1000, gid: 1000}, false},
+		{"root file group writable", credentialMetadata{mode: 0o460, uid: 0, gid: 0}, false},
+		{"root file world readable", credentialMetadata{mode: 0o444, uid: 0, gid: 0}, false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if secureCredentialMetadata(tt.meta, tt.directory) {
+				t.Fatal("unsafe credential metadata accepted")
+			}
+		})
+	}
+}
+
 func TestFSRootAtAllowedRootBoundary(t *testing.T) {
 	// CREDENTIALS_DIRECTORY directly equal to the allowed root is
 	// refused: the unit dir must be strictly beneath the root.
