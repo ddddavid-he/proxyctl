@@ -84,7 +84,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          shasum -a 256 dist/*.tar.gz > dist/SHA256SUMS
+          (cd dist && shasum -a 256 ./*.tar.gz > SHA256SUMS)
           gh release create "${GITHUB_REF_NAME}" dist/*.tar.gz dist/SHA256SUMS \
             --repo "${GITHUB_REPOSITORY}" \
             --title "${GITHUB_REF_NAME} candidate" \

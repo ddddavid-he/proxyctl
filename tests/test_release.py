@@ -105,6 +105,11 @@ class WorkflowTests(unittest.TestCase):
             with self.assertRaisesRegex(release.ReleaseError, "forbidden"):
                 release.lint_workflows(path.parent)
 
+    def test_release_checksums_are_download_directory_relative(self):
+        workflow = (ROOT / ".github/workflows/release.yml").read_text()
+        self.assertIn("(cd dist && shasum -a 256 ./*.tar.gz > SHA256SUMS)", workflow)
+        self.assertNotIn("shasum -a 256 dist/*.tar.gz", workflow)
+
 
 class BundleVerificationTests(unittest.TestCase):
     def make_bundle(self, directory, *, wrong_checksum=False):
