@@ -24,6 +24,7 @@ def main() -> int:
         "GATEWAY_EGRESS_PASSWORD_1", "TROJAN_USER_1", "TROJAN_PASSWORD_1",
         "HTTPS_USER_1", "HTTPS_PASSWORD_1", "gateway.crt", "gateway.key",
     ))
+    RUNTIME.mkdir(mode=0o700, parents=True, exist_ok=True)
     checked([str(APP / "proxyctl"), "preflight", "--role", "gateway", "--offline", "--config", str(CONFIG)])
     checked([
         str(APP / "proxyctl"), "render", "--role", "gateway",

@@ -65,6 +65,12 @@ class ComposeContractTests(unittest.TestCase):
         self.assertIn("deploy/compose/run_strongswan.py", destinations)
         self.assertEqual(release.ROLE_SPECS["gateway"]["extra_upstreams"], [("hysteria-linux-arm64", "hysteria")])
 
+    def test_mihomo_launcher_creates_runtime_directory_before_render(self):
+        text = (ROOT / "deploy/compose/run_mihomo.py").read_text()
+        mkdir = text.index("RUNTIME.mkdir(")
+        render = text.index('str(APP / "proxyctl"), "render"')
+        self.assertLess(mkdir, render)
+
 
 if __name__ == "__main__":
     unittest.main()
