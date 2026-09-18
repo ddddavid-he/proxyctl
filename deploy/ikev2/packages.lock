@@ -1,0 +1,8 @@
+# Debian 13 (trixie), arm64. Installation remains an explicit host action.
+charon-systemd=6.0.1-6+deb13u7
+strongswan-swanctl=6.0.1-6+deb13u7
+libcharon-extauth-plugins=6.0.1-6+deb13u7
+libstrongswan-extra-plugins=6.0.1-6+deb13u7
+libstrongswan-standard-plugins=6.0.1-6+deb13u7
+iproute2=6.15.0-1
+nftables=1.1.3-1

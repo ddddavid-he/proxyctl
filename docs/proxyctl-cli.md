@@ -117,6 +117,13 @@ an embedded proxy implementation. For Hysteria2 `userpass`, render derives
 the client authentication value as `gateway-egress-user:GATEWAY_EGRESS_PASSWORD_1`; machine
 usernames are restricted so the delimiter cannot be ambiguous.
 
+The primary gateway listener set is fixed: Trojan on public TCP/8443, the
+OpenResty-owned HTTPS CONNECT backend on loopback TCP/18444, and the IKEv2
+TPROXY adapter on loopback TCP+UDP/17894. The TPROXY listener shares the
+primary gateway's existing `controlled-egress`; it does not create a second
+Mihomo process or another outbound. The packaged nftables policy only marks the
+fixed VPN address pool.
+
 Safety matrix (all rejected before any write):
 
 - templates are governed by a **double allowlist**: the exact file name

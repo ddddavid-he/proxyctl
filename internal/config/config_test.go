@@ -55,6 +55,12 @@ func TestRuntimePortsAreFixed(t *testing.T) {
 	if _, err := Parse(strings.Replace(string(gateway), "port: 18444", "port: 8444", 1), RoleGateway); err == nil {
 		t.Fatal("Mihomo accepted the OpenResty-owned public HTTPS CONNECT port")
 	}
+	if _, err := Parse(strings.Replace(string(gateway), "listen: 127.0.0.1\n    port: 17894", "listen: 0.0.0.0\n    port: 17894", 1), RoleGateway); err == nil {
+		t.Fatal("Mihomo accepted a public IKEv2 TPROXY listener")
+	}
+	if _, err := Parse(strings.Replace(string(gateway), "port: 17894", "port: 17895", 1), RoleGateway); err == nil {
+		t.Fatal("Mihomo accepted a moved IKEv2 TPROXY listener")
+	}
 	egress, err := os.ReadFile(fixture(t, "egress-valid.yaml"))
 	if err != nil {
 		t.Fatal(err)

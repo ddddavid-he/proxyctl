@@ -1,0 +1,39 @@
+[Unit]
+Description=Private Proxy IKEv2 access point
+After=network-online.target strongswan.service private-proxy-ikev2-policy.service
+Wants=network-online.target
+Requires=strongswan.service private-proxy-ikev2-policy.service
+StartLimitIntervalSec=60s
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+UMask=0077
+RuntimeDirectory=private-proxy-ikev2
+RuntimeDirectoryMode=0700
+Environment=SWANCTL_DIR=/run/private-proxy-ikev2
+LoadCredential=IKEV2_USER_1:/etc/private-proxy/secrets/IKEV2_USER_1
+LoadCredential=IKEV2_PASSWORD_1:/etc/private-proxy/secrets/IKEV2_PASSWORD_1
+LoadCredential=IKEV2_REMOTE_ID:/etc/private-proxy/secrets/IKEV2_REMOTE_ID
+LoadCredential=ikev2.crt:/etc/private-proxy/secrets/ikev2.crt
+LoadCredential=ikev2.key:/etc/private-proxy/secrets/ikev2.key
+ExecStartPre=/opt/private-proxy/current/deploy/ikev2/render_ikev2.py
+ExecStart=/usr/sbin/swanctl --load-all --noprompt --file /run/private-proxy-ikev2/swanctl.conf
+ExecReload=/opt/private-proxy/current/deploy/ikev2/render_ikev2.py
+ExecReload=/usr/sbin/swanctl --load-all --noprompt --file /run/private-proxy-ikev2/swanctl.conf
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictRealtime=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+ReadWritePaths=/run/private-proxy-ikev2
+
+[Install]
+WantedBy=multi-user.target

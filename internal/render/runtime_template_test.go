@@ -13,7 +13,7 @@ func TestRuntimeTemplatesEmitUpstreamConfiguration(t *testing.T) {
 	}{
 		{
 			role: "gateway", templateDir: "mihomo", fixture: "gateway-valid.yaml", bundle: synthGateway(),
-			required:  []string{"proxies:\n", "type: hysteria2", "password: \"gateway-node-01:", "proxy-groups:\n", "listeners:\n", "certificate: /run/private-proxy/gateway.crt", "name: gateway-https-in\n    type: http\n", "listen: 127.0.0.1\n    port: 18444"},
+			required:  []string{"proxies:\n", "type: hysteria2", "password: \"gateway-node-01:", "proxy-groups:\n", "listeners:\n", "certificate: /run/private-proxy/gateway.crt", "name: gateway-https-in\n    type: http\n", "listen: 127.0.0.1\n    port: 18444", "name: gateway-ikev2-tproxy\n    type: tproxy\n", "listen: 127.0.0.1\n    port: 17894\n    udp: true"},
 			forbidden: []string{"schema: private-proxy/v1", "role: gateway", "skip-cert-verify", "DIRECT", "name: gateway-https-in\n    type: http\n    listen: 0.0.0.0"},
 		},
 		{

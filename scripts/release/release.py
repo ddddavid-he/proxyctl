@@ -41,7 +41,12 @@ ROLE_SPECS = {
         "bundle": "proxyctl-gateway-linux-arm64.tar.gz",
         "engine": "mihomo",
         "template": "templates/mihomo/mihomo-gateway.yaml.tmpl",
-        "units": ["private-proxy-mihomo.service", "private-proxy-verify.service", "private-proxy-verify.timer"],
+        "units": ["private-proxy-mihomo.service", "private-proxy-ikev2-policy.service", "private-proxy-ikev2.service", "private-proxy-verify.service", "private-proxy-verify.timer"],
+        "extra_files": [
+            ("deploy/ikev2/render_ikev2.py", "deploy/ikev2/render_ikev2.py", 0o755),
+            ("deploy/ikev2/configure_policy.py", "deploy/ikev2/configure_policy.py", 0o755),
+            ("deploy/ikev2/packages.lock", "deploy/ikev2/packages.lock", 0o644),
+        ],
     },
     "egress": {
         "goarch": "amd64",
@@ -50,6 +55,7 @@ ROLE_SPECS = {
         "engine": "hysteria",
         "template": "templates/hysteria/hysteria-egress.yaml.tmpl",
         "units": ["private-proxy-hysteria.service", "private-proxy-verify.service", "private-proxy-verify.timer"],
+        "extra_files": [],
     },
 }
 
@@ -325,6 +331,8 @@ def build_bundle(args: argparse.Namespace) -> pathlib.Path:
         copy_file(stage, ROOT / example, f"examples/{args.role}.yaml")
         for unit in spec["units"]:
             copy_file(stage, ROOT / "deploy/systemd" / unit, f"systemd/{unit}")
+        for source, destination, mode in spec["extra_files"]:
+            copy_file(stage, ROOT / source, destination, mode)
         copy_file(stage, ROOT / "deploy/tmpfiles.d/private-proxy.conf", "tmpfiles.d/private-proxy.conf")
         copy_file(stage, ROOT / "release/licenses.json", "licenses.json")
         copy_file(stage, args.lock, "upstream-lock.json")

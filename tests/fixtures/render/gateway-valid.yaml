@@ -19,6 +19,11 @@ listeners:
     type: http
     listen: 127.0.0.1
     port: 18444
+  - name: gateway-ikev2-tproxy
+    type: tproxy
+    listen: 127.0.0.1
+    port: 17894
+    udp: true
 
 users:
   - username: "${TROJAN_USER_1}"

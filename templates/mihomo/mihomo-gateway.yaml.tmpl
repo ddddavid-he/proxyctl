@@ -39,11 +39,18 @@ listeners:
     private-key: /run/private-proxy/gateway.key
   - name: gateway-https-in
     type: http
-    # Public TLS/SNI is terminated by the audited OpenResty stream edge on
-    # TCP/8444. Plain HTTP CONNECT is never public and is accepted only from
-    # the loopback edge on this fixed backend port.
+    # Public TCP/443 SNI/TLS is terminated by the audited OpenResty stream edge
+    # through its internal 10444 path. Plain HTTP CONNECT is never public and
+    # is accepted only from the loopback edge on this fixed backend port.
     listen: 127.0.0.1
     port: 18444
     users:
       - username: ${HTTPS_USER_1}
         password: ${HTTPS_PASSWORD_1}
+  - name: gateway-ikev2-tproxy
+    type: tproxy
+    # strongSwan traffic selected by the dedicated nftables policy is sent to
+    # this loopback-only transparent listener.
+    listen: 127.0.0.1
+    port: 17894
+    udp: true

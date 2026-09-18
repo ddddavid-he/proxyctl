@@ -213,7 +213,7 @@ var roleAllowlists = map[Role]map[string]bool{
 // sectionAllowlists defines accepted section names and their item keys.
 var sectionAllowlists = map[Role]map[string][]string{
 	RoleGateway: {
-		"listeners": {"name", "type", "listen", "port", "users"},
+		"listeners": {"name", "type", "listen", "port", "users", "udp"},
 		"users":     {"username", "password"},
 	},
 	RoleEgress: {
@@ -369,11 +369,12 @@ func (d *Document) validateNetworkPosture(role Role) error {
 	return nil
 }
 
-// validateGatewayListeners binds the reviewed input document to the two fixed
+// validateGatewayListeners binds the reviewed input document to the fixed
 // runtime edges. Public HTTPS CONNECT TLS belongs to OpenResty TCP/8444; the
-// Mihomo listener behind it must stay on loopback TCP/18444. This prevents a
-// config-only edit from turning the decrypted HTTP backend into a public
-// listener or silently moving either listener away from the release template.
+// Mihomo listener behind it must stay on loopback TCP/18444. The IKEv2 TPROXY
+// adapter is also loopback-only and receives packets selected by the dedicated
+// nftables policy. This prevents a config-only edit from exposing either
+// decrypted backend or moving a listener away from the release template.
 func validateGatewayListeners(items [][2]string) error {
 	expected := map[string]map[string]string{
 		"gateway-trojan-in": {
@@ -381,6 +382,9 @@ func validateGatewayListeners(items [][2]string) error {
 		},
 		"gateway-https-in": {
 			"type": "http", "listen": "127.0.0.1", "port": "18444",
+		},
+		"gateway-ikev2-tproxy": {
+			"type": "tproxy", "listen": "127.0.0.1", "port": "17894", "udp": "true",
 		},
 	}
 	seen := map[string]bool{}
