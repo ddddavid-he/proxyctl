@@ -51,6 +51,8 @@ func makeGatewayRoot(t *testing.T) (string, string) {
 	writeCred(t, dir, "TROJAN_PASSWORD_1", trojanPC)
 	writeCred(t, dir, "HTTPS_USER_1", httpsUC)
 	writeCred(t, dir, "HTTPS_PASSWORD_1", httpsPC)
+	writeCred(t, dir, "HTTPS_USER_2", httpsUC2)
+	writeCred(t, dir, "HTTPS_PASSWORD_2", httpsPC2)
 	writeCred(t, dir, "gateway.crt", certGatewayCanary)
 	writeCred(t, dir, "gateway.key", keyGatewayCanary)
 	return root, dir

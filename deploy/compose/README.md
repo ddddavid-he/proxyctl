@@ -19,6 +19,8 @@ Keep all non-image inputs below one configuration root:
     TROJAN_PASSWORD_1
     HTTPS_USER_1
     HTTPS_PASSWORD_1
+    HTTPS_USER_2
+    HTTPS_PASSWORD_2
     gateway.crt
     gateway.key
     IKEV2_USER_1
@@ -28,6 +30,10 @@ Keep all non-image inputs below one configuration root:
     ikev2.key
   runtime.env
 ```
+
+The `_1` HTTPS pair is the interactive identity. The `_2` pair is a separate
+machine identity for the HomeServer build-egress adapter and must not reuse the
+interactive password.
 
 The configuration directory is root-owned `0750`; `gateway.yaml` is `0640`.
 The secrets directory and each secret are root-owned `0700`/`0600`. Compose

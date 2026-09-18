@@ -23,6 +23,7 @@ def main() -> int:
     stage("mihomo", (
         "GATEWAY_EGRESS_PASSWORD_1", "TROJAN_USER_1", "TROJAN_PASSWORD_1",
         "HTTPS_USER_1", "HTTPS_PASSWORD_1", "gateway.crt", "gateway.key",
+        "HTTPS_USER_2", "HTTPS_PASSWORD_2",
     ))
     RUNTIME.mkdir(mode=0o700, parents=True, exist_ok=True)
     checked([str(APP / "proxyctl"), "preflight", "--role", "gateway", "--offline", "--config", str(CONFIG)])

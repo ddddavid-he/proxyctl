@@ -23,8 +23,8 @@ func TestParseGatewayValid(t *testing.T) {
 	if err != nil {
 		t.Fatalf("gateway-valid rejected: %v", err)
 	}
-	if got := len(doc.Users()); got != 2 {
-		t.Errorf("users = %d, want 2", got)
+	if got := len(doc.Users()); got != 3 {
+		t.Errorf("users = %d, want 3", got)
 	}
 	if v, _ := doc.Scalar("bind-address"); v != "127.0.0.1" {
 		t.Errorf("bind-address = %q", v)

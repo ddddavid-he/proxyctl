@@ -24,6 +24,8 @@ func TestLoadGatewayHappy(t *testing.T) {
 		"TROJAN_PASSWORD_1":         trojanPC,
 		"HTTPS_USER_1":              httpsUC,
 		"HTTPS_PASSWORD_1":          httpsPC,
+		"HTTPS_USER_2":              httpsUC2,
+		"HTTPS_PASSWORD_2":          httpsPC2,
 	} {
 		got, ok := b.Scalar(placeholder)
 		if !ok || got != want {

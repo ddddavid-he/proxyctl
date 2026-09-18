@@ -30,3 +30,5 @@ users:
     password: "${TROJAN_PASSWORD_1}"
   - username: "${HTTPS_USER_1}"
     password: "${HTTPS_PASSWORD_1}"
+  - username: "${HTTPS_USER_2}"
+    password: "${HTTPS_PASSWORD_2}"

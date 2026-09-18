@@ -15,6 +15,8 @@ const (
 	trojanPC            = "cw-trojan-pass-b820"
 	httpsUC             = "cw-https-user-77e0"
 	httpsPC             = "cw-https-pass-13b5"
+	httpsUC2            = "cw-https-user2-77e0"
+	httpsPC2            = "cw-https-pass2-13b5"
 	certGatewayCanary   = "cw-gateway-crt-pem-0d4a"
 	keyGatewayCanary    = "cw-gateway-key-pem-6e91"
 	certEgressCanary    = "cw-egress-crt-pem-25c7"
@@ -27,7 +29,7 @@ const (
 // strings assertNoLeak checks: fixed error messages (which legitimately
 // contain words like "credentials") are safe and must not trip it.
 var canaries = []string{
-	gatewayEgressCanary, trojanUC, trojanPC, httpsUC, httpsPC,
+	gatewayEgressCanary, trojanUC, trojanPC, httpsUC, httpsPC, httpsUC2, httpsPC2,
 	certGatewayCanary, keyGatewayCanary, certEgressCanary, keyEgressCanary,
 	optGatewayClientCr, optGatewayCA,
 }
@@ -93,6 +95,8 @@ func cnFakeFiles() map[string][]byte {
 		"TROJAN_PASSWORD_1":         []byte(trojanPC),
 		"HTTPS_USER_1":              []byte(httpsUC),
 		"HTTPS_PASSWORD_1":          []byte(httpsPC),
+		"HTTPS_USER_2":              []byte(httpsUC2),
+		"HTTPS_PASSWORD_2":          []byte(httpsPC2),
 		"gateway.crt":               []byte(certGatewayCanary),
 		"gateway.key":               []byte(keyGatewayCanary),
 	}

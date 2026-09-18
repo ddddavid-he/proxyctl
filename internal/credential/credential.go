@@ -79,6 +79,8 @@ const (
 	scalarTrojanPass            scalarName = "TROJAN_PASSWORD_1"
 	scalarHTTPSUser             scalarName = "HTTPS_USER_1"
 	scalarHTTPSPassword         scalarName = "HTTPS_PASSWORD_1"
+	scalarHTTPSUser2            scalarName = "HTTPS_USER_2"
+	scalarHTTPSPassword2        scalarName = "HTTPS_PASSWORD_2"
 )
 
 // gatewayNodePasswordAlias is the legacy fixture name for the gateway->egress machine
@@ -240,7 +242,7 @@ func scalarForPlaceholder(placeholder string) (scalarName, bool) {
 	n := scalarName(placeholder)
 	switch n {
 	case scalarGatewayEgressPassword, scalarTrojanUser, scalarTrojanPass,
-		scalarHTTPSUser, scalarHTTPSPassword:
+		scalarHTTPSUser, scalarHTTPSPassword, scalarHTTPSUser2, scalarHTTPSPassword2:
 		return n, true
 	}
 	return "", false
@@ -363,6 +365,7 @@ func requiredScalars(role config.Role) []scalarName {
 			scalarGatewayEgressPassword,
 			scalarTrojanUser, scalarTrojanPass,
 			scalarHTTPSUser, scalarHTTPSPassword,
+			scalarHTTPSUser2, scalarHTTPSPassword2,
 		}
 	case config.RoleEgress:
 		// GATEWAY_NODE_PASSWORD_1 is an alias of GATEWAY_EGRESS_PASSWORD_1: the egress

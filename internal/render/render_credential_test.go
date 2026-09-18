@@ -377,7 +377,7 @@ func TestRenderRejectsMalformedCredentialValues(t *testing.T) {
 func TestRenderRejectsMissingCredential(t *testing.T) {
 	for _, missing := range []string{
 		"GATEWAY_EGRESS_PASSWORD_1", "TROJAN_USER_1", "TROJAN_PASSWORD_1",
-		"HTTPS_USER_1", "HTTPS_PASSWORD_1",
+		"HTTPS_USER_1", "HTTPS_PASSWORD_1", "HTTPS_USER_2", "HTTPS_PASSWORD_2",
 	} {
 		b := synthGateway()
 		delete(b.scalars, missing)

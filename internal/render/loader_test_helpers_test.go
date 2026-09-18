@@ -17,6 +17,8 @@ const (
 	synthTrojanPass            = "SYNTH-CANARY-trojan-pass-5e6f"
 	synthHTTPSUser             = "SYNTH-CANARY-https-user-7a8b"
 	synthHTTPSPass             = "SYNTH-CANARY-https-pass-9c0d"
+	synthHTTPSUser2            = "SYNTH-CANARY-https-user2-7a8b"
+	synthHTTPSPass2            = "SYNTH-CANARY-https-pass2-9c0d"
 	synthGatewayCrt            = "SYNTH-CANARY-gateway-crt-body-e1f2"
 	synthGatewayKey            = "SYNTH-CANARY-gateway-key-body-a3b4"
 	synthEgressCrt             = "SYNTH-CANARY-egress-crt-body-c5d6"
@@ -30,7 +32,7 @@ const (
 // output, JSON and errors are checked against this list.
 var synthSecrets = []string{
 	synthGatewayEgressPassword, synthTrojanUser, synthTrojanPass,
-	synthHTTPSUser, synthHTTPSPass,
+	synthHTTPSUser, synthHTTPSPass, synthHTTPSUser2, synthHTTPSPass2,
 	synthGatewayCrt, synthGatewayKey, synthEgressCrt, synthEgressKey,
 	synthGatewayClientCrt, synthGatewayClientKey, synthGatewayClientCA,
 }
@@ -212,6 +214,8 @@ func synthGateway() *synthBundle {
 			"TROJAN_PASSWORD_1":         synthTrojanPass,
 			"HTTPS_USER_1":              synthHTTPSUser,
 			"HTTPS_PASSWORD_1":          synthHTTPSPass,
+			"HTTPS_USER_2":              synthHTTPSUser2,
+			"HTTPS_PASSWORD_2":          synthHTTPSPass2,
 		},
 		assets: map[string][]byte{
 			"gateway.crt": []byte(synthGatewayCrt),

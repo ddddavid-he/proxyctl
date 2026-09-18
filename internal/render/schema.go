@@ -71,6 +71,8 @@ var placeholderSchema = map[string]placeholderKind{
 	"TROJAN_PASSWORD_1":         kindSecret,
 	"HTTPS_USER_1":              kindSecret,
 	"HTTPS_PASSWORD_1":          kindSecret,
+	"HTTPS_USER_2":              kindSecret,
+	"HTTPS_PASSWORD_2":          kindSecret,
 }
 
 // kindBounds bounds raw numeric emission per schema placeholder:

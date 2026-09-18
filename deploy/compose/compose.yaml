@@ -32,6 +32,8 @@ services:
       - ${PRIVATE_PROXY_SECRETS_DIR}/TROJAN_PASSWORD_1:/run/input-secrets/TROJAN_PASSWORD_1:ro
       - ${PRIVATE_PROXY_SECRETS_DIR}/HTTPS_USER_1:/run/input-secrets/HTTPS_USER_1:ro
       - ${PRIVATE_PROXY_SECRETS_DIR}/HTTPS_PASSWORD_1:/run/input-secrets/HTTPS_PASSWORD_1:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/HTTPS_USER_2:/run/input-secrets/HTTPS_USER_2:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/HTTPS_PASSWORD_2:/run/input-secrets/HTTPS_PASSWORD_2:ro
       - ${PRIVATE_PROXY_SECRETS_DIR}/gateway.crt:/run/input-secrets/gateway.crt:ro
       - ${PRIVATE_PROXY_SECRETS_DIR}/gateway.key:/run/input-secrets/gateway.key:ro
     tmpfs:

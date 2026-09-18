@@ -51,6 +51,14 @@ loopback backend, while the external edge remains an independently reviewed
 configuration transaction. Ordinary HTTP `proxy_pass` is not equivalent to
 this stream contract and is not supported.
 
+The HTTPS listener has two fixed, independently provisioned identities.
+`HTTPS_USER_1`/`HTTPS_PASSWORD_1` remains the interactive client identity;
+`HTTPS_USER_2`/`HTTPS_PASSWORD_2` is reserved for the HomeServer build-egress
+machine adapter. Both pairs are required systemd credentials. A release that
+contains the second identity must not be activated until its root-only files
+exist; the renderer otherwise fails closed before replacing the running
+process. The two identities must never reuse a password.
+
 ## Consequences
 
 - The `gateway` role renders a Mihomo configuration and may publish gateway

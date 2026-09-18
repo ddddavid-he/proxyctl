@@ -47,6 +47,8 @@ listeners:
     users:
       - username: ${HTTPS_USER_1}
         password: ${HTTPS_PASSWORD_1}
+      - username: ${HTTPS_USER_2}
+        password: ${HTTPS_PASSWORD_2}
   - name: gateway-ikev2-tproxy
     type: tproxy
     # strongSwan traffic selected by the dedicated nftables policy is sent to
