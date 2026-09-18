@@ -22,6 +22,11 @@ loader = load("ikev2_loader", ROOT / "deploy/ikev2/load_ikev2.py")
 
 
 class RenderTests(unittest.TestCase):
+    CERTIFICATE = """-----BEGIN CERTIFICATE-----
+c3ludGhldGlj
+-----END CERTIFICATE-----
+"""
+
     def credentials(self, root):
         directory = pathlib.Path(root, "credentials")
         directory.mkdir()
@@ -29,7 +34,7 @@ class RenderTests(unittest.TestCase):
             "IKEV2_USER_1": "synthetic-user",
             "IKEV2_PASSWORD_1": "synthetic-password",
             "IKEV2_REMOTE_ID": "vpn.example.invalid",
-            "ikev2.crt": "synthetic-certificate",
+            "ikev2.crt": self.CERTIFICATE + self.CERTIFICATE,
             "ikev2.key": "synthetic-private-key",
         }
         for name, value in values.items():
@@ -47,6 +52,16 @@ class RenderTests(unittest.TestCase):
             self.assertIn('secret = "synthetic-password"', text)
             self.assertEqual(output.stat().st_mode & 0o777, 0o600)
             self.assertEqual((runtime / "private/ikev2.key").stat().st_mode & 0o777, 0o600)
+            self.assertEqual((runtime / "x509/ikev2.crt").read_text(), self.CERTIFICATE)
+            self.assertEqual((runtime / "x509ca/ikev2-chain-1.crt").read_text(), self.CERTIFICATE)
+            self.assertEqual((runtime / "x509ca/ikev2-chain-1.crt").stat().st_mode & 0o777, 0o600)
+
+    def test_render_rejects_non_pem_certificate(self):
+        with tempfile.TemporaryDirectory() as temp:
+            credentials = self.credentials(temp)
+            (credentials / "ikev2.crt").write_text("not-a-certificate")
+            with self.assertRaisesRegex(renderer.RenderError, "invalid PEM certificate chain"):
+                renderer.render(credentials, pathlib.Path(temp, "runtime"))
 
     def test_invalid_secret_is_rejected_without_leaking_value(self):
         with tempfile.TemporaryDirectory() as temp:

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import os
 import pathlib
+import re
 import shutil
 import stat
 import tempfile
@@ -19,6 +20,10 @@ RUNTIME_DIR = pathlib.Path("/run/private-proxy-ikev2")
 POOL = "10.89.0.0/24"
 DNS = "1.1.1.1"
 REQUIRED = ("IKEV2_USER_1", "IKEV2_PASSWORD_1", "IKEV2_REMOTE_ID", "ikev2.crt", "ikev2.key")
+PEM_CERTIFICATE = re.compile(
+    rb"-----BEGIN CERTIFICATE-----\s+.+?\s+-----END CERTIFICATE-----\s*",
+    re.DOTALL,
+)
 
 
 class RenderError(RuntimeError):
@@ -50,6 +55,26 @@ def _quote(value: str) -> str:
     return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
+def _install_certificate_chain(source: pathlib.Path, runtime: pathlib.Path) -> None:
+    try:
+        certificates = PEM_CERTIFICATE.findall(source.read_bytes())
+    except OSError as exc:
+        raise RenderError("cannot read credential: ikev2.crt") from exc
+    if not certificates:
+        raise RenderError("credential has an invalid PEM certificate chain: ikev2.crt")
+
+    leaf = runtime / "x509" / "ikev2.crt"
+    leaf.write_bytes(certificates[0])
+    os.chmod(leaf, 0o600)
+
+    for stale in (runtime / "x509ca").glob("ikev2-chain-*.crt"):
+        stale.unlink()
+    for index, certificate in enumerate(certificates[1:], start=1):
+        intermediate = runtime / "x509ca" / f"ikev2-chain-{index}.crt"
+        intermediate.write_bytes(certificate)
+        os.chmod(intermediate, 0o600)
+
+
 def render(credentials: pathlib.Path, runtime: pathlib.Path) -> pathlib.Path:
     for name in REQUIRED:
         _regular_file(credentials / name)
@@ -59,14 +84,13 @@ def render(credentials: pathlib.Path, runtime: pathlib.Path) -> pathlib.Path:
 
     runtime.mkdir(mode=0o700, parents=True, exist_ok=True)
     os.chmod(runtime, 0o700)
-    for relative in ("x509", "private"):
+    for relative in ("x509", "x509ca", "private"):
         target = runtime / relative
         target.mkdir(mode=0o700, exist_ok=True)
         os.chmod(target, 0o700)
 
-    shutil.copyfile(credentials / "ikev2.crt", runtime / "x509" / "ikev2.crt")
+    _install_certificate_chain(credentials / "ikev2.crt", runtime)
     shutil.copyfile(credentials / "ikev2.key", runtime / "private" / "ikev2.key")
-    os.chmod(runtime / "x509" / "ikev2.crt", 0o600)
     os.chmod(runtime / "private" / "ikev2.key", 0o600)
 
     config = f"""connections {{
