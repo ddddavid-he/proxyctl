@@ -43,7 +43,10 @@ proxyctl version
 
 See [CLI reference](docs/proxyctl-cli.md),
 [credential-rendering design](docs/adr-prx01-render-runtime-credentials.md), and
-[release format](docs/prx02-release.md) for details.
+[release format](docs/prx02-release.md) for details. The optional official
+Hysteria2 user ingress, its credential-safe runtime renderer, and the
+`ladder.ddddavid.cn:19444` Mihomo client fields are documented in
+[Hysteria2 gateway ingress](docs/hysteria-gateway.md).
 
 ## Project status
 

@@ -1,0 +1,40 @@
+[Unit]
+Description=Private Proxy Hysteria2 user ingress gateway
+After=network-online.target private-proxy-mihomo.service
+Wants=network-online.target
+Requires=private-proxy-mihomo.service
+StartLimitIntervalSec=60s
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=privateproxy
+Group=privateproxy
+UMask=0077
+RuntimeDirectory=private-proxy-hy2-gateway
+RuntimeDirectoryMode=0700
+Environment=HOME=/run/private-proxy-hy2-gateway
+LoadCredential=HY2_USER_1:/etc/private-proxy/secrets/HTTPS_USER_1
+LoadCredential=HY2_PASSWORD_1:/etc/private-proxy/secrets/HTTPS_PASSWORD_1
+LoadCredential=gateway.crt:/etc/private-proxy/secrets/gateway.crt
+LoadCredential=gateway.key:/etc/private-proxy/secrets/gateway.key
+ExecStartPre=/usr/bin/python3 /opt/private-proxy/hysteria-gateway/current/render_hysteria_gateway.py
+ExecStart=/opt/private-proxy/hysteria-gateway/current/hysteria server -c /run/private-proxy-hy2-gateway/server.json
+Restart=on-failure
+RestartSec=5s
+TimeoutStopSec=20s
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictRealtime=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+ReadWritePaths=/run/private-proxy-hy2-gateway
+
+[Install]
+WantedBy=multi-user.target
