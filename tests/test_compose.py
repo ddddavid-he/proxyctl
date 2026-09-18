@@ -30,12 +30,15 @@ class ComposeContractTests(unittest.TestCase):
         self.assertNotIn("privileged: true", text)
         self.assertNotIn("ports:", text)
         self.assertNotIn("image: latest", text)
+        self.assertIn("HOME: /run/private-proxy", text)
 
     def test_runtime_image_is_digest_pinned_and_strongswan_is_exact(self):
         text = (ROOT / "deploy/compose/Dockerfile.runtime").read_text()
         self.assertRegex(text.splitlines()[0], r"^FROM debian@sha256:[0-9a-f]{64}$")
         self.assertIn("ARG STRONGSWAN_VERSION=6.0.1-6+deb13u7", text)
         self.assertIn("charon-systemd=${STRONGSWAN_VERSION}", text)
+        self.assertIn("       python3 \\\n", text)
+        self.assertNotIn("python3-minimal", text)
 
     def test_credential_stage_rejects_non_regular_input(self):
         with tempfile.TemporaryDirectory() as temp:

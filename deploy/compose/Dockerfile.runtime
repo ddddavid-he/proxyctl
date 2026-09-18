@@ -8,7 +8,7 @@ RUN apt-get update \
        ca-certificates \
        iproute2 \
        nftables \
-       python3-minimal \
+       python3 \
        charon-systemd=${STRONGSWAN_VERSION} \
        strongswan-swanctl=${STRONGSWAN_VERSION} \
        libcharon-extauth-plugins=${STRONGSWAN_VERSION} \

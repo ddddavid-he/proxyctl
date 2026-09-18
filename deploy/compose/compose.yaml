@@ -22,6 +22,7 @@ services:
     environment:
       CREDENTIALS_DIRECTORY: /run/credentials/mihomo
       GATEWAY_CONFIG: /config/gateway.yaml
+      HOME: /run/private-proxy
     volumes:
       - ${PRIVATE_PROXY_RELEASE_DIR}:/app:ro
       - ${PRIVATE_PROXY_CONFIG_DIR:?set PRIVATE_PROXY_CONFIG_DIR}/gateway.yaml:/config/gateway.yaml:ro
