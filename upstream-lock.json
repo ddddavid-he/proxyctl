@@ -25,6 +25,18 @@
       "goos": "linux",
       "goarch": "amd64",
       "license": "MIT"
+    },
+    "hysteria-linux-arm64": {
+      "version": "v2.9.2",
+      "sourceRepository": "https://github.com/apernet/hysteria",
+      "sourceTagOid": "c3a806b5cbbb20fe72099529573da26b1a2e9f22",
+      "url": "https://github.com/apernet/hysteria/releases/download/app%2Fv2.9.2/hysteria-linux-arm64",
+      "sha256": "9ec8f49f4ea554b1cac04e6f3690cea76ff835082e943e54196d7f323fcfba71",
+      "format": "raw",
+      "outputName": "hysteria",
+      "goos": "linux",
+      "goarch": "arm64",
+      "license": "MIT"
     }
   }
 }

@@ -46,7 +46,8 @@ See [CLI reference](docs/proxyctl-cli.md),
 [release format](docs/prx02-release.md) for details. The optional official
 Hysteria2 user ingress, its credential-safe runtime renderer, and the
 `ladder.ddddavid.cn:19444` Mihomo client fields are documented in
-[Hysteria2 gateway ingress](docs/hysteria-gateway.md). The optional native
+[Hysteria2 gateway ingress](docs/hysteria-gateway.md). The gateway services can
+be deployed as the consolidated [Compose stack](deploy/compose/README.md). The optional native
 [IKEv2 gateway ingress](docs/ikev2-gateway.md) reuses the same controlled
 egress without adding a direct fallback.
 

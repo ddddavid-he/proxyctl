@@ -1,0 +1,19 @@
+FROM debian@sha256:7215f78f35ffe58fe13f244fac9c4f21326d55187271fbb3e1a8aa5cc7e387ab
+
+ARG STRONGSWAN_VERSION=6.0.1-6+deb13u7
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+       ca-certificates \
+       iproute2 \
+       nftables \
+       python3-minimal \
+       charon-systemd=${STRONGSWAN_VERSION} \
+       strongswan-swanctl=${STRONGSWAN_VERSION} \
+       libcharon-extauth-plugins=${STRONGSWAN_VERSION} \
+       libstrongswan-extra-plugins=${STRONGSWAN_VERSION} \
+       libstrongswan-standard-plugins=${STRONGSWAN_VERSION} \
+    && rm -rf /var/lib/apt/lists/*
+
+STOPSIGNAL SIGTERM

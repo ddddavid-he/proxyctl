@@ -40,6 +40,7 @@ ROLE_SPECS = {
         "upstream": "mihomo-linux-arm64",
         "bundle": "proxyctl-gateway-linux-arm64.tar.gz",
         "engine": "mihomo",
+        "extra_upstreams": [("hysteria-linux-arm64", "hysteria")],
         "template": "templates/mihomo/mihomo-gateway.yaml.tmpl",
         "units": ["private-proxy-mihomo.service", "private-proxy-ikev2-policy.service", "private-proxy-ikev2.service", "private-proxy-verify.service", "private-proxy-verify.timer"],
         "extra_files": [
@@ -48,6 +49,15 @@ ROLE_SPECS = {
             ("deploy/ikev2/configure_policy.py", "deploy/ikev2/configure_policy.py", 0o755),
             ("deploy/ikev2/packages.lock", "deploy/ikev2/packages.lock", 0o644),
             ("deploy/apparmor/usr.sbin.swanctl.private-proxy", "apparmor/usr.sbin.swanctl.private-proxy", 0o644),
+            ("deploy/compose/compose.yaml", "compose/compose.yaml", 0o644),
+            ("deploy/compose/README.md", "compose/README.md", 0o644),
+            ("deploy/compose/Dockerfile.runtime", "compose/Dockerfile.runtime", 0o644),
+            ("deploy/compose/run_mihomo.py", "deploy/compose/run_mihomo.py", 0o755),
+            ("deploy/compose/run_hysteria.py", "deploy/compose/run_hysteria.py", 0o755),
+            ("deploy/compose/run_policy.py", "deploy/compose/run_policy.py", 0o755),
+            ("deploy/compose/run_strongswan.py", "deploy/compose/run_strongswan.py", 0o755),
+            ("deploy/compose/healthcheck.py", "deploy/compose/healthcheck.py", 0o755),
+            ("deploy/compose/credential_stage.py", "deploy/compose/credential_stage.py", 0o755),
         ],
     },
     "egress": {
@@ -55,6 +65,7 @@ ROLE_SPECS = {
         "upstream": "hysteria-linux-amd64",
         "bundle": "proxyctl-egress-linux-amd64.tar.gz",
         "engine": "hysteria",
+        "extra_upstreams": [],
         "template": "templates/hysteria/hysteria-egress.yaml.tmpl",
         "units": ["private-proxy-hysteria.service", "private-proxy-verify.service", "private-proxy-verify.timer"],
         "extra_files": [],
@@ -91,7 +102,9 @@ def load_lock(path: pathlib.Path) -> dict:
         raise ReleaseError("upstream lock has an unsupported schema")
     if not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", lock["goToolchain"]):
         raise ReleaseError("Go toolchain must be an exact patch version")
-    if set(lock["upstreams"]) != {spec["upstream"] for spec in ROLE_SPECS.values()}:
+    expected_upstreams = {spec["upstream"] for spec in ROLE_SPECS.values()}
+    expected_upstreams.update(name for spec in ROLE_SPECS.values() for name, _ in spec.get("extra_upstreams", []))
+    if set(lock["upstreams"]) != expected_upstreams:
         raise ReleaseError("upstream lock must contain exactly the closed target set")
     for name, item in lock["upstreams"].items():
         required = {"version", "sourceRepository", "sourceTagOid", "url", "sha256", "format", "outputName", "goos", "goarch", "license"}
@@ -116,6 +129,9 @@ def load_lock(path: pathlib.Path) -> dict:
     for spec in ROLE_SPECS.values():
         if lock["upstreams"][spec["upstream"]]["goarch"] != spec["goarch"]:
             raise ReleaseError("role architecture and upstream lock disagree")
+        for name, _ in spec.get("extra_upstreams", []):
+            if lock["upstreams"][name]["goarch"] != spec["goarch"]:
+                raise ReleaseError("role architecture and extra upstream lock disagree")
     return lock
 
 
@@ -265,7 +281,7 @@ def file_records(stage: pathlib.Path, excluded: set[str] | None = None) -> list[
     return records
 
 
-def make_sbom(stage: pathlib.Path, role: str, version: str, commit: str, lock_item: dict) -> dict:
+def make_sbom(stage: pathlib.Path, role: str, version: str, commit: str, lock_items: list[tuple[str, dict]]) -> dict:
     files = []
     for record in file_records(stage):
         files.append({"SPDXID": "SPDXRef-File-" + hashlib.sha256(record["path"].encode()).hexdigest()[:16], "fileName": "./" + record["path"], "checksums": [{"algorithm": "SHA256", "checksumValue": record["sha256"]}]})
@@ -278,7 +294,10 @@ def make_sbom(stage: pathlib.Path, role: str, version: str, commit: str, lock_it
         "creationInfo": {"created": "1970-01-01T00:00:00Z", "creators": ["Tool: scripts/release/release.py"]},
         "packages": [
             {"name": "proxyctl", "SPDXID": "SPDXRef-Package-proxyctl", "versionInfo": version, "downloadLocation": "NOASSERTION", "filesAnalyzed": False, "licenseConcluded": "MIT", "licenseDeclared": "MIT", "copyrightText": "Copyright (c) 2026 proxyctl contributors", "externalRefs": [{"referenceCategory": "OTHER", "referenceType": "source-commit", "referenceLocator": commit}]},
-            {"name": lock_item["outputName"], "SPDXID": "SPDXRef-Package-upstream", "versionInfo": lock_item["version"], "downloadLocation": lock_item["url"], "filesAnalyzed": False, "licenseConcluded": lock_item["license"], "licenseDeclared": lock_item["license"], "copyrightText": "NOASSERTION", "checksums": [{"algorithm": "SHA256", "checksumValue": lock_item["sha256"]}]},
+            *[
+                {"name": item["outputName"], "SPDXID": "SPDXRef-Package-upstream-" + name, "versionInfo": item["version"], "downloadLocation": item["url"], "filesAnalyzed": False, "licenseConcluded": item["license"], "licenseDeclared": item["license"], "copyrightText": "NOASSERTION", "checksums": [{"algorithm": "SHA256", "checksumValue": item["sha256"]}]}
+                for name, item in lock_items
+            ],
         ],
         "files": files,
     }
@@ -324,10 +343,13 @@ def build_bundle(args: argparse.Namespace) -> pathlib.Path:
     epoch = source_epoch(args.source_date_epoch)
     spec = ROLE_SPECS[args.role]
     lock_item = lock["upstreams"][spec["upstream"]]
+    extra_lock_items = [(name, lock["upstreams"][name]) for name, _ in spec.get("extra_upstreams", [])]
     with tempfile.TemporaryDirectory(prefix="prx02-stage-") as temp:
         stage = pathlib.Path(temp)
         build_proxyctl(stage, args.role, args.version, args.commit, epoch, args.go_binary)
         write_file(stage, spec["engine"], checked_upstream(lock_item, args.cache_dir), 0o755)
+        for (name, item), (_, output) in zip(extra_lock_items, spec.get("extra_upstreams", [])):
+            write_file(stage, output, checked_upstream(item, args.cache_dir), 0o755)
         copy_file(stage, ROOT / spec["template"], spec["template"])
         example = "tests/fixtures/render/gateway-valid.yaml" if args.role == "gateway" else "tests/fixtures/render/egress-valid.yaml"
         copy_file(stage, ROOT / example, f"examples/{args.role}.yaml")
@@ -339,17 +361,22 @@ def build_bundle(args: argparse.Namespace) -> pathlib.Path:
         copy_file(stage, ROOT / "release/licenses.json", "licenses.json")
         copy_file(stage, args.lock, "upstream-lock.json")
         copy_file(stage, ROOT / "scripts/release/release.py", "verify-release.py", 0o755)
-        sbom = make_sbom(stage, args.role, args.version, args.commit, lock_item)
+        all_lock_items = [(spec["upstream"], lock_item), *extra_lock_items]
+        sbom = make_sbom(stage, args.role, args.version, args.commit, all_lock_items)
         write_file(stage, "sbom.spdx.json", json_bytes(sbom))
         provenance = {
             "_type": "https://in-toto.io/Statement/v1",
             "subject": [
                 {"name": "proxyctl", "digest": {"sha256": sha256_file(stage / "proxyctl")}},
                 {"name": spec["engine"], "digest": {"sha256": sha256_file(stage / spec["engine"])}},
+                *[
+                    {"name": output, "digest": {"sha256": sha256_file(stage / output)}}
+                    for _, output in spec.get("extra_upstreams", [])
+                ],
             ],
             "predicateType": "https://slsa.dev/provenance/v1",
             "predicate": {
-                "buildDefinition": {"buildType": "https://pushpop.invalid/buildtypes/prx02/v1", "externalParameters": {"role": args.role, "version": args.version, "sourceCommit": args.commit, "upstreamLockSha256": sha256_file(args.lock)}, "resolvedDependencies": [{"uri": lock_item["sourceRepository"], "digest": {"gitCommit": lock_item["sourceTagOid"]}}, {"uri": lock_item["url"], "digest": {"sha256": lock_item["sha256"]}}]},
+                "buildDefinition": {"buildType": "https://pushpop.invalid/buildtypes/prx02/v1", "externalParameters": {"role": args.role, "version": args.version, "sourceCommit": args.commit, "upstreamLockSha256": sha256_file(args.lock)}, "resolvedDependencies": [dependency for _, item in all_lock_items for dependency in ({"uri": item["sourceRepository"], "digest": {"gitCommit": item["sourceTagOid"]}}, {"uri": item["url"], "digest": {"sha256": item["sha256"]}})]},
                 "runDetails": {"builder": {"id": f"https://pushpop.invalid/builders/{args.builder_environment}/{urllib.parse.quote(args.builder_identity, safe='')}"}, "metadata": {"invocationId": f"{args.commit}:{args.role}:{epoch}"}},
             },
         }
@@ -365,6 +392,7 @@ def build_bundle(args: argparse.Namespace) -> pathlib.Path:
             "toolchain": {"go": lock["goToolchain"]},
             "sourceDateEpoch": epoch,
             "upstream": {"name": spec["upstream"], **lock_item},
+            "additionalUpstreams": [{"name": name, **item} for name, item in extra_lock_items],
             "files": manifest_files,
             "installationRoot": f"/opt/private-proxy/releases/{args.version}/",
             "activation": "manual-only: verify first; never overwrite /opt/private-proxy/current",
@@ -427,6 +455,12 @@ def verify_bundle(path: pathlib.Path, expected_role: str | None = None) -> dict:
         spec = ROLE_SPECS.get(manifest.get("role"))
         if spec is None or manifest.get("upstream") != {"name": spec["upstream"], **embedded_lock["upstreams"][spec["upstream"]]}:
             raise ReleaseError("manifest upstream does not match embedded lock")
+        expected_additional = [
+            {"name": name, **embedded_lock["upstreams"][name]}
+            for name, _ in spec.get("extra_upstreams", [])
+        ]
+        if manifest.get("additionalUpstreams", []) != expected_additional:
+            raise ReleaseError("manifest additional upstreams do not match embedded lock")
         validate_license_inventory(embedded_lock, root / "licenses.json")
         if manifest.get("toolchain", {}).get("go") != embedded_lock["goToolchain"]:
             raise ReleaseError("manifest toolchain does not match embedded lock")
@@ -459,6 +493,7 @@ def verify_bundle(path: pathlib.Path, expected_role: str | None = None) -> dict:
         expected_subjects = {
             ("proxyctl", sha256_file(root / "proxyctl")),
             (spec["engine"], sha256_file(root / spec["engine"])),
+            *((output, sha256_file(root / output)) for _, output in spec.get("extra_upstreams", [])),
         }
         try:
             subjects = {
@@ -478,7 +513,7 @@ def lint_workflows(directory: pathlib.Path) -> None:
         raise ReleaseError("no workflow files found")
     for path in workflow_files:
         text = path.read_text()
-        if re.search(r"(?i)(ssh|scp|rsync|kubectl|systemctl|docker\s+build)", text):
+        if re.search(r"(?i)(ssh|scp|rsync|kubectl|systemctl|docker\s+compose)", text):
             raise ReleaseError(f"{path.name}: deployment or forbidden build command in workflow")
         for number, line in enumerate(text.splitlines(), 1):
             if "uses:" in line and not ACTION_PIN_RE.match(line):

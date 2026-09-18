@@ -124,15 +124,18 @@ class BundleVerificationTests(unittest.TestCase):
         root.mkdir()
         release.write_file(root, "proxyctl", b"proxyctl", 0o755)
         release.write_file(root, "mihomo", b"mihomo", 0o755)
+        release.write_file(root, "hysteria", b"hysteria", 0o755)
         release.copy_file(root, ROOT / "upstream-lock.json", "upstream-lock.json")
         release.copy_file(root, ROOT / "release/licenses.json", "licenses.json")
         lock_item = json.loads((ROOT / "upstream-lock.json").read_text())["upstreams"]["mihomo-linux-arm64"]
-        release.write_file(root, "sbom.spdx.json", release.json_bytes(release.make_sbom(root, "gateway", "v0.1.0", "a" * 40, lock_item)))
+        extra_item = json.loads((ROOT / "upstream-lock.json").read_text())["upstreams"]["hysteria-linux-arm64"]
+        release.write_file(root, "sbom.spdx.json", release.json_bytes(release.make_sbom(root, "gateway", "v0.1.0", "a" * 40, [("mihomo-linux-arm64", lock_item), ("hysteria-linux-arm64", extra_item)])))
         release.write_file(root, "provenance.intoto.jsonl", release.json_bytes({
             "predicateType": "https://slsa.dev/provenance/v1",
             "subject": [
                 {"name": "proxyctl", "digest": {"sha256": release.sha256_file(root / "proxyctl")}},
                 {"name": "mihomo", "digest": {"sha256": release.sha256_file(root / "mihomo")}},
+                {"name": "hysteria", "digest": {"sha256": release.sha256_file(root / "hysteria")}},
             ],
         }))
         records = release.file_records(root)
@@ -143,6 +146,7 @@ class BundleVerificationTests(unittest.TestCase):
             "builder": {"environment": "local", "identity": "test", "hostLabel": "test-host"},
             "toolchain": {"go": "1.25.14"},
             "upstream": {"name": "mihomo-linux-arm64", **lock_item},
+            "additionalUpstreams": [{"name": "hysteria-linux-arm64", **extra_item}],
             "files": records,
         }
         release.write_file(root, "manifest.json", release.json_bytes(manifest))

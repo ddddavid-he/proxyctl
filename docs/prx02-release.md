@@ -2,8 +2,12 @@
 
 `scripts/release/release.py` builds deterministic Linux bundles for the
 `gateway` and `egress` roles. A bundle contains `proxyctl`, the pinned upstream
-engine, the role template, systemd units, checksums, an SPDX SBOM, license
-inventory, and in-toto provenance metadata.
+engine, the role template, deployment assets, checksums, an SPDX SBOM, license
+inventory, and in-toto provenance metadata. Gateway releases also contain the
+ARM64 Hysteria2 ingress binary and the consolidated Compose definition. CI
+publishes a separately attested `private-proxy-runtime-linux-arm64.tar.gz`
+image archive so production can use `docker load` without building or pulling
+an image.
 
 ## Build
 
