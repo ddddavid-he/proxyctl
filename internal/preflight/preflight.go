@@ -277,10 +277,10 @@ type reservation struct {
 }
 
 // roleReservations is the fixed role-specific reservation matrix:
-// gateway TCP 8443/18444/7890 and egress UDP 443. Public HTTPS CONNECT TCP/8444
-// is owned by the external OpenResty TLS edge; Mihomo reserves only its fixed
-// loopback backend 18444. Bind scope (loopback-only for gateway 18444/7890) is a
-// static config policy declared here; it is separate
+// gateway TCP 8443/18444/7890, gateway TCP+UDP 17894, and egress UDP 443.
+// Public HTTPS CONNECT TCP/443 is owned by the external OpenResty TLS edge;
+// Mihomo reserves only its fixed loopback backend 18444. Bind scope
+// (loopback-only for gateway 18444/7890/17894) is a static config policy declared here; it is separate
 // from conflict detection and never claims any address is "approved".
 func roleReservations(role string) []reservation {
 	switch role {
@@ -289,6 +289,8 @@ func roleReservations(role string) []reservation {
 			{proto: "tcp", port: 8443, label: "8443/tcp (trojan-in)"},
 			{proto: "tcp", port: 18444, loopbackOnly: true, label: "18444/tcp (loopback https backend)"},
 			{proto: "tcp", port: 7890, loopbackOnly: true, label: "7890/tcp (loopback mixed)"},
+			{proto: "tcp", port: 17894, loopbackOnly: true, label: "17894/tcp (loopback ikev2 tproxy)"},
+			{proto: "udp", port: 17894, loopbackOnly: true, label: "17894/udp (loopback ikev2 tproxy)"},
 		}
 	case "egress":
 		return []reservation{
