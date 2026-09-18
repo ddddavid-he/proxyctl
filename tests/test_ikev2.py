@@ -18,6 +18,7 @@ def load(name, path):
 
 renderer = load("ikev2_renderer", ROOT / "deploy/ikev2/render_ikev2.py")
 policy = load("ikev2_policy", ROOT / "deploy/ikev2/configure_policy.py")
+loader = load("ikev2_loader", ROOT / "deploy/ikev2/load_ikev2.py")
 
 
 class RenderTests(unittest.TestCase):
@@ -101,6 +102,25 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(calls[1][1:3], ["rule", "del"])
 
 
+class LoadTests(unittest.TestCase):
+    def test_load_requires_named_connection(self):
+        responses = [
+            mock.Mock(returncode=0, stdout="", stderr=""),
+            mock.Mock(returncode=0, stdout="private-proxy-ikev2: IKEv2\n", stderr=""),
+        ]
+        with mock.patch.object(loader, "_run", side_effect=responses):
+            loader.load()
+
+    def test_load_rejects_swanctl_zero_with_no_connection(self):
+        responses = [
+            mock.Mock(returncode=0, stdout="no connections found\n", stderr=""),
+            mock.Mock(returncode=0, stdout="", stderr=""),
+        ]
+        with mock.patch.object(loader, "_run", side_effect=responses):
+            with self.assertRaisesRegex(loader.LoadError, "was not loaded"):
+                loader.load()
+
+
 class UnitTests(unittest.TestCase):
     def test_ikev2_unit_uses_systemd_credentials(self):
         unit = (ROOT / "deploy/systemd/private-proxy-ikev2.service").read_text()
@@ -125,7 +145,14 @@ class UnitTests(unittest.TestCase):
         self.assertNotIn("private-proxy-ikev2-tproxy.service", spec["units"])
         destinations = {destination for _, destination, _ in spec["extra_files"]}
         self.assertIn("deploy/ikev2/render_ikev2.py", destinations)
+        self.assertIn("deploy/ikev2/load_ikev2.py", destinations)
         self.assertIn("deploy/ikev2/configure_policy.py", destinations)
+        self.assertIn("apparmor/usr.sbin.swanctl.private-proxy", destinations)
+
+    def test_apparmor_fragment_allows_only_runtime_reads(self):
+        fragment = (ROOT / "deploy/apparmor/usr.sbin.swanctl.private-proxy").read_text()
+        self.assertIn("/run/private-proxy-ikev2/** r,", fragment)
+        self.assertNotIn(" w,", fragment)
 
 
 if __name__ == "__main__":

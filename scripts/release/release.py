@@ -44,8 +44,10 @@ ROLE_SPECS = {
         "units": ["private-proxy-mihomo.service", "private-proxy-ikev2-policy.service", "private-proxy-ikev2.service", "private-proxy-verify.service", "private-proxy-verify.timer"],
         "extra_files": [
             ("deploy/ikev2/render_ikev2.py", "deploy/ikev2/render_ikev2.py", 0o755),
+            ("deploy/ikev2/load_ikev2.py", "deploy/ikev2/load_ikev2.py", 0o755),
             ("deploy/ikev2/configure_policy.py", "deploy/ikev2/configure_policy.py", 0o755),
             ("deploy/ikev2/packages.lock", "deploy/ikev2/packages.lock", 0o644),
+            ("deploy/apparmor/usr.sbin.swanctl.private-proxy", "apparmor/usr.sbin.swanctl.private-proxy", 0o644),
         ],
     },
     "egress": {

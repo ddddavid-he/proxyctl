@@ -1,0 +1,4 @@
+# Merge this fragment into /etc/apparmor.d/local/usr.sbin.swanctl on hosts
+# whose distribution profile confines swanctl.
+/run/private-proxy-ikev2/ r,
+/run/private-proxy-ikev2/** r,

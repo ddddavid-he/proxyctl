@@ -26,6 +26,14 @@ On the Debian arm64 gateway, install the exact versions in
 The supported service is `charon-systemd` with `strongswan-swanctl`; the legacy
 starter configuration is not used.
 
+Debian's packaged AppArmor profile confines `swanctl` to `/etc/swanctl` by
+default. To keep rendered credentials in tmpfs, merge the packaged
+`apparmor/usr.sbin.swanctl.private-proxy` fragment into
+`/etc/apparmor.d/local/usr.sbin.swanctl` and reload the distribution profile
+before starting the IKEv2 unit. The fragment grants read-only access to
+`/run/private-proxy-ikev2`; do not broaden it to another tree or add write
+access.
+
 The primary Mihomo unit receives only `CAP_NET_ADMIN`, which is required to
 create its loopback transparent proxy socket. The root policy unit receives the
 same bounded capability to manage its dedicated nftables table and policy
@@ -50,6 +58,11 @@ writes the generated swanctl tree only under `/run/private-proxy-ikev2` with
 mode `0600`. Values must never be placed in the Git input document, unit files,
 release manifest, or command line.
 
+The load helper checks the VICI connection inventory after `swanctl
+--load-all`. This is required because `swanctl` may exit successfully after a
+configuration read failure while loading zero connections; the unit fails
+unless `private-proxy-ikev2` is actually present.
+
 ## Activation boundary
 
 Installing packages, copying credentials, changing the host firewall, and
@@ -59,8 +72,8 @@ authorized deployment installs the packaged units and enables them in this
 order:
 
 1. `private-proxy-mihomo.service`
-2. `private-proxy-ikev2-policy.service`
-3. `strongswan.service`
+2. `strongswan.service`
+3. `private-proxy-ikev2-policy.service`
 4. `private-proxy-ikev2.service`
 
 Acceptance requires a native IKEv2 client to authenticate, receive an address
