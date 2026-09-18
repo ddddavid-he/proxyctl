@@ -31,6 +31,7 @@ class ComposeContractTests(unittest.TestCase):
         self.assertNotIn("ports:", text)
         self.assertNotIn("image: latest", text)
         self.assertIn("HOME: /run/private-proxy", text)
+        self.assertIn("SAFE_PATHS: /run/private-proxy", text)
 
     def test_runtime_image_is_digest_pinned_and_strongswan_is_exact(self):
         text = (ROOT / "deploy/compose/Dockerfile.runtime").read_text()
@@ -63,6 +64,7 @@ class ComposeContractTests(unittest.TestCase):
         self.assertIn("compose/compose.yaml", destinations)
         self.assertIn("deploy/compose/credential_stage.py", destinations)
         self.assertIn("deploy/compose/run_strongswan.py", destinations)
+        self.assertIn("deploy/hysteria-gateway/render_hysteria_gateway.py", destinations)
         self.assertEqual(release.ROLE_SPECS["gateway"]["extra_upstreams"], [("hysteria-linux-arm64", "hysteria")])
 
     def test_mihomo_launcher_creates_runtime_directory_before_render(self):

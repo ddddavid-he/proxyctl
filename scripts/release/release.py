@@ -58,6 +58,7 @@ ROLE_SPECS = {
             ("deploy/compose/run_strongswan.py", "deploy/compose/run_strongswan.py", 0o755),
             ("deploy/compose/healthcheck.py", "deploy/compose/healthcheck.py", 0o755),
             ("deploy/compose/credential_stage.py", "deploy/compose/credential_stage.py", 0o755),
+            ("deploy/hysteria-gateway/render_hysteria_gateway.py", "deploy/hysteria-gateway/render_hysteria_gateway.py", 0o755),
         ],
     },
     "egress": {
