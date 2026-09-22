@@ -1,0 +1,8 @@
+# Negative fixture: 0.0.0.0 controller (must reject).
+schema: private-proxy/v1
+role: gateway
+mixed-port: 7890
+bind-address: 127.0.0.1
+controller-listen: 0.0.0.0:9090
+gateway-egress-user: gateway-node-01
+gateway-egress-password: ${GATEWAY_EGRESS_PASSWORD_1}

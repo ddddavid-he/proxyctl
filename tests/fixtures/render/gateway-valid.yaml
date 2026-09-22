@@ -1,0 +1,34 @@
+# gateway positive fixture: valid placeholder-only config (render must succeed).
+schema: private-proxy/v1
+role: gateway
+mixed-port: 7890
+bind-address: 127.0.0.1
+controller-listen: 127.0.0.1:9090
+gateway-egress-user: gateway-node-01
+gateway-egress-password: ${GATEWAY_EGRESS_PASSWORD_1}
+egress-server: proxy-egress.example.invalid
+egress-port: 443
+egress-sni: proxy-egress.example.invalid
+
+listeners:
+  - name: gateway-trojan-in
+    type: trojan
+    listen: 0.0.0.0
+    port: 8443
+  - name: gateway-https-in
+    type: http
+    listen: 127.0.0.1
+    port: 18444
+  - name: gateway-ikev2-tproxy
+    type: tproxy
+    listen: 127.0.0.1
+    port: 17894
+    udp: true
+
+users:
+  - username: "${TROJAN_USER_1}"
+    password: "${TROJAN_PASSWORD_1}"
+  - username: "${HTTPS_USER_1}"
+    password: "${HTTPS_PASSWORD_1}"
+  - username: "${HTTPS_USER_2}"
+    password: "${HTTPS_PASSWORD_2}"

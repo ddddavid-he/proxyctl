@@ -1,0 +1,17 @@
+# ALLOWED PLACEHOLDER FIXTURE - must stay clean
+listeners:
+  - name: gateway-trojan-in
+    type: trojan
+    port: 8443
+    users:
+      - username: "${TROJAN_USER_1}"
+        password: "${TROJAN_PASSWORD_1}"
+
+  - name: gateway-https-in
+    type: http
+    port: 8444
+    users:
+      - username: "${HTTPS_USER_1}"
+        password: "${HTTPS_PASSWORD_1}"
+      - username: "${HTTPS_USER_2}"
+        password: "${HTTPS_PASSWORD_2}"

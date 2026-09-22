@@ -1,0 +1,15 @@
+# Negative fixture: skip-cert-verify (render must reject).
+schema: private-proxy/v1
+role: gateway
+mixed-port: 7890
+bind-address: 127.0.0.1
+controller-listen: 127.0.0.1:9090
+gateway-egress-user: gateway-node-01
+gateway-egress-password: ${GATEWAY_EGRESS_PASSWORD_1}
+skip-cert-verify: true
+
+listeners:
+  - name: gateway-trojan-in
+    type: trojan
+    listen: 0.0.0.0
+    port: 8443

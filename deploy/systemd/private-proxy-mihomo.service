@@ -1,0 +1,48 @@
+[Unit]
+Description=Private Proxy Mihomo gateway
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=60s
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=privateproxy
+Group=privateproxy
+UMask=0077
+RuntimeDirectory=private-proxy
+RuntimeDirectoryMode=0700
+Environment=HOME=/run/private-proxy
+Environment=SAFE_PATHS=/run/private-proxy
+LoadCredential=GATEWAY_EGRESS_PASSWORD_1:/etc/private-proxy/secrets/GATEWAY_EGRESS_PASSWORD_1
+LoadCredential=TROJAN_USER_1:/etc/private-proxy/secrets/TROJAN_USER_1
+LoadCredential=TROJAN_PASSWORD_1:/etc/private-proxy/secrets/TROJAN_PASSWORD_1
+LoadCredential=HTTPS_USER_1:/etc/private-proxy/secrets/HTTPS_USER_1
+LoadCredential=HTTPS_PASSWORD_1:/etc/private-proxy/secrets/HTTPS_PASSWORD_1
+LoadCredential=HTTPS_USER_2:/etc/private-proxy/secrets/HTTPS_USER_2
+LoadCredential=HTTPS_PASSWORD_2:/etc/private-proxy/secrets/HTTPS_PASSWORD_2
+LoadCredential=gateway.crt:/etc/private-proxy/secrets/gateway.crt
+LoadCredential=gateway.key:/etc/private-proxy/secrets/gateway.key
+ExecStartPre=/opt/private-proxy/current/proxyctl preflight --role gateway --offline --config /etc/private-proxy/gateway.yaml
+ExecStartPre=/opt/private-proxy/current/proxyctl render --role gateway --template-dir /opt/private-proxy/current/templates/mihomo --config /etc/private-proxy/gateway.yaml --out-dir /run/private-proxy
+ExecStart=/opt/private-proxy/current/mihomo -f /run/private-proxy/gateway-rendered.yaml
+Restart=on-failure
+RestartSec=5s
+TimeoutStopSec=20s
+NoNewPrivileges=yes
+AmbientCapabilities=CAP_NET_ADMIN
+CapabilityBoundingSet=CAP_NET_ADMIN
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictRealtime=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+ReadWritePaths=/run/private-proxy
+
+[Install]
+WantedBy=multi-user.target

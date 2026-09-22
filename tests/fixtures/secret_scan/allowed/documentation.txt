@@ -1,0 +1,8 @@
+# ALLOWED DOCUMENTATION FIXTURE - must stay clean
+# Prose that mentions secrets without containing any value:
+# "Do not commit passwords, tokens, private keys, or API keys."
+# "Log only user IDs, connection state, and aggregate byte counts."
+api-key: <your-api-key>
+secret: <REPLACE_WITH_SECRET>
+token: "placeholder-token-value"
+password: "example-password-only"

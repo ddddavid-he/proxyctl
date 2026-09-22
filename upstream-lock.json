@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "goToolchain": "1.25.14",
+  "upstreams": {
+    "mihomo-linux-arm64": {
+      "version": "v1.19.30",
+      "sourceRepository": "https://github.com/MetaCubeX/mihomo",
+      "sourceTagOid": "ac017cdd246ce8bd547653d927e7bf77d7ee73d5",
+      "url": "https://github.com/MetaCubeX/mihomo/releases/download/v1.19.30/mihomo-linux-arm64-v1.19.30.gz",
+      "sha256": "58896873736d28628f66de3677c8654fa0f180662523148e136cff4f6e890069",
+      "format": "gzip",
+      "outputName": "mihomo",
+      "goos": "linux",
+      "goarch": "arm64",
+      "license": "GPL-3.0-or-later"
+    },
+    "hysteria-linux-amd64": {
+      "version": "v2.9.2",
+      "sourceRepository": "https://github.com/apernet/hysteria",
+      "sourceTagOid": "c3a806b5cbbb20fe72099529573da26b1a2e9f22",
+      "url": "https://github.com/apernet/hysteria/releases/download/app%2Fv2.9.2/hysteria-linux-amd64",
+      "sha256": "86fef8e2f1b2bf41318ac96724eee6c3b449e4e510022cc89658b63a6713922a",
+      "format": "raw",
+      "outputName": "hysteria",
+      "goos": "linux",
+      "goarch": "amd64",
+      "license": "MIT"
+    },
+    "hysteria-linux-arm64": {
+      "version": "v2.9.2",
+      "sourceRepository": "https://github.com/apernet/hysteria",
+      "sourceTagOid": "c3a806b5cbbb20fe72099529573da26b1a2e9f22",
+      "url": "https://github.com/apernet/hysteria/releases/download/app%2Fv2.9.2/hysteria-linux-arm64",
+      "sha256": "9ec8f49f4ea554b1cac04e6f3690cea76ff835082e943e54196d7f323fcfba71",
+      "format": "raw",
+      "outputName": "hysteria",
+      "goos": "linux",
+      "goarch": "arm64",
+      "license": "MIT"
+    }
+  }
+}

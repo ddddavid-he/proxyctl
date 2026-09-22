@@ -1,0 +1,12 @@
+# ALLOWED PLACEHOLDER FIXTURE - must stay clean
+auth: "<REDACTED_EPHEMERAL_PASSWORD>"
+password: "<REDACTED_GATEWAY_INGRESS_PASSWORD>"
+password: "<REDACTED_EGRESS_PASSWORD>"
+password: "REDACTED"
+password: "CHANGE_ME"
+password: "your-password-here"
+password: "xxxxxxxx"
+password: "****"
+proxy-url: https://user:${HTTPS_PASSWORD_1}@native-gateway.example.com:8444/
+domain: proxy-egress.example.com
+owner: "@maintainer"

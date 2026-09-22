@@ -1,0 +1,6 @@
+# SYNTHETIC FIXTURE - EXPECTED SECRET DETECTION
+# A high-entropy value concatenated with an embedded placeholder must still
+# be detected; only a whole-value placeholder may bypass the generic rule.
+password: "Qk9udG9uZWckc2VjcmV0LXB3LWZpeHR1cmUxMg${GATEWAY_EGRESS_PASSWORD_1}"
+secret = dG90YWxseXN5bnRoZXRpY3ZhbHVlMTIzNDU2JHtYfQ==
+api-key: "aW50ZXJlc3Rpbmdfc2VjcmV0X3ZhbHVlMTIzJHtURVNUX1ZBUjF9"

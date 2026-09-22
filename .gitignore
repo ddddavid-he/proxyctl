@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# Editors / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local environment / secrets (never commit real secrets)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+!*.example
+# Synthetic scanner fixtures: fabricated detection-corpus values, tracked by
+# design and validated by `tools/secret_scan.py --self-test`.
+!tests/fixtures/secret_scan/positives/*.pem
+!tests/fixtures/secret_scan/positives/*.key
+secrets/
+/secrets.yaml
+
+# Build artifacts
+/dist/
+/build/
+*.tar.gz
+*.log

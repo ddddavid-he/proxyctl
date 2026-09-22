@@ -1,0 +1,113 @@
+name: private-proxy
+
+x-runtime: &runtime
+  image: ${PRIVATE_PROXY_RUNTIME_IMAGE:?set PRIVATE_PROXY_RUNTIME_IMAGE}
+  pull_policy: never
+  network_mode: host
+  read_only: true
+  restart: unless-stopped
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+  volumes:
+    - ${PRIVATE_PROXY_RELEASE_DIR:?set PRIVATE_PROXY_RELEASE_DIR}:/app:ro
+
+services:
+  mihomo:
+    <<: *runtime
+    command: ["python3", "/app/deploy/compose/run_mihomo.py"]
+    cap_add:
+      - NET_ADMIN
+    environment:
+      CREDENTIALS_DIRECTORY: /run/credentials/mihomo
+      GATEWAY_CONFIG: /config/gateway.yaml
+      HOME: /run/private-proxy
+      SAFE_PATHS: /run/private-proxy
+    volumes:
+      - ${PRIVATE_PROXY_RELEASE_DIR}:/app:ro
+      - ${PRIVATE_PROXY_CONFIG_DIR:?set PRIVATE_PROXY_CONFIG_DIR}/gateway.yaml:/config/gateway.yaml:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR:?set PRIVATE_PROXY_SECRETS_DIR}/GATEWAY_EGRESS_PASSWORD_1:/run/input-secrets/GATEWAY_EGRESS_PASSWORD_1:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/TROJAN_USER_1:/run/input-secrets/TROJAN_USER_1:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/TROJAN_PASSWORD_1:/run/input-secrets/TROJAN_PASSWORD_1:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/HTTPS_USER_1:/run/input-secrets/HTTPS_USER_1:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/HTTPS_PASSWORD_1:/run/input-secrets/HTTPS_PASSWORD_1:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/HTTPS_USER_2:/run/input-secrets/HTTPS_USER_2:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/HTTPS_PASSWORD_2:/run/input-secrets/HTTPS_PASSWORD_2:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/gateway.crt:/run/input-secrets/gateway.crt:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/gateway.key:/run/input-secrets/gateway.key:ro
+    tmpfs:
+      - /run:mode=0755,size=32m
+    healthcheck:
+      test: ["CMD", "python3", "/app/deploy/compose/healthcheck.py", "tcp", "127.0.0.1", "7890"]
+      interval: 5s
+      timeout: 2s
+      retries: 12
+      start_period: 5s
+    stop_grace_period: 20s
+
+  ikev2-policy:
+    <<: *runtime
+    command: ["python3", "/app/deploy/compose/run_policy.py"]
+    cap_add:
+      - NET_ADMIN
+    depends_on:
+      mihomo:
+        condition: service_healthy
+        restart: true
+    healthcheck:
+      test: ["CMD", "python3", "/app/deploy/compose/healthcheck.py", "policy"]
+      interval: 5s
+      timeout: 2s
+      retries: 12
+    stop_grace_period: 10s
+
+  strongswan:
+    <<: *runtime
+    command: ["python3", "/app/deploy/compose/run_strongswan.py"]
+    cap_add:
+      - NET_ADMIN
+      - NET_BIND_SERVICE
+      - NET_RAW
+    environment:
+      CREDENTIALS_DIRECTORY: /run/credentials/ikev2
+      SWANCTL_DIR: /run/private-proxy-ikev2
+    volumes:
+      - ${PRIVATE_PROXY_RELEASE_DIR}:/app:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/IKEV2_USER_1:/run/input-secrets/IKEV2_USER_1:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/IKEV2_PASSWORD_1:/run/input-secrets/IKEV2_PASSWORD_1:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/IKEV2_REMOTE_ID:/run/input-secrets/IKEV2_REMOTE_ID:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/ikev2.crt:/run/input-secrets/ikev2.crt:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/ikev2.key:/run/input-secrets/ikev2.key:ro
+    tmpfs:
+      - /run:mode=0755,size=32m
+    depends_on:
+      ikev2-policy:
+        condition: service_healthy
+        restart: true
+    healthcheck:
+      test: ["CMD", "python3", "/app/deploy/compose/healthcheck.py", "ikev2"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+    stop_grace_period: 20s
+
+  hysteria-gateway:
+    <<: *runtime
+    command: ["python3", "/app/deploy/compose/run_hysteria.py"]
+    environment:
+      CREDENTIALS_DIRECTORY: /run/credentials/hysteria
+    volumes:
+      - ${PRIVATE_PROXY_RELEASE_DIR}:/app:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/HTTPS_USER_1:/run/input-secrets/HY2_USER_1:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/HTTPS_PASSWORD_1:/run/input-secrets/HY2_PASSWORD_1:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/gateway.crt:/run/input-secrets/gateway.crt:ro
+      - ${PRIVATE_PROXY_SECRETS_DIR}/gateway.key:/run/input-secrets/gateway.key:ro
+    tmpfs:
+      - /run:mode=0755,size=16m
+    depends_on:
+      mihomo:
+        condition: service_healthy
+        restart: true
+    stop_grace_period: 20s

@@ -1,0 +1,13 @@
+[Unit]
+Description=Verify Private Proxy loopback invariants
+After=private-proxy-mihomo.service private-proxy-hysteria.service
+
+[Service]
+Type=oneshot
+User=privateproxy
+Group=privateproxy
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ExecStart=/opt/private-proxy/current/proxyctl verify --profile loopback
