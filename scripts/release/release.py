@@ -42,8 +42,11 @@ ROLE_SPECS = {
         "engine": "mihomo",
         "extra_upstreams": [("hysteria-linux-arm64", "hysteria")],
         "template": "templates/mihomo/mihomo-gateway.yaml.tmpl",
-        "units": ["private-proxy-mihomo.service", "private-proxy-ikev2-policy.service", "private-proxy-ikev2.service", "private-proxy-verify.service", "private-proxy-verify.timer"],
+        "units": ["private-proxy-mihomo.service", "private-proxy-traffic.service", "private-proxy-ikev2-policy.service", "private-proxy-ikev2.service", "private-proxy-verify.service", "private-proxy-verify.timer"],
         "extra_files": [
+            ("deploy/traffic/compose.override.yaml", "deploy/traffic/compose.override.yaml", 0o644),
+            ("deploy/traffic/traffic.py", "deploy/traffic/traffic.py", 0o755),
+            ("docs/traffic-accounting.md", "docs/traffic-accounting.md", 0o644),
             ("deploy/ikev2/render_ikev2.py", "deploy/ikev2/render_ikev2.py", 0o755),
             ("deploy/ikev2/load_ikev2.py", "deploy/ikev2/load_ikev2.py", 0o755),
             ("deploy/ikev2/configure_policy.py", "deploy/ikev2/configure_policy.py", 0o755),

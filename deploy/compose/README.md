@@ -70,3 +70,13 @@ Rollback is `docker compose down`, removal of the stack-owned nftables policy
 if still present, and re-enabling the previous systemd units. Do not delete the
 previous release, runtime image, or `/etc/private-proxy/stack` until the
 acceptance window closes.
+
+## Optional traffic accounting
+
+Enable the `traffic` profile to persist aggregate Mihomo usage in the independent
+project directory `./data/traffic` (configurable with
+`PRIVATE_PROXY_TRAFFIC_DATA_DIR`, owned by UID/GID 10001 with mode 0700). The source epoch has its own `traffic-source` volume.
+See [accounting documentation](../docs/traffic-accounting.md) in a release or
+[the source copy](../../docs/traffic-accounting.md) for queries, retention,
+resource estimates and limitations. Preserve the data directory across upgrades and back it up with SQLite
+backup or after stopping collection.

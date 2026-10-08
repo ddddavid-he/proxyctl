@@ -6,6 +6,7 @@ from __future__ import annotations
 import os
 import pathlib
 import subprocess
+import uuid
 
 from credential_stage import stage
 
@@ -32,6 +33,13 @@ def main() -> int:
         "--template-dir", str(APP / "templates/mihomo"),
         "--config", str(CONFIG), "--out-dir", str(RUNTIME),
     ])
+    epoch_dir = os.environ.get("TRAFFIC_EPOCH_DIR")
+    if epoch_dir:
+        marker = pathlib.Path(epoch_dir) / "epoch"
+        temporary = marker.with_name(".epoch.tmp")
+        temporary.write_text(uuid.uuid4().hex + "\n")
+        temporary.chmod(0o644)
+        os.replace(temporary, marker)
     os.execv(str(APP / "mihomo"), [str(APP / "mihomo"), "-f", str(RUNTIME / "gateway-rendered.yaml")])
     return 1
 

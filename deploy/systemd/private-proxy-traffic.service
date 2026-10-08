@@ -1,0 +1,34 @@
+[Unit]
+Description=Private Proxy aggregate traffic accounting
+After=private-proxy-mihomo.service
+Wants=private-proxy-mihomo.service
+
+[Service]
+Type=simple
+User=privateproxy
+Group=privateproxy
+UMask=0077
+StateDirectory=private-proxy-traffic
+StateDirectoryMode=0700
+ExecStart=/usr/bin/python3 /opt/private-proxy/current/deploy/traffic/traffic.py collect --db /var/lib/private-proxy-traffic/usage.sqlite3 --controller http://127.0.0.1:9090 --process-name mihomo
+Restart=on-failure
+RestartSec=10s
+TimeoutStopSec=10s
+MemoryMax=64M
+CPUQuota=25%
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictRealtime=yes
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+ReadWritePaths=/var/lib/private-proxy-traffic
+
+[Install]
+WantedBy=multi-user.target

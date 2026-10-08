@@ -1,0 +1,48 @@
+# Add accounting to an existing compatible gateway stack without replacing its release.
+services:
+  mihomo:
+    environment:
+      TRAFFIC_EPOCH_DIR: /run/traffic-source
+    volumes:
+      - traffic-source:/run/traffic-source
+      - ${PRIVATE_PROXY_TRAFFIC_RELEASE_DIR:?set PRIVATE_PROXY_TRAFFIC_RELEASE_DIR}/run_mihomo.py:/app/deploy/compose/run_mihomo.py:ro
+
+  traffic:
+    image: ${PRIVATE_PROXY_RUNTIME_IMAGE:?set PRIVATE_PROXY_RUNTIME_IMAGE}
+    pull_policy: never
+    network_mode: host
+    read_only: true
+    restart: unless-stopped
+    profiles: [traffic]
+    user: "10001:10001"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    command: ["python3", "/accounting/traffic.py", "collect", "--db", "/var/lib/private-proxy-traffic/usage.sqlite3", "--controller", "${PRIVATE_PROXY_TRAFFIC_CONTROLLER:-http://127.0.0.1:9090}", "--epoch-file", "/run/traffic-source/epoch"]
+    volumes:
+      - ${PRIVATE_PROXY_TRAFFIC_RELEASE_DIR}:/accounting:ro
+      - ${PRIVATE_PROXY_TRAFFIC_DATA_DIR:-./data/traffic}:/var/lib/private-proxy-traffic
+      - traffic-source:/run/traffic-source:ro
+    tmpfs:
+      - /tmp:mode=1777,size=16m
+    depends_on:
+      mihomo:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python3", "/accounting/traffic.py", "health", "--db", "/var/lib/private-proxy-traffic/usage.sqlite3"]
+      interval: 60s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+      start_interval: 5s
+    mem_limit: 64m
+    cpus: 0.25
+    stop_grace_period: 10s
+
+volumes:
+  traffic-source:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+      o: size=1m,mode=0755

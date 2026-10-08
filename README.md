@@ -117,6 +117,14 @@ See the [CLI reference](docs/proxyctl-cli.md),
 for [Hysteria2](docs/hysteria-gateway.md) and
 [IKEv2](docs/ikev2-gateway.md).
 
+## Traffic usage
+
+An optional Python/SQLite sidecar collects aggregate Mihomo upload/download
+counters every minute. It keeps three calendar months of 15-minute buckets and
+reports 15-minute, hourly or daily usage without retaining connection details.
+See [traffic accounting](docs/traffic-accounting.md) for the counting contract,
+resource estimates, queries and optional Compose/systemd activation.
+
 ## Build and test
 
 ```sh

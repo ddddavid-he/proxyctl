@@ -62,6 +62,9 @@ class ComposeContractTests(unittest.TestCase):
         release = load("release_for_compose", ROOT / "scripts/release/release.py")
         destinations = {destination for _, destination, _ in release.ROLE_SPECS["gateway"]["extra_files"]}
         self.assertIn("compose/compose.yaml", destinations)
+        self.assertIn("deploy/traffic/traffic.py", destinations)
+        self.assertIn("docs/traffic-accounting.md", destinations)
+        self.assertIn("private-proxy-traffic.service", release.ROLE_SPECS["gateway"]["units"])
         self.assertIn("deploy/compose/credential_stage.py", destinations)
         self.assertIn("deploy/compose/run_strongswan.py", destinations)
         self.assertIn("deploy/hysteria-gateway/render_hysteria_gateway.py", destinations)
