@@ -126,7 +126,11 @@ on fully covered buckets after `tracking_started`. A read-only domain query on
 an older v1 database reports no domain samples and does not migrate the file.
 
 Before updating, use SQLite's live backup API. Replace only the collector; keep
-the existing Mihomo process and its source epoch. For rollback to a v1 collector,
+the existing Mihomo process and its source epoch. In the overlay, set
+`PRIVATE_PROXY_TRAFFIC_COLLECTOR_RELEASE_DIR` to the new accounting directory;
+it defaults to `PRIVATE_PROXY_TRAFFIC_RELEASE_DIR` for existing deployments.
+Keep the latter unchanged during collector-only updates so Mihomo's launcher
+mount also stays unchanged. For rollback to a v1 collector,
 stop the collector and set `PRAGMA user_version=1` on the live database before
 starting the old code: its existing tables remain compatible, and the extra
 domain tables and collected history stay intact. Do not restore an older backup
