@@ -219,6 +219,217 @@ class APITests(unittest.TestCase):
             self.assertEqual(db.execute("SELECT count(*) FROM cursor").fetchone()[0], 0)
             db.close()
 
+
+class DomainTests(unittest.TestCase):
+    setUp = AccountingTests.setUp
+    tearDown = AccountingTests.tearDown
+    sample = AccountingTests.sample
+    query = AccountingTests.query
+    def sample_domain(self, seconds, up, down, connections, epoch="one"):
+        return self.store.record(BASE+seconds, up, down, epoch, "source", 2, connections)
+
+    def conn(self, identity="a", domain="example.com", up=0, down=0, start=1):
+        return (identity, domain, up, down, BASE+start)
+
+    def domains(self, start=0, end=3600, granularity="hour", domain=None, limit=20):
+        return traffic.domain_report(self.path, BASE+start, BASE+end, granularity, UTC, BASE+end, domain, limit)
+
+    def test_first_snapshot_baselines_existing_lifetimes(self):
+        self.sample(0, 100, 200)
+        self.sample_domain(2, 1000, 2000, [self.conn(up=700, down=1400, start=-100)])
+        self.sample_domain(4, 1010, 2040, [self.conn(up=710, down=1440, start=-100)])
+        result = self.domains()
+        self.assertEqual(result["totals"]["total_bytes"], 50)
+        self.assertEqual(result["domains"][0]["domain"], "example.com")
+        self.assertEqual(result["tracking_started"], dt.datetime.fromtimestamp(BASE+2, UTC).isoformat())
+        self.assertEqual(result["buckets"][0]["observed_seconds"], 2)
+
+    def test_new_connections_count_and_closed_tails_are_unattributed(self):
+        self.sample_domain(0, 0, 0, [])
+        self.sample_domain(2, 100, 300, [self.conn(up=80, down=250)])
+        self.sample_domain(4, 120, 350, [])
+        rows = {r["domain"]:r for r in self.domains()["domains"]}
+        self.assertEqual(rows["example.com"]["total_bytes"], 330)
+        self.assertEqual(rows[traffic.UNATTRIBUTED]["total_bytes"], 140)
+        self.assertEqual(sum(r["total_bytes"] for r in rows.values()), 470)
+        self.assertEqual(self.store.db.execute("SELECT COUNT(*) FROM domain_cursor").fetchone()[0], 0)
+
+    def test_connection_finishes_between_snapshots_not_invented(self):
+        self.sample_domain(0, 0, 0, [])
+        self.sample_domain(2, 123, 456, [])
+        result=self.domains()
+        self.assertEqual(result["unattributed_bytes"], 579)
+        self.assertEqual(result["domain_attribution_ratio"], 0)
+
+    def test_restart_preserves_checkpoint_no_double_count(self):
+        self.sample_domain(0, 0, 0, [])
+        self.sample_domain(2, 10, 20, [self.conn(up=10, down=20)])
+        self.store.close();self.store=traffic.Store(self.path)
+        self.sample_domain(2, 999, 999, [self.conn(up=999, down=999)])
+        self.sample_domain(4, 15, 25, [self.conn(up=15, down=25)])
+        self.assertEqual(self.domains()["totals"]["total_bytes"], 40)
+        self.assertEqual(self.domains()["identified_domain_bytes"], 40)
+
+    def test_source_restart_does_not_reuse_old_connection_counters(self):
+        self.sample_domain(0, 0, 0, [])
+        self.sample_domain(2, 10, 20, [self.conn(up=10, down=20)])
+        self.sample_domain(4, 100, 200, [self.conn(up=100, down=200)], "two")
+        self.sample_domain(6, 110, 220, [self.conn(up=110, down=220)], "two")
+        result=self.domains()
+        self.assertEqual(result["totals"]["total_bytes"], 360)
+        self.assertEqual(result["identified_domain_bytes"], 60)
+        self.assertEqual(result["unattributed_bytes"], 300)
+        self.assertEqual(result["buckets"][0]["resets"], 1)
+
+    def test_counter_decrease_and_domain_change_never_rebill_lifetime(self):
+        self.sample_domain(0, 0, 0, [])
+        self.sample_domain(2, 100, 200, [self.conn(up=100, down=200)])
+        self.sample_domain(4, 200, 400, [self.conn(up=1, down=1, domain="changed.example")])
+        self.assertEqual(self.domains()["identified_domain_bytes"], 300)
+        self.assertEqual(self.domains()["unattributed_bytes"], 300)
+
+    def test_unknown_preexisting_connection_and_clock_future_baseline(self):
+        self.sample_domain(0, 0, 0, [])
+        self.sample_domain(2, 100, 200, [self.conn(up=100, down=200, start=-10),self.conn("future",up=100,down=200,start=99)])
+        self.assertEqual(self.domains()["unattributed_bytes"], 300)
+
+    def test_snapshot_skew_caps_both_directions_and_exposes_clipping(self):
+        self.sample_domain(0, 0, 0, [])
+        self.sample_domain(2, 10, 20, [self.conn(up=100, down=100),self.conn("b","b.example",up=100,down=100)])
+        result=self.domains()
+        self.assertEqual(result["totals"]["total_bytes"], 30)
+        self.assertEqual(result["unattributed_bytes"], 0)
+        self.assertEqual(result["buckets"][0]["clipped_upload_bytes"], 190)
+        self.assertEqual(result["buckets"][0]["clipped_download_bytes"], 180)
+
+    def test_boundary_integer_conservation_by_bucket(self):
+        self.sample_domain(899, 0, 0, [])
+        self.sample_domain(901, 101, 203, [self.conn(up=33,down=101,start=900),self.conn("b","b.example",up=68,down=102,start=900)])
+        result=self.domains(granularity="15m")
+        self.assertEqual([r["total_bytes"] for r in result["buckets"][:2]], [151,153])
+        self.assertEqual(result["totals"],self.query()["totals"])
+
+    def test_total_only_fallback_and_domain_recovery_preserve_independent_cursor(self):
+        self.sample_domain(0, 0, 0, [])
+        self.sample_domain(2, 10, 20, [self.conn(up=10,down=20)])
+        self.sample(4, 20, 40)
+        self.sample_domain(8, 40, 80, [self.conn(up=30,down=60)])
+        result=self.domains()
+        self.assertEqual(result["totals"]["total_bytes"],120)
+        self.assertEqual(result["identified_domain_bytes"],90)
+        self.assertEqual(result["unattributed_bytes"],30)
+        self.assertEqual(result["buckets"][0]["estimated_seconds"],6)
+
+    def test_domain_writes_roll_back_with_global_cursor_failure(self):
+        self.sample_domain(0, 0, 0, [])
+        self.store.db.execute("CREATE TRIGGER reject_new_cursor BEFORE INSERT ON cursor WHEN NEW.upload=10 BEGIN SELECT RAISE(ABORT, 'test'); END")
+        with self.assertRaises(sqlite3.IntegrityError):
+            self.sample_domain(2, 10, 20, [self.conn(up=10,down=20)])
+        self.assertEqual(self.domains()["totals"]["total_bytes"],0)
+        self.assertEqual(self.store.db.execute("SELECT at FROM domain_state").fetchone()[0],BASE)
+        self.assertEqual(self.store.db.execute("SELECT COUNT(*) FROM domain_cursor").fetchone()[0],0)
+
+    def test_ranking_limit_filter_and_local_day(self):
+        self.sample_domain(0,0,0,[])
+        self.sample_domain(2,10,20,[self.conn(up=2,down=3),self.conn("b","b.example",up=8,down=17)])
+        result=self.domains(limit=1)
+        self.assertEqual(result["domains"][0]["domain"],"b.example")
+        self.assertEqual(result["other_domains_bytes"],5)
+        filtered=self.domains(domain="example.com")
+        self.assertEqual(filtered["totals"]["total_bytes"],5)
+        self.assertEqual(filtered["buckets"][0]["total_bytes"],5)
+        day=traffic.domain_report(self.path,BASE-8*3600,BASE+16*3600,"day",traffic.timezone("+08:00"),BASE+16*3600)
+        self.assertEqual(day["totals"]["total_bytes"],30)
+        self.assertEqual(day["buckets"][0]["total_bytes"],30)
+
+    def test_retention_and_domain_health(self):
+        self.sample_domain(0,0,0,[])
+        self.sample_domain(2,10,20,[self.conn(up=10,down=20)])
+        self.assertTrue(traffic.healthy(self.path,10,BASE+10,True))
+        self.sample(20,20,40)
+        self.assertFalse(traffic.healthy(self.path,10,BASE+20,True))
+        self.assertTrue(traffic.healthy(self.path,10,BASE+20))
+        self.store.prune(BASE+100*86400)
+        self.assertEqual(self.store.db.execute("SELECT COUNT(*) FROM domain_buckets").fetchone()[0],0)
+        self.assertEqual(self.store.db.execute("SELECT COUNT(*) FROM domain_sampling").fetchone()[0],0)
+
+    def test_v1_upgrade_preserves_total_data_and_query_does_not_migrate(self):
+        self.sample(0,0,0);self.sample(60,10,20)
+        self.store.close()
+        db=sqlite3.connect(self.path)
+        for table in ("domain_buckets","domain_sampling","domain_cursor","domain_state"):
+            db.execute("DROP TABLE "+table)
+        db.execute("PRAGMA user_version=1");db.commit();db.close()
+        self.assertIsNone(self.domains()["tracking_started"])
+        self.store=traffic.Store(self.path)
+        self.assertEqual(self.query()["totals"]["total_bytes"],30)
+        self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0],2)
+
+
+class DomainAPITests(unittest.TestCase):
+    def payload(self):
+        return {"uploadTotal":10,"downloadTotal":20,"connections":[{"id":"synthetic-id","start":"2026-09-01T00:00:01Z","upload":10,"download":20,"metadata":{"host":"EXAMPLE.COM.","sourceIP":"192.0.2.99","process":"private-process","inboundUser":"synthetic-user"}}]}
+
+    def test_domain_canonicalization_and_minimal_checkpoint(self):
+        result=traffic.connection_samples(self.payload())
+        self.assertEqual(result[0][1:4],("example.com",10,20))
+        for private in ("192.0.2.99","private-process","synthetic-user","synthetic-id"):
+            self.assertNotIn(private,json.dumps(result))
+        self.assertEqual(traffic.domain_name("bücher.example"),"xn--bcher-kva.example")
+        for invalid in ("https://example.com/path","user@example.com","example.com:443","x\n.example", "-bad.example"):
+            self.assertEqual(traffic.domain_name(invalid),traffic.UNKNOWN_DOMAIN)
+        self.assertEqual(traffic.domain_name("192.0.2.1"),traffic.IP_ONLY)
+
+    def test_ip_and_sniffed_domain_no_address_persistence(self):
+        p=self.payload();p["connections"][0]["metadata"]={"host":"192.0.2.1","sniffHost":"actual.example"}
+        self.assertEqual(traffic.connection_samples(p)[0][1],"actual.example")
+        p["connections"][0]["metadata"]={"destinationIP":"192.0.2.1"}
+        self.assertEqual(traffic.connection_samples(p)[0][1],traffic.IP_ONLY)
+        p["connections"][0]["metadata"]={}
+        self.assertEqual(traffic.connection_samples(p)[0][1],traffic.UNKNOWN_DOMAIN)
+
+    def test_connections_http_and_null_list(self):
+        class Handler(http.server.BaseHTTPRequestHandler):
+            def do_GET(self):
+                self.server.seen=(self.path,self.headers.get("Authorization"))
+                self.send_response(200);self.end_headers()
+                self.wfile.write(json.dumps(self.server.payload).encode())
+            def log_message(self,*_): pass
+        with http.server.HTTPServer(("127.0.0.1",0),Handler) as server:
+            server.payload=self.payload()
+            thread=threading.Thread(target=server.handle_request);thread.start()
+            try:
+                up,down,items=traffic.fetch_connections(f"http://127.0.0.1:{server.server_port}","synthetic")
+                self.assertEqual((up,down),(10,20));self.assertEqual(items[0][1],"example.com")
+                self.assertEqual(server.seen,("/connections","Bearer synthetic"))
+            finally: thread.join(timeout=5)
+        p=self.payload();p["connections"]=None
+        self.assertEqual(traffic.connection_samples(p),[])
+
+    def test_reject_duplicate_malformed_and_oversized_snapshot(self):
+        p=self.payload();p["connections"]*=2
+        with self.assertRaises(ValueError): traffic.connection_samples(p)
+        for bad in (True,-1,2**63):
+            p=self.payload();p["connections"][0]["upload"]=bad
+            with self.assertRaises(ValueError): traffic.connection_samples(p)
+        p=self.payload();p["connections"][0]["start"]="2026-09-01T00:00:00"
+        with self.assertRaises(ValueError):traffic.connection_samples(p)
+        response=mock.MagicMock();response.status=200;response.read.return_value=b'x'*(traffic.MAX_SNAPSHOT+1)
+        connection=mock.MagicMock();connection.getresponse.return_value=response
+        with mock.patch.object(traffic.http.client,"HTTPConnection",return_value=connection):
+            with self.assertRaises(ValueError):traffic.fetch_connections("http://127.0.0.1")
+        connection.close.assert_called_once()
+
+    def test_cli_domains_and_failure_fallback_keep_total(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path=pathlib.Path(temp)/"usage.sqlite3"
+            with mock.patch.object(traffic,"fetch_connections",side_effect=ValueError),mock.patch.object(traffic,"fetch",return_value=(10,20)),contextlib.redirect_stderr(io.StringIO()),contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(traffic.main(["collect","--db",str(path),"--domains","--once"]),1)
+            self.assertTrue(traffic.healthy(path,180,int(dt.datetime.now(UTC).timestamp())))
+            with contextlib.redirect_stdout(io.StringIO()) as output:
+                self.assertEqual(traffic.main(["query","--db",str(path),"--from","2026-09-01","--to","2026-09-02","--group-by","domain","--json"]),0)
+            self.assertEqual(json.loads(output.getvalue())["scope"],"gateway-domains")
+
     def test_sample_failure_once_returns_failure_without_advancing_database(self):
         with tempfile.TemporaryDirectory() as temp:
             path = pathlib.Path(temp) / "usage.sqlite3"

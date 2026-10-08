@@ -1,14 +1,19 @@
-# Aggregate traffic accounting
+# Total and domain traffic accounting
 
 The optional collector measures **all traffic handled by one Mihomo gateway**.
 It reports upload, download and their sum at 15-minute, hour and day resolution.
-SQLite stores 15-minute buckets and a single restart-safe cumulative cursor;
-there is no database server or third-party Python dependency. No user identities,
-connection details, destination addresses or request bodies are stored.
+SQLite stores 15-minute buckets and restart-safe cumulative cursors;
+there is no database server or third-party Python dependency. Domain-enabled
+collection also stores canonical target DNS hostnames and their sampled upload/
+download bytes. No client IPs, destination IPs, user identities, URLs, paths,
+query strings or request bodies are stored. Active-connection checkpoints contain
+only a hashed connection key, hostname and counters, and are replaced each sample.
 
 ## Accounting contract
 
-- Poll every 60 seconds. Upload means client-to-destination; download is the
+- Total-only collection polls every 60 seconds. Domain-enabled Compose/systemd
+  collection polls `/connections` every 2 seconds, updating both total and domain
+  accounting from the same snapshot. Upload means client-to-destination; download is the
   reverse. Store integer bytes; the terminal displays MiB (1,048,576 bytes).
 - The source is the pinned Mihomo v1.19.30 HTTP `/traffic` stream. Read its first
   line's `upTotal` and `downTotal`, then close the connection. These are cumulative
@@ -57,6 +62,75 @@ connection details, destination addresses or request bodies are stored.
   select another offset with `--utc-offset`. No daylight-saving zone conversion
   is implied. Query endpoints must align to the selected granularity; ranges are
   half-open `[from,to)` and limited to 96 days.
+
+## Historical domain accounting
+
+Enable `collect --domains`; `--domain-interval` selects 1–60 seconds (default 2).
+The supplied Compose services and systemd unit enable it. Without this flag,
+collection and default queries retain the existing total-only behavior.
+
+The pinned Mihomo `/connections` snapshot includes gateway-wide cumulative
+`uploadTotal`/`downloadTotal`, plus active connection IDs, start times, target
+metadata and per-connection upload/download counters. Only the minimal fields
+above are retained. DNS names are normalized to lowercase ASCII/IDNA without a
+trailing dot; subdomains remain separate. A sniffed hostname can supply a DNS
+name for an IP-only connection. Invalid/missing names become `[unknown-domain]`;
+connections known only by IP become `[ip-only]`, without storing the IP.
+
+**Domain attribution is sampled, not an exact completed-connection ledger.**
+Mihomo removes a connection when it closes and provides no historical final
+counter. A connection that begins and ends between polls, or bytes transferred
+after its last observed snapshot, cannot be assigned to a hostname. These bytes
+are retained under `[unattributed]`. Connection snapshot and global counters can
+also differ while traffic is moving, and nested trackers can overlap: each
+direction is proportionally capped to its global delta. Reports expose clipped
+byte counts rather than allowing domain totals to exceed the sampled global
+total. Boundary allocation conserves total integer bytes per 15-minute bucket;
+domain boundary attribution may differ slightly because of rounding.
+
+Check `domain_attribution_ratio` (identified DNS-domain bytes / all bytes since
+domain accounting began), the three special buckets, sampling freshness, and
+`clipped_upload_bytes`/`clipped_download_bytes` when interpreting rankings.
+`complete` coverage means polling covered the interval, **not** that every byte
+has an identified domain. A hostname filter does not change the overall
+attribution-quality metadata. Never extrapolate a full site total from sampled
+bytes or from connection counts. Client-side DIRECT traffic is outside scope.
+
+The first domain snapshot is a baseline: existing connections' previous lifetime
+bytes are not backfilled. `tracking_started` reports the actual activation time;
+older aggregate history remains available but has no historical domain data.
+SQLite schema v1 upgrades transactionally to v2 without deleting old totals.
+Both total buckets and domain buckets/checkpoints commit atomically. Collector
+restart preserves connection counters; source resets clear their baseline and
+mark that interval estimated/unattributed. On a failed domain snapshot, total
+collection falls back to `/traffic`; the next domain snapshot recovers the
+surviving global delta and marks extended gaps estimated. Domain-enabled health
+checks require both cursors to be fresh. Responses are bounded to 4 MiB / 10,000
+active connections; exceeding that limit fails domain sampling but retains total
+collection. Retention of domain buckets/coverage is the same three calendar
+months; inactive checkpoints are dropped after the retention cutoff.
+
+Query historical site ranking (top 20 by default, `--limit 1..1000`):
+
+```sh
+docker exec private-proxy-traffic-1 python3 /accounting/traffic.py query \
+  --db /var/lib/private-proxy-traffic/usage.sqlite3 \
+  --from 2026-10-09 --to 2026-10-10 --granularity day --group-by domain --json
+```
+
+For one exact hostname's hourly curve, append `--domain chatgpt.com` and use
+`--granularity hour`. `domains` contains the ranking, `buckets` the selected
+scope's time series, and `other_domains_bytes` the bytes outside the ranking
+limit. `gateway_totals` also includes periods before domain activation; compare
+on fully covered buckets after `tracking_started`. A read-only domain query on
+an older v1 database reports no domain samples and does not migrate the file.
+
+Before updating, use SQLite's live backup API. Replace only the collector; keep
+the existing Mihomo process and its source epoch. For rollback to a v1 collector,
+stop the collector and set `PRAGMA user_version=1` on the live database before
+starting the old code: its existing tables remain compatible, and the extra
+domain tables and collected history stay intact. Do not restore an older backup
+over newer usage unless deliberately accepting loss of post-backup samples.
 
 ## Compose
 
@@ -139,7 +213,7 @@ python3 deploy/traffic/traffic.py collect --db /var/lib/private-proxy-traffic/us
   --controller http://127.0.0.1:9090 --process-name mihomo
 ```
 
-`health --db PATH [--max-age 180]` checks the persisted cursor without creating
+`health --db PATH [--max-age 180] [--domains]` checks the persisted cursors without creating
 a database. `--once` performs one sample and returns nonzero on failure. `--interval` supports
 10–300 seconds. `--pid` and `--epoch-file` are alternate process identity sources.
 If a separately configured controller requires a token, supply `--secret-file`
@@ -164,7 +238,12 @@ Ingest took 9.87 seconds wall / 3.925 seconds CPU (0.076 ms per commit); a
 90-day daily report took 7.8 ms. These are synthetic local measurements,
 excluding a production collector's HTTP connection and container overhead.
 
-Allow **5–10 MiB disk and 32–64 MiB RAM** for one gateway. Normal minute-level
+These capacity figures apply to **total-only** accounting. Domain history grows
+with distinct hostnames per bucket and active connections, and 2-second polling
+increases API work and SQLite/WAL writes; measure the target host before using
+the total-only estimates for this mode. The 64 MiB / 25% CPU ceilings remain.
+
+Allow **5–10 MiB disk and 32–64 MiB RAM** for one total-only gateway. Normal minute-level
 collection should use well below 0.1% of one CPU core, but that is a planning
 estimate requiring target-host measurement. The configured 64 MiB / 25% CPU
 limits are ceilings, not expected consumption. Each cycle opens one small
@@ -184,6 +263,7 @@ Run the reproducible synthetic capacity benchmark:
 
 ```sh
 python3 tools/benchmark_traffic.py
+python3 tools/benchmark_domain_traffic.py
 python3 -m unittest discover -s tests -p 'test_traffic.py'
 ```
 

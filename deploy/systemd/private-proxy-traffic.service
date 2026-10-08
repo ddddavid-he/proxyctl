@@ -1,5 +1,5 @@
 [Unit]
-Description=Private Proxy aggregate traffic accounting
+Description=Private Proxy total and domain traffic accounting
 After=private-proxy-mihomo.service
 Wants=private-proxy-mihomo.service
 
@@ -10,7 +10,7 @@ Group=privateproxy
 UMask=0077
 StateDirectory=private-proxy-traffic
 StateDirectoryMode=0700
-ExecStart=/usr/bin/python3 /opt/private-proxy/current/deploy/traffic/traffic.py collect --db /var/lib/private-proxy-traffic/usage.sqlite3 --controller http://127.0.0.1:9090 --process-name mihomo
+ExecStart=/usr/bin/python3 /opt/private-proxy/current/deploy/traffic/traffic.py collect --db /var/lib/private-proxy-traffic/usage.sqlite3 --controller http://127.0.0.1:9090 --process-name mihomo --domains --domain-interval 2
 Restart=on-failure
 RestartSec=10s
 TimeoutStopSec=10s

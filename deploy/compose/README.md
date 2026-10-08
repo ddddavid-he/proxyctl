@@ -73,10 +73,12 @@ acceptance window closes.
 
 ## Optional traffic accounting
 
-Enable the `traffic` profile to persist aggregate Mihomo usage in the independent
+Enable the `traffic` profile to persist total and sampled domain Mihomo usage in the independent
 project directory `./data/traffic` (configurable with
 `PRIVATE_PROXY_TRAFFIC_DATA_DIR`, owned by UID/GID 10001 with mode 0700). The source epoch has its own `traffic-source` volume.
 See [accounting documentation](../docs/traffic-accounting.md) in a release or
 [the source copy](../../docs/traffic-accounting.md) for queries, retention,
-resource estimates and limitations. Preserve the data directory across upgrades and back it up with SQLite
+resource estimates, domain-attribution coverage and limitations. Domain snapshots
+poll every 2 seconds; unassignable bytes remain visible as `[unattributed]`.
+Preserve the data directory across upgrades and back it up with SQLite
 backup or after stopping collection.
