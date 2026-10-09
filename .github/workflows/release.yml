@@ -2,7 +2,15 @@ name: candidate-release
 
 on:
   push:
+    branches: [main, master]
     tags: ['proxy-v[0-9]+.[0-9]+.[0-9]+']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Candidate version (vMAJOR.MINOR.PATCH)
+        required: true
+        default: v0.4.0
+        type: string
 
 permissions:
   contents: read
@@ -10,10 +18,17 @@ permissions:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         role: [gateway, egress]
-    runs-on: ubuntu-24.04
-    timeout-minutes: 25
+        arch: [amd64, arm64]
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
     permissions:
       contents: read
     steps:
@@ -25,13 +40,22 @@ jobs:
           go-version: 1.25.14
           check-latest: false
           cache: false
-      - name: Build deterministic candidate
+      - name: Build and verify Linux candidate
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+          TARGET_ROLE: ${{ matrix.role }}
+          TARGET_ARCH: ${{ matrix.arch }}
         shell: bash
         run: |
+          VERSION="${INPUT_VERSION:-${GITHUB_REF_NAME#proxy-}}"
+          if [[ "${GITHUB_REF_TYPE}" != tag && -z "${INPUT_VERSION}" ]]; then
+            VERSION="v0.4.0-dev.${GITHUB_RUN_NUMBER}"
+          fi
           python3 scripts/release/release.py fetch --cache-dir /tmp/prx02-upstreams
           python3 scripts/release/release.py build \
-            --role "${{ matrix.role }}" \
-            --version "${GITHUB_REF_NAME#proxy-}" \
+            --role "${TARGET_ROLE}" \
+            --arch "${TARGET_ARCH}" \
+            --version "${VERSION}" \
             --commit "${GITHUB_SHA}" \
             --source-repository "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" \
             --builder-environment github \
@@ -39,44 +63,61 @@ jobs:
             --host-label "${RUNNER_NAME}" \
             --cache-dir /tmp/prx02-upstreams \
             --output-dir dist
-          python3 scripts/release/release.py verify dist/proxyctl-${{ matrix.role }}-linux-${{ matrix.role == 'gateway' && 'arm64' || 'amd64' }}.tar.gz --role "${{ matrix.role }}"
+          python3 scripts/release/release.py verify "dist/proxyctl-${TARGET_ROLE}-linux-${TARGET_ARCH}.tar.gz" --role "${TARGET_ROLE}"
+          if [[ "${TARGET_ROLE}" == gateway ]]; then
+            mkdir -p /tmp/gateway-check
+            tar -xzf "dist/proxyctl-${TARGET_ROLE}-linux-${TARGET_ARCH}.tar.gz" -C /tmp/gateway-check
+            python3 tools/verify_engine_accounting.py /tmp/gateway-check/mihomo
+          fi
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: candidate-${{ matrix.role }}
+          name: candidate-${{ matrix.role }}-linux-${{ matrix.arch }}
           path: dist/*.tar.gz
           if-no-files-found: error
           retention-days: 14
 
   build-runtime:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-      - uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
-        with:
-          platforms: arm64
       - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
-      - name: Build portable ARM64 runtime image
+      - name: Build Linux runtime image
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+          TARGET_ARCH: ${{ matrix.arch }}
         shell: bash
         run: |
+          VERSION="${INPUT_VERSION:-${GITHUB_REF_NAME#proxy-}}"
+          if [[ "${GITHUB_REF_TYPE}" != tag && -z "${INPUT_VERSION}" ]]; then
+            VERSION="v0.4.0-dev.${GITHUB_RUN_NUMBER}"
+          fi
           mkdir -p dist
           docker buildx build \
-            --platform linux/arm64 \
-            --tag "private-proxy-runtime:${GITHUB_REF_NAME#proxy-}" \
+            --platform "linux/${TARGET_ARCH}" \
+            --tag "private-proxy-runtime:${VERSION}" \
             --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
-            --label "org.opencontainers.image.version=${GITHUB_REF_NAME#proxy-}" \
+            --label "org.opencontainers.image.version=${VERSION}" \
             --label "org.opencontainers.image.source=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" \
-            --output "type=docker,dest=/tmp/private-proxy-runtime-linux-arm64.tar" \
+            --output "type=docker,dest=/tmp/private-proxy-runtime-linux-${TARGET_ARCH}.tar" \
             --file deploy/compose/Dockerfile.runtime .
-          gzip -n -9 -c /tmp/private-proxy-runtime-linux-arm64.tar > dist/private-proxy-runtime-linux-arm64.tar.gz
+          gzip -n -9 -c "/tmp/private-proxy-runtime-linux-${TARGET_ARCH}.tar" > "dist/private-proxy-runtime-linux-${TARGET_ARCH}.tar.gz"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: candidate-runtime
-          path: dist/private-proxy-runtime-linux-arm64.tar.gz
+          name: candidate-runtime-linux-${{ matrix.arch }}
+          path: dist/private-proxy-runtime-linux-${{ matrix.arch }}.tar.gz
           if-no-files-found: error
           retention-days: 14
 
@@ -85,6 +126,7 @@ jobs:
     strategy:
       matrix:
         role: [gateway, egress]
+        arch: [amd64, arm64]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
@@ -94,7 +136,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
-          name: candidate-${{ matrix.role }}
+          name: candidate-${{ matrix.role }}-linux-${{ matrix.arch }}
           path: dist
       - uses: actions/attest@a1948c3f048ba23858d222213b7c278aabede763 # v4.1.1
         with:
@@ -102,6 +144,9 @@ jobs:
 
   attest-runtime:
     needs: build-runtime
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
@@ -111,13 +156,14 @@ jobs:
     steps:
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
-          name: candidate-runtime
+          name: candidate-runtime-linux-${{ matrix.arch }}
           path: dist
       - uses: actions/attest@a1948c3f048ba23858d222213b7c278aabede763 # v4.1.1
         with:
-          subject-path: dist/private-proxy-runtime-linux-arm64.tar.gz
+          subject-path: dist/private-proxy-runtime-linux-${{ matrix.arch }}.tar.gz
 
   publish:
+    if: startsWith(github.ref, 'refs/tags/proxy-v')
     needs: [attest, attest-runtime]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -138,4 +184,4 @@ jobs:
           gh release create "${GITHUB_REF_NAME}" dist/*.tar.gz dist/SHA256SUMS \
             --repo "${GITHUB_REPOSITORY}" \
             --title "${GITHUB_REF_NAME} candidate" \
-            --notes "Candidate artifacts only. No host installation or activation was performed."
+            --notes "Linux amd64 and arm64 candidate artifacts. No host installation or activation was performed."

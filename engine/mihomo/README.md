@@ -2,6 +2,7 @@
 
 Base: MetaCubeX/mihomo v1.19.30, commit
 `ac017cdd246ce8bd547653d927e7bf77d7ee73d5`.
+Release targets are Linux amd64 and arm64 only.
 The patch and overlay are GPL-3.0-or-later; the separate proxyctl control CLI
 retains its MIT license. Build with `python3 engine/mihomo/build.py --help`.
 

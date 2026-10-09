@@ -42,7 +42,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument("--goos", default="linux", choices=("linux", "darwin"))
+    parser.add_argument("--goos", default="linux", choices=("linux",))
     parser.add_argument("--goarch", default="arm64", choices=("arm64", "amd64"))
     parser.add_argument("--test", action="store_true")
     args = parser.parse_args()

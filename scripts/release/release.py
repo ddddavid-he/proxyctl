@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import datetime as dt
 import gzip
 import hashlib
@@ -77,6 +78,22 @@ ROLE_SPECS = {
 }
 
 
+ARCHITECTURES = ("amd64", "arm64")
+
+
+def role_spec(role: str, goarch: str | None = None) -> dict:
+    if role not in ROLE_SPECS:
+        raise ReleaseError("invalid role")
+    spec = copy.deepcopy(ROLE_SPECS[role])
+    goarch = goarch or spec["goarch"]
+    if goarch not in ARCHITECTURES:
+        raise ReleaseError("unsupported Linux architecture")
+    spec.update(goarch=goarch, upstream=f"{spec['engine']}-linux-{goarch}",
+                bundle=f"proxyctl-{role}-linux-{goarch}.tar.gz")
+    spec["extra_upstreams"] = [(f"hysteria-linux-{goarch}", "hysteria")] if role == "gateway" else []
+    return spec
+
+
 class ReleaseError(RuntimeError):
     pass
 
@@ -106,10 +123,11 @@ def load_lock(path: pathlib.Path) -> dict:
         raise ReleaseError("upstream lock has an unsupported schema")
     if not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", lock["goToolchain"]):
         raise ReleaseError("Go toolchain must be an exact patch version")
-    expected_upstreams = {spec["upstream"] for spec in ROLE_SPECS.values()}
-    expected_upstreams.update(name for spec in ROLE_SPECS.values() for name, _ in spec.get("extra_upstreams", []))
-    if set(lock["upstreams"]) != expected_upstreams:
-        raise ReleaseError("upstream lock must contain exactly the closed target set")
+    expected_upstreams = {role_spec(role, arch)["upstream"] for role in ROLE_SPECS for arch in ARCHITECTURES}
+    legacy_upstreams = {spec["upstream"] for spec in ROLE_SPECS.values()}
+    legacy_upstreams.update(name for spec in ROLE_SPECS.values() for name, _ in spec["extra_upstreams"])
+    if set(lock["upstreams"]) not in (expected_upstreams, legacy_upstreams):
+        raise ReleaseError("upstream lock must contain exactly the current or legacy closed target set")
     for name, item in lock["upstreams"].items():
         required = {"version", "sourceRepository", "sourceTagOid", "url", "sha256", "format", "outputName", "goos", "goarch", "license"}
         if set(item) != required:
@@ -130,7 +148,9 @@ def load_lock(path: pathlib.Path) -> dict:
             raise ReleaseError(f"{name}: unsupported format or OS")
         if item["goarch"] not in {"arm64", "amd64"} or not item["license"]:
             raise ReleaseError(f"{name}: unsupported architecture or missing license")
-    for spec in ROLE_SPECS.values():
+    for spec in (role_spec(role, arch) for role in ROLE_SPECS for arch in ARCHITECTURES):
+        if spec["upstream"] not in lock["upstreams"]:
+            continue
         if lock["upstreams"][spec["upstream"]]["goarch"] != spec["goarch"]:
             raise ReleaseError("role architecture and upstream lock disagree")
         for name, _ in spec.get("extra_upstreams", []):
@@ -265,11 +285,11 @@ def current_source() -> tuple[str, str]:
     return commit, repository.rstrip("/")
 
 
-def build_proxyctl(stage: pathlib.Path, role: str, version: str, commit: str, epoch: int, go_binary: str) -> None:
+def build_proxyctl(stage: pathlib.Path, role: str, version: str, commit: str, epoch: int, go_binary: str, goarch: str | None = None) -> None:
     build_time = dt.datetime.fromtimestamp(epoch, tz=dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     ldflags = f"-s -w -X main.version={version} -X main.commit={commit} -X main.buildTime={build_time} -buildid="
     env = dict(os.environ)
-    env.update({"CGO_ENABLED": "0", "GOOS": "linux", "GOARCH": ROLE_SPECS[role]["goarch"], "SOURCE_DATE_EPOCH": str(epoch)})
+    env.update({"CGO_ENABLED": "0", "GOOS": "linux", "GOARCH": role_spec(role, goarch)["goarch"], "SOURCE_DATE_EPOCH": str(epoch)})
     run([go_binary, "build", "-trimpath", "-buildvcs=false", "-ldflags", ldflags, "-o", str(stage / "proxyctl"), "./cmd/proxyctl"], env=env)
     (stage / "proxyctl").chmod(0o755)
 
@@ -285,7 +305,7 @@ def file_records(stage: pathlib.Path, excluded: set[str] | None = None) -> list[
     return records
 
 
-def make_sbom(stage: pathlib.Path, role: str, version: str, commit: str, lock_items: list[tuple[str, dict]]) -> dict:
+def make_sbom(stage: pathlib.Path, role: str, version: str, commit: str, lock_items: list[tuple[str, dict]], goarch: str | None = None) -> dict:
     files = []
     for record in file_records(stage):
         files.append({"SPDXID": "SPDXRef-File-" + hashlib.sha256(record["path"].encode()).hexdigest()[:16], "fileName": "./" + record["path"], "checksums": [{"algorithm": "SHA256", "checksumValue": record["sha256"]}]})
@@ -293,8 +313,8 @@ def make_sbom(stage: pathlib.Path, role: str, version: str, commit: str, lock_it
         "spdxVersion": "SPDX-2.3",
         "dataLicense": "CC0-1.0",
         "SPDXID": "SPDXRef-DOCUMENT",
-        "name": ROLE_SPECS[role]["bundle"],
-        "documentNamespace": f"https://proxyctl.example/spdx/{commit}/{role}/{version}",
+        "name": role_spec(role, goarch)["bundle"],
+        "documentNamespace": f"https://proxyctl.example/spdx/{commit}/{role}/{role_spec(role, goarch)['goarch']}/{version}",
         "creationInfo": {"created": "1970-01-01T00:00:00Z", "creators": ["Tool: scripts/release/release.py"]},
         "packages": [
             {"name": "proxyctl", "SPDXID": "SPDXRef-Package-proxyctl", "versionInfo": version, "downloadLocation": "NOASSERTION", "filesAnalyzed": False, "licenseConcluded": "MIT", "licenseDeclared": "MIT", "copyrightText": "Copyright (c) 2026 proxyctl contributors", "externalRefs": [{"referenceCategory": "OTHER", "referenceType": "source-commit", "referenceLocator": commit}]},
@@ -345,15 +365,17 @@ def build_bundle(args: argparse.Namespace) -> pathlib.Path:
     if f"go{lock['goToolchain']}" not in go_version.split():
         raise ReleaseError(f"Go toolchain mismatch: expected {lock['goToolchain']}")
     epoch = source_epoch(args.source_date_epoch)
-    spec = ROLE_SPECS[args.role]
+    spec = role_spec(args.role, args.arch)
+    if spec["upstream"] not in lock["upstreams"]:
+        raise ReleaseError("selected architecture requires the current upstream lock")
     lock_item = lock["upstreams"][spec["upstream"]]
     extra_lock_items = [(name, lock["upstreams"][name]) for name, _ in spec.get("extra_upstreams", [])]
     with tempfile.TemporaryDirectory(prefix="prx02-stage-") as temp:
         stage = pathlib.Path(temp)
-        build_proxyctl(stage, args.role, args.version, args.commit, epoch, args.go_binary)
+        build_proxyctl(stage, args.role, args.version, args.commit, epoch, args.go_binary, spec["goarch"])
         if args.role == "gateway":
             run([sys.executable, str(ROOT / "engine/mihomo/build.py"), "--source",
-                 str(pathlib.Path(temp) / "engine-source"), "--output", str(stage / "mihomo")])
+                 str(pathlib.Path(temp) / "engine-source"), "--output", str(stage / "mihomo"), "--goos", "linux", "--goarch", spec["goarch"]])
             # The complete modified engine source is included alongside its binary.
             shutil.rmtree(pathlib.Path(temp) / "engine-source")
         else:
@@ -372,7 +394,7 @@ def build_bundle(args: argparse.Namespace) -> pathlib.Path:
         copy_file(stage, args.lock, "upstream-lock.json")
         copy_file(stage, ROOT / "scripts/release/release.py", "verify-release.py", 0o755)
         all_lock_items = [(spec["upstream"], lock_item), *extra_lock_items]
-        sbom = make_sbom(stage, args.role, args.version, args.commit, all_lock_items)
+        sbom = make_sbom(stage, args.role, args.version, args.commit, all_lock_items, spec["goarch"])
         if args.role == "gateway":
             package = next(p for p in sbom["packages"] if p["name"] == "mihomo")
             package.update(versionInfo="v1.19.30-proxyctl.1", downloadLocation="NOASSERTION",
@@ -391,8 +413,8 @@ def build_bundle(args: argparse.Namespace) -> pathlib.Path:
             ],
             "predicateType": "https://slsa.dev/provenance/v1",
             "predicate": {
-                "buildDefinition": {"buildType": "https://proxyctl.example/buildtypes/prx02/v1", "externalParameters": {"role": args.role, "version": args.version, "sourceCommit": args.commit, "upstreamLockSha256": sha256_file(args.lock)}, "resolvedDependencies": [dependency for _, item in all_lock_items for dependency in ({"uri": item["sourceRepository"], "digest": {"gitCommit": item["sourceTagOid"]}}, {"uri": item["url"], "digest": {"sha256": item["sha256"]}})]},
-                "runDetails": {"builder": {"id": f"https://proxyctl.example/builders/{args.builder_environment}/{urllib.parse.quote(args.builder_identity, safe='')}"}, "metadata": {"invocationId": f"{args.commit}:{args.role}:{epoch}"}},
+                "buildDefinition": {"buildType": "https://proxyctl.example/buildtypes/prx02/v1", "externalParameters": {"role": args.role, "goarch": spec["goarch"], "version": args.version, "sourceCommit": args.commit, "upstreamLockSha256": sha256_file(args.lock)}, "resolvedDependencies": [dependency for _, item in all_lock_items for dependency in ({"uri": item["sourceRepository"], "digest": {"gitCommit": item["sourceTagOid"]}}, {"uri": item["url"], "digest": {"sha256": item["sha256"]}})]},
+                "runDetails": {"builder": {"id": f"https://proxyctl.example/builders/{args.builder_environment}/{urllib.parse.quote(args.builder_identity, safe='')}"}, "metadata": {"invocationId": f"{args.commit}:{args.role}:{spec['goarch']}:{epoch}"}},
             },
         }
         if args.role == "gateway":
@@ -469,8 +491,11 @@ def verify_bundle(path: pathlib.Path, expected_role: str | None = None) -> dict:
         if not OID_RE.fullmatch(manifest.get("source", {}).get("commit", "")):
             raise ReleaseError("manifest source commit is invalid")
         embedded_lock = load_lock(root / "upstream-lock.json")
-        spec = ROLE_SPECS.get(manifest.get("role"))
-        if spec is None or manifest.get("upstream") != {"name": spec["upstream"], **embedded_lock["upstreams"][spec["upstream"]]}:
+        target = manifest.get("target", {})
+        if target.get("goos") != "linux" or target.get("goarch") not in ARCHITECTURES:
+            raise ReleaseError("manifest target must be Linux amd64 or arm64")
+        spec = role_spec(manifest.get("role"), target["goarch"])
+        if spec["upstream"] not in embedded_lock["upstreams"] or manifest.get("upstream") != {"name": spec["upstream"], **embedded_lock["upstreams"][spec["upstream"]]}:
             raise ReleaseError("manifest upstream does not match embedded lock")
         expected_additional = [
             {"name": name, **embedded_lock["upstreams"][name]}
@@ -547,6 +572,7 @@ def parser() -> argparse.ArgumentParser:
     fetch.add_argument("--cache-dir", type=pathlib.Path, required=True)
     build = sub.add_parser("build")
     build.add_argument("--role", required=True, choices=sorted(ROLE_SPECS))
+    build.add_argument("--arch", choices=ARCHITECTURES, help="Linux target architecture; defaults to the role legacy architecture")
     build.add_argument("--version", required=True)
     build.add_argument("--commit", required=True)
     build.add_argument("--source-repository", required=True)

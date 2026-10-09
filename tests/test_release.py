@@ -29,6 +29,13 @@ class LockTests(unittest.TestCase):
         loaded = release.load_lock(ROOT / "upstream-lock.json")
         self.assertEqual(loaded["schemaVersion"], 1)
 
+    def test_legacy_lock_remains_verifiable(self):
+        with tempfile.TemporaryDirectory() as temp:
+            value = copy.deepcopy(self.lock)
+            del value["upstreams"]["mihomo-linux-amd64"]
+            loaded = release.load_lock(self.write_lock(temp, value))
+            self.assertEqual(len(loaded["upstreams"]), 3)
+
     def test_floating_version_is_rejected(self):
         with tempfile.TemporaryDirectory() as temp:
             value = copy.deepcopy(self.lock)
@@ -87,6 +94,35 @@ class BuilderPolicyTests(unittest.TestCase):
                 release.current_source()
 
 
+class ArchitectureTests(unittest.TestCase):
+    def test_architecture_selects_matching_engines_and_names(self):
+        for role in release.ROLE_SPECS:
+            for arch in release.ARCHITECTURES:
+                with self.subTest(role=role, arch=arch):
+                    spec = release.role_spec(role, arch)
+                    self.assertEqual(spec["goarch"], arch)
+                    self.assertEqual(spec["bundle"], f"proxyctl-{role}-linux-{arch}.tar.gz")
+                    self.assertEqual(spec["upstream"], f"{spec['engine']}-linux-{arch}")
+                    for name, _ in spec["extra_upstreams"]:
+                        self.assertTrue(name.endswith("-" + arch))
+        self.assertEqual(release.ROLE_SPECS["gateway"]["goarch"], "arm64")
+
+    def test_other_architectures_are_rejected(self):
+        with self.assertRaisesRegex(release.ReleaseError, "architecture"):
+            release.role_spec("gateway", "386")
+        with self.assertRaises(SystemExit), mock.patch("sys.stderr", new=io.StringIO()):
+            release.parser().parse_args(["build", "--role", "gateway", "--arch", "386"])
+
+    def test_proxyctl_cross_build_uses_requested_architecture(self):
+        for arch in release.ARCHITECTURES:
+            with tempfile.TemporaryDirectory() as temp, mock.patch.object(release, "run") as run:
+                stage = pathlib.Path(temp)
+                (stage / "proxyctl").touch()
+                release.build_proxyctl(stage, "gateway", "v0.4.0", "a"*40, 1, "go", arch)
+                env = run.call_args.kwargs["env"]
+                self.assertEqual((env["GOOS"], env["GOARCH"]), ("linux", arch))
+
+
 class WorkflowTests(unittest.TestCase):
     def test_repository_workflows_are_pinned_and_non_deploying(self):
         release.lint_workflows(ROOT / ".github/workflows")
@@ -119,34 +155,38 @@ class WorkflowTests(unittest.TestCase):
 
 
 class BundleVerificationTests(unittest.TestCase):
-    def make_bundle(self, directory, *, wrong_checksum=False):
+    def make_bundle(self, directory, *, wrong_checksum=False, role="gateway", goarch="arm64"):
+        spec = release.role_spec(role, goarch)
         root = pathlib.Path(directory, "stage")
         root.mkdir()
         release.write_file(root, "proxyctl", b"proxyctl", 0o755)
-        release.write_file(root, "mihomo", b"mihomo", 0o755)
+        if role == "gateway":
+            release.write_file(root, "mihomo", b"mihomo", 0o755)
         release.write_file(root, "hysteria", b"hysteria", 0o755)
         release.copy_file(root, ROOT / "upstream-lock.json", "upstream-lock.json")
         release.copy_file(root, ROOT / "release/licenses.json", "licenses.json")
-        lock_item = json.loads((ROOT / "upstream-lock.json").read_text())["upstreams"]["mihomo-linux-arm64"]
-        extra_item = json.loads((ROOT / "upstream-lock.json").read_text())["upstreams"]["hysteria-linux-arm64"]
-        release.write_file(root, "sbom.spdx.json", release.json_bytes(release.make_sbom(root, "gateway", "v0.1.0", "a" * 40, [("mihomo-linux-arm64", lock_item), ("hysteria-linux-arm64", extra_item)])))
+        lock = release.load_lock(ROOT / "upstream-lock.json")
+        lock_item = lock["upstreams"][spec["upstream"]]
+        extra_items = [(name, lock["upstreams"][name]) for name, _ in spec["extra_upstreams"]]
+        release.write_file(root, "sbom.spdx.json", release.json_bytes(release.make_sbom(root, role, "v0.1.0", "a" * 40, [(spec["upstream"], lock_item), *extra_items], goarch)))
         release.write_file(root, "provenance.intoto.jsonl", release.json_bytes({
             "predicateType": "https://slsa.dev/provenance/v1",
             "subject": [
                 {"name": "proxyctl", "digest": {"sha256": release.sha256_file(root / "proxyctl")}},
-                {"name": "mihomo", "digest": {"sha256": release.sha256_file(root / "mihomo")}},
+                *([{ "name": "mihomo", "digest": {"sha256": release.sha256_file(root / "mihomo")} }] if role == "gateway" else []),
                 {"name": "hysteria", "digest": {"sha256": release.sha256_file(root / "hysteria")}},
             ],
         }))
         records = release.file_records(root)
         manifest = {
             "schemaVersion": 1,
-            "role": "gateway",
+            "role": role,
+            "target": {"goos": "linux", "goarch": goarch},
             "source": {"repository": "https://example.invalid/proxyctl.git", "commit": "a" * 40},
             "builder": {"environment": "local", "identity": "test", "hostLabel": "test-host"},
             "toolchain": {"go": "1.25.14"},
-            "upstream": {"name": "mihomo-linux-arm64", **lock_item},
-            "additionalUpstreams": [{"name": "hysteria-linux-arm64", **extra_item}],
+            "upstream": {"name": spec["upstream"], **lock_item},
+            "additionalUpstreams": [{"name": name, **item} for name, item in extra_items],
             "files": records,
         }
         release.write_file(root, "manifest.json", release.json_bytes(manifest))
@@ -163,6 +203,14 @@ class BundleVerificationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             manifest = release.verify_bundle(self.make_bundle(temp), "gateway")
             self.assertEqual(manifest["role"], "gateway")
+
+    def test_both_roles_verify_on_both_linux_architectures(self):
+        for role in release.ROLE_SPECS:
+            for arch in release.ARCHITECTURES:
+                with self.subTest(role=role, arch=arch), tempfile.TemporaryDirectory() as temp:
+                    manifest = release.verify_bundle(self.make_bundle(temp, role=role, goarch=arch), role)
+                    self.assertEqual(manifest["target"], {"goos": "linux", "goarch": arch})
+                    self.assertEqual(manifest["upstream"]["goarch"], arch)
 
     def test_tampered_checksum_fails(self):
         with tempfile.TemporaryDirectory() as temp:

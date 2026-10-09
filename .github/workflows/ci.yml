@@ -52,7 +52,15 @@ jobs:
         run: python3 scripts/release/release.py fetch --cache-dir /tmp/prx02-upstreams
 
   engine-accounting:
-    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -64,6 +72,8 @@ jobs:
           check-latest: false
           cache: false
       - name: Engine race and forwarding tests
+        env:
+          TARGET_ARCH: ${{ matrix.arch }}
         run: |
-          python3 engine/mihomo/build.py --source /tmp/mihomo-source --output /tmp/engine/mihomo --goarch amd64 --test
+          python3 engine/mihomo/build.py --source /tmp/mihomo-source --output /tmp/engine/mihomo --goos linux --goarch "${TARGET_ARCH}" --test
           python3 tools/verify_engine_accounting.py /tmp/engine/mihomo
