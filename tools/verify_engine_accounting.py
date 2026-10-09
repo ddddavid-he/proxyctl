@@ -45,6 +45,18 @@ def socks(proxy_port, command, host, target_port):
     return sock, bind_port
 
 
+def http_payload(proxy_port, target_port):
+    sock, _ = socks(proxy_port, 1, 'accounting.example.test', target_port)
+    try:
+        sock.sendall(b'GET / HTTP/1.0\r\nHost: accounting.example.test\r\n\r\n')
+        data = b''
+        while chunk := sock.recv(65536):
+            data += chunk
+        return data
+    finally:
+        sock.close()
+
+
 def verify(binary):
     class Handler(http.server.BaseHTTPRequestHandler):
         def do_GET(self):
@@ -86,28 +98,28 @@ def verify(binary):
             with opener.open(f'http://127.0.0.1:{controller_port}/connections', timeout=2) as response:
                 return json.load(response)
         try:
-            for _ in range(100):
+            readiness_attempts = 0
+            deadline = time.monotonic() + 20
+            # Listeners precede tunnel.OnRunning in the pinned engine startup.
+            # Require one successful transfer before the strict test workload.
+            while time.monotonic() < deadline:
+                readiness_attempts += 1
                 if process.poll() is not None:
                     log.seek(0)
                     raise RuntimeError(log.read())
                 try:
                     snapshot()
-                    with socket.create_connection(('127.0.0.1', proxy_port), timeout=1):
-                        pass
-                    break
-                except OSError:
-                    time.sleep(.1)
+                    if http_payload(proxy_port, server.server_port).endswith(b'x'*32768):
+                        break
+                except (OSError, RuntimeError, AssertionError):
+                    pass
+                time.sleep(.1)
             else:
                 log.seek(0)
-                raise RuntimeError("engine readiness timeout: " + log.read())
-            for _ in range(25):
-                sock, _ = socks(proxy_port, 1, 'accounting.example.test', server.server_port)
-                sock.sendall(b'GET / HTTP/1.0\r\nHost: accounting.example.test\r\n\r\n')
-                data = b''
-                while chunk := sock.recv(65536):
-                    data += chunk
-                sock.close()
-                assert data.endswith(b'x'*32768)
+                raise RuntimeError("engine forwarding readiness timeout: " + log.read())
+            for index in range(25):
+                data = http_payload(proxy_port, server.server_port)
+                assert data.endswith(b'x'*32768), f"TCP flow {index+1}: incomplete response ({len(data)} bytes)"
             control, relay_port = socks(proxy_port, 3, '0.0.0.0', 0)
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as client:
                 client.settimeout(5)
@@ -140,7 +152,7 @@ def verify(binary):
             with sqlite3.connect(root/'usage.sqlite3') as db:
                 assert db.execute('SELECT SUM(upload),SUM(download) FROM buckets').fetchone() == (up, down)
                 assert db.execute('SELECT SUM(upload),SUM(download) FROM domain_buckets').fetchone() == (up, down)
-            return dict(tcp_short_connections=25, udp_datagrams=5, upload=up, download=down, exact_match=True)
+            return dict(tcp_short_connections=25, udp_datagrams=5, readiness_attempts=readiness_attempts, upload=up, download=down, exact_match=True)
         finally:
             if process.poll() is None:
                 process.kill()
