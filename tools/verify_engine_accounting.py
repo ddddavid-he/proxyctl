@@ -75,6 +75,8 @@ def verify(binary):
         spool = root/'spool'
         spool.mkdir()
         proxy_port, controller_port = port(), port()
+        while controller_port == proxy_port:
+            controller_port = port()
         config = root/'config.yaml'
         config.write_text(f'mixed-port: {proxy_port}\nexternal-controller: 127.0.0.1:{controller_port}\nmode: direct\nlog-level: error\nhosts:\n  accounting.example.test: 127.0.0.1\n')
         log = (root/'engine.log').open('w+')
@@ -90,9 +92,14 @@ def verify(binary):
                     raise RuntimeError(log.read())
                 try:
                     snapshot()
+                    with socket.create_connection(('127.0.0.1', proxy_port), timeout=1):
+                        pass
                     break
                 except OSError:
                     time.sleep(.1)
+            else:
+                log.seek(0)
+                raise RuntimeError("engine readiness timeout: " + log.read())
             for _ in range(25):
                 sock, _ = socks(proxy_port, 1, 'accounting.example.test', server.server_port)
                 sock.sendall(b'GET / HTTP/1.0\r\nHost: accounting.example.test\r\n\r\n')
