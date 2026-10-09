@@ -283,3 +283,25 @@ func TestCLIErrorOutputIsJSON(t *testing.T) {
 		t.Errorf("code = %s", e.Error.Code)
 	}
 }
+
+func TestRuntimeCommandsResolveOnlyInstalledComponents(t *testing.T) {
+	if runtime.GOOS != "linux" && runtime.GOOS != "darwin" {
+		t.Skip("Unix runtime")
+	}
+	bin := buildBinary(t)
+	for _, args := range [][]string{{"gateway"}, {"gateway", "--config", "relative", "--accounting-dir", "/tmp"}, {"gateway", "--engine", "/bin/sh"}} {
+		code, _ := runCLI(t, bin, args...)
+		if code == 0 {
+			t.Fatalf("accepted invalid runtime arguments: %v", args)
+		}
+	}
+	dir := filepath.Dir(bin)
+	script := "#!/bin/sh\n[ \"$1\" = '-f' ] && [ \"$2\" = '/test/config' ] && [ \"$PROXYCTL_ACCOUNTING_DIR\" = '/test/spool' ] || exit 90\nexit 23\n"
+	if err := os.WriteFile(filepath.Join(dir, "mihomo"), []byte(script), 0700); err != nil {
+		t.Fatal(err)
+	}
+	code, out := runCLI(t, bin, "gateway", "--config", "/test/config", "--accounting-dir", "/test/spool")
+	if code != 23 {
+		t.Fatalf("did not preserve runtime exit: %d %s", code, out)
+	}
+}

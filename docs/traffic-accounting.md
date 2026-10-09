@@ -297,3 +297,53 @@ rather than the complete-release `/app/deploy/traffic/traffic.py` path.
 Rollback stops/removes only the accounting service, restores the saved Compose
 configuration and recreates Mihomo using the original launcher. Preserve the
 host data directory; it remains independent of all release versions.
+
+## Integrated engine accounting (schema 3)
+
+New gateway releases include a source-built `v1.19.30-proxyctl.1` engine.
+`proxyctl gateway --config /absolute/rendered.yaml --accounting-dir /private/spool`
+executes the fixed sibling engine. `proxyctl traffic collect --db /private/usage.sqlite3
+--engine-spool /private/spool` imports its durable journal. `proxyctl traffic query`
+and `proxyctl traffic health` expose the same options as the original Python CLI.
+Python 3 remains a runtime dependency; the engine remains a separate executable.
+
+Each byte increment in the common TCP/UDP gateway tracker is assigned to a
+hostname and the current 15-minute bucket. Buffered initial bytes, ordinary
+reads/writes and optimized copy callbacks are covered. This includes HTTPS
+CONNECT, Trojan, Hysteria ingress through SOCKS, and IKEv2 through TPROXY. It does
+not require flows to remain open until the collector runs. Identity is the
+canonical destination hostname available to the tracker; IP-only traffic remains
+`[ip-only]`. This change does not enable TLS interception or promise recovery of
+unavailable hostnames. Domain cardinality overflow is `[domain-limit]`.
+
+The engine fsyncs immutable batches every two seconds. The collector commits
+both global and domain totals plus an epoch/sequence checkpoint in one SQLite
+FULL transaction, then deletes the batch. A replay after a collector crash is
+idempotent. Missing sequences or conflicting latest batches stop importing and
+make health stale; they never silently advance the checkpoint. Total and domain
+bytes use the exact same rows. Legacy polling is retained for stock engines.
+Do not run polling and journal ingestion against one database concurrently.
+
+A process/host crash can lose unflushed bytes: normally up to two seconds, with
+no hard time bound during an I/O stall. Subsequent engine starts conservatively
+report a possible tail-loss event, including orderly restarts while relay
+routines might still be active. `possible_tail_loss_restarts` is the lifetime
+count of such marked engine epochs, not a measured byte error or a per-query
+count. A disk failure or spool exceeding 10,000 batches stops the engine with a
+fixed error rather than discarding accounting data. Monitor engine health and
+collector freshness. This is payload accounting, not network billing.
+
+Schema 3 preserves earlier totals and sampled domain history. Reports expose
+`kernel_tracking_started` and label periods as sampled, kernel counters, or
+mixed. No sampled history is relabeled as exact. During upgrade, stop the old
+collector, take a SQLite backup, stop the old engine, then start the new engine
+and journal collector. The handoff gap remains visible as missing coverage.
+Keep spool data and SQLite together for recovery; do not restore an old database
+while discarding newer acknowledged batches. Rollback to the old collector
+requires an explicit migration/backup choice because it only accepts schema 2.
+
+For Compose, provision `PRIVATE_PROXY_ACCOUNTING_DIR` on persistent disk with
+owner/group `10001:10001`, mode `2770`. The privileged gateway inherits that
+group on batch files (mode `0640`); the collector runs as UID/GID 10001. The spool
+must not be a tmpfs. systemd uses a private shared state directory owned by
+`privateproxy`. The legacy Compose overlay remains for stock-engine sampling.

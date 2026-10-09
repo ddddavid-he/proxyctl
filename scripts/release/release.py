@@ -351,7 +351,13 @@ def build_bundle(args: argparse.Namespace) -> pathlib.Path:
     with tempfile.TemporaryDirectory(prefix="prx02-stage-") as temp:
         stage = pathlib.Path(temp)
         build_proxyctl(stage, args.role, args.version, args.commit, epoch, args.go_binary)
-        write_file(stage, spec["engine"], checked_upstream(lock_item, args.cache_dir), 0o755)
+        if args.role == "gateway":
+            run([sys.executable, str(ROOT / "engine/mihomo/build.py"), "--source",
+                 str(pathlib.Path(temp) / "engine-source"), "--output", str(stage / "mihomo")])
+            # The complete modified engine source is included alongside its binary.
+            shutil.rmtree(pathlib.Path(temp) / "engine-source")
+        else:
+            write_file(stage, spec["engine"], checked_upstream(lock_item, args.cache_dir), 0o755)
         for (name, item), (_, output) in zip(extra_lock_items, spec.get("extra_upstreams", [])):
             write_file(stage, output, checked_upstream(item, args.cache_dir), 0o755)
         copy_file(stage, ROOT / spec["template"], spec["template"])
@@ -367,6 +373,11 @@ def build_bundle(args: argparse.Namespace) -> pathlib.Path:
         copy_file(stage, ROOT / "scripts/release/release.py", "verify-release.py", 0o755)
         all_lock_items = [(spec["upstream"], lock_item), *extra_lock_items]
         sbom = make_sbom(stage, args.role, args.version, args.commit, all_lock_items)
+        if args.role == "gateway":
+            package = next(p for p in sbom["packages"] if p["name"] == "mihomo")
+            package.update(versionInfo="v1.19.30-proxyctl.1", downloadLocation="NOASSERTION",
+                           sourceInfo="Modified source in mihomo.source.tar.gz; build details in mihomo.build.json",
+                           checksums=[{"algorithm": "SHA256", "checksumValue": sha256_file(stage / "mihomo")}])
         write_file(stage, "sbom.spdx.json", json_bytes(sbom))
         provenance = {
             "_type": "https://in-toto.io/Statement/v1",
@@ -384,6 +395,8 @@ def build_bundle(args: argparse.Namespace) -> pathlib.Path:
                 "runDetails": {"builder": {"id": f"https://proxyctl.example/builders/{args.builder_environment}/{urllib.parse.quote(args.builder_identity, safe='')}"}, "metadata": {"invocationId": f"{args.commit}:{args.role}:{epoch}"}},
             },
         }
+        if args.role == "gateway":
+            provenance["predicate"]["buildDefinition"]["externalParameters"]["engineBuild"] = json.loads((stage / "mihomo.build.json").read_text())
         write_file(stage, "provenance.intoto.jsonl", json_bytes(provenance))
         manifest_files = file_records(stage)
         manifest = {

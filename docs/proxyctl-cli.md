@@ -1,7 +1,8 @@
 # proxyctl CLI
 
-`proxyctl` is a local validation and rendering tool. It performs no remote
-execution, deployment, or proxy data-plane work.
+`proxyctl` provides local validation, rendering, and explicit runtime commands
+for its separately installed forwarding and accounting components. It performs
+no remote deployment.
 
 ## Commands
 
@@ -243,6 +244,15 @@ remote deployment automation (see `docs/prx02-release.md`).
 ## Out of scope (by design)
 
 No embedded Mihomo/Hysteria2/Trojan/CONNECT/QUIC implementation, no shell
-or systemctl passthrough, no remote execution, no secret storage — proxyctl
-is a local validation and rendering control plane only. The release bundle
-contains separately locked upstream engine binaries.
+or systemctl passthrough, no remote execution, and no secret storage. Runtime
+commands execute fixed sibling components. The gateway release builds the
+locked Mihomo source with the accounting extension and includes its source.
+
+## Runtime commands
+
+`proxyctl gateway --config PATH --accounting-dir DIR` runs the fixed sibling
+custom Mihomo binary, with absolute rendered-config and persistent spool paths.
+`proxyctl traffic collect|query|health ...` runs the release-bundled SQLite
+collector through `/usr/bin/python3`. These explicit runtime commands extend the
+original offline-only CLI boundary. Signal and exit behavior is preserved via
+process replacement. No arbitrary executable argument is accepted.

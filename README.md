@@ -3,7 +3,8 @@
 `proxyctl` is a local, security-focused control-plane CLI for validating and
 rendering a two-role proxy configuration. It prepares native configuration for
 a Mihomo gateway and a Hysteria2 egress while keeping credentials out of Git.
-It does not implement or forward proxy traffic itself.
+It provides a unified gateway and traffic command interface, with a separately
+maintained Mihomo forwarding engine and durable domain accounting.
 
 ## Architecture
 
@@ -31,7 +32,7 @@ flowchart LR
 ```
 
 `proxyctl` owns validation, rendering, local evidence checks, and release
-metadata. Mihomo and Hysteria2 remain independent upstream processes. Service
+metadata. The customized Mihomo engine and Hysteria2 remain independent processes. Service
 activation, firewall changes, DNS, certificates, remote execution, and secret
 provisioning stay outside the CLI trust boundary.
 
@@ -101,6 +102,8 @@ proxyctl preflight --role gateway|egress [--offline] [--config PATH]
 proxyctl render --role gateway|egress --template-dir DIR --config PATH --out-dir DIR
 proxyctl verify --profile loopback|canary
 proxyctl status [--json] [--state-dir DIR]
+proxyctl gateway --config PATH --accounting-dir DIR
+proxyctl traffic collect|query|health [OPTIONS]
 proxyctl version
 ```
 
@@ -119,9 +122,12 @@ for [Hysteria2](docs/hysteria-gateway.md) and
 
 ## Traffic usage
 
-An optional Python/SQLite sidecar collects aggregate Mihomo upload/download
-counters every minute. It keeps three calendar months of 15-minute buckets and
-reports 15-minute, hourly or daily usage without retaining connection details.
+The gateway counts each TCP/UDP payload byte by hostname and writes durable
+batches. A Python/SQLite collector imports them transactionally through
+`proxyctl traffic`, preserving short-lived connections and avoiding replay
+duplicates. It keeps three calendar months of 15-minute buckets and reports
+15-minute, hourly or daily usage without retaining connection details. Stock
+engine polling remains available as a legacy mode.
 See [traffic accounting](docs/traffic-accounting.md) for the counting contract,
 resource estimates, queries and optional Compose/systemd activation.
 
@@ -138,10 +144,12 @@ python3 tools/secret_scan.py
 
 ## Scope
 
-`proxyctl` is not a proxy engine, secret store, installer, deployment system,
-remote executor, DNS client, certificate manager, or firewall manager. It does
-not open network listeners, run `systemctl`, or connect to remote hosts.
+The offline control commands do not open listeners or contact remote hosts.
+The explicit `gateway` and `traffic` commands execute fixed installed runtime
+components. Deployment, certificates and firewall administration remain external.
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+The control CLI is MIT; see [LICENSE](LICENSE). The customized Mihomo engine
+and its extension are GPL-3.0-or-later; release bundles include the modified
+engine source and build manifest. See [engine integration](engine/mihomo/README.md).

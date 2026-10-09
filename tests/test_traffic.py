@@ -363,7 +363,7 @@ class DomainTests(unittest.TestCase):
         self.assertIsNone(self.domains()["tracking_started"])
         self.store=traffic.Store(self.path)
         self.assertEqual(self.query()["totals"]["total_bytes"],30)
-        self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0],2)
+        self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0],3)
 
 
 class DomainAPITests(unittest.TestCase):

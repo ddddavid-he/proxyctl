@@ -25,9 +25,11 @@ services:
       HOME: /run/private-proxy
       SAFE_PATHS: /run/private-proxy
       TRAFFIC_EPOCH_DIR: /run/traffic-source
+      PROXYCTL_ACCOUNTING_DIR: /var/lib/private-proxy-accounting
     volumes:
       - ${PRIVATE_PROXY_RELEASE_DIR}:/app:ro
       - traffic-source:/run/traffic-source
+      - ${PRIVATE_PROXY_ACCOUNTING_DIR:?set PRIVATE_PROXY_ACCOUNTING_DIR}:/var/lib/private-proxy-accounting
       - ${PRIVATE_PROXY_CONFIG_DIR:?set PRIVATE_PROXY_CONFIG_DIR}/gateway.yaml:/config/gateway.yaml:ro
       - ${PRIVATE_PROXY_SECRETS_DIR:?set PRIVATE_PROXY_SECRETS_DIR}/GATEWAY_EGRESS_PASSWORD_1:/run/input-secrets/GATEWAY_EGRESS_PASSWORD_1:ro
       - ${PRIVATE_PROXY_SECRETS_DIR}/TROJAN_USER_1:/run/input-secrets/TROJAN_USER_1:ro
@@ -118,18 +120,19 @@ services:
     <<: *runtime
     profiles: [traffic]
     user: "10001:10001"
-    command: ["python3", "/app/deploy/traffic/traffic.py", "collect", "--db", "/var/lib/private-proxy-traffic/usage.sqlite3", "--controller", "${PRIVATE_PROXY_TRAFFIC_CONTROLLER:-http://127.0.0.1:9090}", "--epoch-file", "/run/traffic-source/epoch", "--domains", "--domain-interval", "2"]
+    command: ["/app/proxyctl", "traffic", "collect", "--db", "/var/lib/private-proxy-traffic/usage.sqlite3", "--engine-spool", "/var/lib/private-proxy-accounting"]
     volumes:
       - ${PRIVATE_PROXY_RELEASE_DIR}:/app:ro
       - ${PRIVATE_PROXY_TRAFFIC_DATA_DIR:-./data/traffic}:/var/lib/private-proxy-traffic
       - traffic-source:/run/traffic-source:ro
+      - ${PRIVATE_PROXY_ACCOUNTING_DIR:?set PRIVATE_PROXY_ACCOUNTING_DIR}:/var/lib/private-proxy-accounting
     depends_on:
       mihomo:
         condition: service_healthy
     tmpfs:
       - /tmp:mode=1777,size=16m
     healthcheck:
-      test: ["CMD", "python3", "/app/deploy/traffic/traffic.py", "health", "--db", "/var/lib/private-proxy-traffic/usage.sqlite3", "--domains"]
+      test: ["CMD", "/app/proxyctl", "traffic", "health", "--db", "/var/lib/private-proxy-traffic/usage.sqlite3", "--domains"]
       interval: 60s
       timeout: 5s
       retries: 3

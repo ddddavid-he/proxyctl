@@ -1,6 +1,6 @@
 // Command proxyctl is the local-only control CLI for the private proxy
-// skeleton. It has no data plane, no external command execution, and no
-// network listeners. See docs/proxyctl-cli.md for the full contract.
+// and runtime entrypoint. Gateway and traffic commands execute fixed installed
+// components; offline control commands remain local. See docs/proxyctl-cli.md.
 package main
 
 import (
@@ -24,13 +24,15 @@ var (
 	buildTime = "unknown"
 )
 
-const usageText = `proxyctl - local-only proxy control skeleton (L1)
+const usageText = `proxyctl - proxy control and runtime
 
 Usage:
   proxyctl preflight --role gateway|egress [--offline] [--config PATH]
   proxyctl render --role gateway|egress --template-dir DIR --config PATH --out-dir DIR
   proxyctl verify --profile loopback|canary
   proxyctl status [--json] [--state-dir DIR]
+  proxyctl gateway --config PATH --accounting-dir DIR
+  proxyctl traffic collect|query|health [OPTIONS]
   proxyctl version
 
 Flags are parsed strictly: unknown flags, unknown commands and invalid
@@ -48,6 +50,8 @@ func run(args []string) int {
 	}
 	cmd, rest := args[0], args[1:]
 	switch cmd {
+	case "gateway", "traffic":
+		return cmdRuntime(cmd, rest)
 	case "preflight":
 		return cmdPreflight(rest)
 	case "render":

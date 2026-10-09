@@ -25,7 +25,9 @@ LoadCredential=gateway.crt:/etc/private-proxy/secrets/gateway.crt
 LoadCredential=gateway.key:/etc/private-proxy/secrets/gateway.key
 ExecStartPre=/opt/private-proxy/current/proxyctl preflight --role gateway --offline --config /etc/private-proxy/gateway.yaml
 ExecStartPre=/opt/private-proxy/current/proxyctl render --role gateway --template-dir /opt/private-proxy/current/templates/mihomo --config /etc/private-proxy/gateway.yaml --out-dir /run/private-proxy
-ExecStart=/opt/private-proxy/current/mihomo -f /run/private-proxy/gateway-rendered.yaml
+StateDirectory=private-proxy-accounting
+StateDirectoryMode=0700
+ExecStart=/opt/private-proxy/current/proxyctl gateway --config /run/private-proxy/gateway-rendered.yaml --accounting-dir /var/lib/private-proxy-accounting
 Restart=on-failure
 RestartSec=5s
 TimeoutStopSec=20s
@@ -42,7 +44,7 @@ RestrictSUIDSGID=yes
 LockPersonality=yes
 RestrictRealtime=yes
 RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
-ReadWritePaths=/run/private-proxy
+ReadWritePaths=/run/private-proxy /var/lib/private-proxy-accounting
 
 [Install]
 WantedBy=multi-user.target

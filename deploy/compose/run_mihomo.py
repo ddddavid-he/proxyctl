@@ -40,7 +40,7 @@ def main() -> int:
         temporary.write_text(uuid.uuid4().hex + "\n")
         temporary.chmod(0o644)
         os.replace(temporary, marker)
-    os.execv(str(APP / "mihomo"), [str(APP / "mihomo"), "-f", str(RUNTIME / "gateway-rendered.yaml")])
+    os.execv(str(APP / "proxyctl"), [str(APP / "proxyctl"), "gateway", "--config", str(RUNTIME / "gateway-rendered.yaml"), "--accounting-dir", os.environ.get("PROXYCTL_ACCOUNTING_DIR", "/var/lib/private-proxy-accounting")])
     return 1
 
 

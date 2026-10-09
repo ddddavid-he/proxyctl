@@ -26,7 +26,8 @@ MAX_COUNTER = 2**63 - 1
 UNATTRIBUTED = "[unattributed]"
 IP_ONLY = "[ip-only]"
 UNKNOWN_DOMAIN = "[unknown-domain]"
-DOMAIN_SPECIAL = (UNATTRIBUTED, IP_ONLY, UNKNOWN_DOMAIN)
+DOMAIN_LIMIT = "[domain-limit]"
+DOMAIN_SPECIAL = (UNATTRIBUTED, IP_ONLY, UNKNOWN_DOMAIN, DOMAIN_LIMIT)
 MAX_SNAPSHOT = 4 * 1024 * 1024
 MAX_CONNECTIONS = 10000
 
@@ -108,7 +109,7 @@ class Store:
         self.db.execute("PRAGMA wal_autocheckpoint=128")
         self.db.execute("PRAGMA cache_size=-2048")
         version = self.db.execute("PRAGMA user_version").fetchone()[0]
-        if version not in (0, 1, 2):
+        if version not in (0, 1, 2, 3):
             raise ValueError("unsupported traffic database version")
         self.db.executescript("""
         BEGIN IMMEDIATE;
@@ -140,7 +141,12 @@ class Store:
           estimated_seconds INTEGER NOT NULL, resets INTEGER NOT NULL,
           clipped_upload INTEGER NOT NULL, clipped_download INTEGER NOT NULL
         );
-        PRAGMA user_version=2;
+        CREATE TABLE IF NOT EXISTS kernel_epochs (
+          epoch TEXT PRIMARY KEY, sequence INTEGER NOT NULL, digest TEXT NOT NULL,
+          at INTEGER NOT NULL, possible_tail_loss INTEGER NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS accounting_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+        PRAGMA user_version=3;
         COMMIT;
         """)
 
@@ -194,6 +200,68 @@ class Store:
             self.prune(at)
             self.db.execute("COMMIT")
             return status
+        except BaseException:
+            if self.db.in_transaction:
+                self.db.execute("ROLLBACK")
+            raise
+
+    def import_batch(self, batch, digest):
+        """Import a durable engine batch once; both totals use identical rows."""
+        epoch, seq = batch["epoch"], batch["sequence"]
+        begin, end = batch["from"], batch["to"]
+        self.db.execute("BEGIN IMMEDIATE")
+        try:
+            old = self.db.execute("SELECT sequence,digest,at FROM kernel_epochs WHERE epoch=?", (epoch,)).fetchone()
+            if old and seq <= old[0]:
+                if seq == old[0] and digest != old[1]:
+                    raise ValueError("conflicting engine batch")
+                self.db.execute("ROLLBACK")
+                return "duplicate"
+            if seq != (old[0] + 1 if old else 1) or (old and begin != old[2]):
+                raise ValueError("engine batch sequence gap")
+            state = self.db.execute("SELECT value FROM accounting_meta WHERE key='kernel_started'").fetchone()
+            if not state:
+                self.db.execute("INSERT INTO accounting_meta VALUES ('kernel_started',?)", (str(begin),))
+            cursor = self.db.execute("SELECT at,upload,download FROM cursor WHERE id=1").fetchone()
+            # A new engine epoch must follow the prior importer/legacy collector.
+            # Stop the legacy collector before starting the engine during migration.
+            if not old and cursor and begin < cursor[0]:
+                raise ValueError("overlapping accounting epochs")
+            total_up = total_down = 0
+            for row in batch["rows"]:
+                start, host, up, down = row["start"], row["domain"], row["upload"], row["download"]
+                if start < cutoff(end):
+                    continue
+                total_up += up
+                total_down += down
+                self.db.execute("""INSERT INTO domain_buckets VALUES (?,?,?,?)
+                    ON CONFLICT(start,domain) DO UPDATE SET upload=upload+excluded.upload,
+                    download=download+excluded.download""", (start, host, up, down))
+                self.db.execute("""INSERT INTO buckets VALUES (?,?,?,0,0,0)
+                    ON CONFLICT(start) DO UPDATE SET upload=upload+excluded.upload,
+                    download=download+excluded.download""", (start, up, down))
+            position = max(begin, cutoff(end))
+            while position < end:
+                start = position // BUCKET * BUCKET
+                stop = min(end, start + BUCKET)
+                seconds = stop - position
+                self.db.execute("""INSERT INTO buckets VALUES (?,0,0,?,0,0)
+                    ON CONFLICT(start) DO UPDATE SET observed_seconds=observed_seconds+excluded.observed_seconds""", (start, seconds))
+                self.db.execute("""INSERT INTO domain_sampling VALUES (?,?,0,0,0,0)
+                    ON CONFLICT(start) DO UPDATE SET observed_seconds=observed_seconds+excluded.observed_seconds""", (start, seconds))
+                position = stop
+            self.db.execute("INSERT OR REPLACE INTO kernel_epochs VALUES (?,?,?,?,?)",
+                            (epoch, seq, digest, end, int(bool(batch["unclean_previous"] or (old and self.db.execute("SELECT possible_tail_loss FROM kernel_epochs WHERE epoch=?", (epoch,)).fetchone()[0])))))
+            # Synthetic durable cumulative cursor is independent of /traffic resets.
+            up = (cursor[1] if cursor else 0) + total_up
+            down = (cursor[2] if cursor else 0) + total_down
+            self.db.execute("INSERT OR REPLACE INTO cursor VALUES (1,?,?,?,?,?)", (end, up, down, epoch, "kernel-journal-v1"))
+            prior = self.db.execute("SELECT started FROM domain_state WHERE id=1").fetchone()
+            self.db.execute("INSERT OR REPLACE INTO domain_state VALUES (1,?,?,?,?,?)", (end, up, down, epoch, prior[0] if prior else begin))
+            self.db.execute("DELETE FROM domain_cursor")
+            self.prune(end)
+            self.db.execute("COMMIT")
+            return "ok"
         except BaseException:
             if self.db.in_transaction:
                 self.db.execute("ROLLBACK")
@@ -420,6 +488,88 @@ def collect(args):
             raise ValueError("sample failed")
 
 
+def validate_batch(data, name):
+    if len(data) > 8 * 1024 * 1024:
+        raise ValueError("oversized engine batch")
+    batch = json.loads(data)
+    epoch, seq = batch["epoch"], counter(batch["sequence"])
+    if batch["version"] != 1 or not re.fullmatch(r"[0-9a-f]{32}", epoch) or seq < 1:
+        raise ValueError("invalid engine batch identity")
+    if name != f"{epoch}-{seq:020d}.json":
+        raise ValueError("engine batch filename mismatch")
+    begin, end = counter(batch["from"]), counter(batch["to"])
+    emitted = counter(batch["emitted_ns"])
+    if not end * 10**9 <= emitted < (end + 2) * 10**9:
+        raise ValueError("invalid engine emission time")
+    if end < begin or end > int(time.time()) + 5 or type(batch["unclean_previous"]) is not bool:
+        raise ValueError("invalid engine batch interval")
+    if not isinstance(batch["rows"], list) or len(batch["rows"]) > 10002:
+        raise ValueError("invalid engine row count")
+    keys = set()
+    for row in batch["rows"]:
+        at, host = counter(row["start"]), row["domain"]
+        if at % BUCKET or not begin // BUCKET * BUCKET <= at <= end // BUCKET * BUCKET:
+            raise ValueError("engine row outside interval")
+        if host not in DOMAIN_SPECIAL and domain_name(host) != host:
+            raise ValueError("invalid engine domain")
+        counter(row["upload"])
+        counter(row["download"])
+        if (at, host) in keys:
+            raise ValueError("duplicate engine row")
+        keys.add((at, host))
+    return batch
+
+
+def drain_engine(store, spool):
+    if not spool.is_dir() or spool.is_symlink():
+        raise ValueError("invalid engine spool")
+    batches = []
+    for path in spool.glob("*.json"):
+        if path.is_symlink() or not path.is_file():
+            raise ValueError("invalid engine batch file")
+        with path.open("rb") as stream:
+            data = stream.read(8 * 1024 * 1024 + 1)
+        batch = validate_batch(data, path.name)
+        batches.append((batch["from"], batch["emitted_ns"], batch["epoch"], batch["sequence"], path))
+        if len(batches) > 10000:
+            raise ValueError("engine spool capacity exceeded")
+    for _, _, _, _, path in sorted(batches):
+        with path.open("rb") as stream:
+            data = stream.read(8 * 1024 * 1024 + 1)
+        batch = validate_batch(data, path.name)
+        store.import_batch(batch, hashlib.sha256(data).hexdigest())
+        path.unlink()  # SQLite FULL commit precedes acknowledgement.
+    if batches:
+        fd = os.open(spool, os.O_RDONLY | os.O_DIRECTORY)
+        try:
+            os.fsync(fd)
+        finally:
+            os.close(fd)
+    return len(batches)
+
+
+def collect_engine(args):
+    stopped = threading.Event()
+    for sig in (signal.SIGINT, signal.SIGTERM):
+        signal.signal(sig, lambda *_: stopped.set())
+    with collector_lock(args.db):
+        store = Store(args.db)
+        try:
+            while not stopped.is_set():
+                try:
+                    drain_engine(store, args.engine_spool)
+                except (OSError, ValueError, KeyError, TypeError, sqlite3.Error):
+                    print('{"event":"engine_import_failed"}', file=sys.stderr, flush=True)
+                    if args.once:
+                        raise ValueError("engine import failed")
+                store.prune(int(time.time()))
+                if args.once:
+                    break
+                stopped.wait(2)
+        finally:
+            store.close()
+
+
 def timezone(value: str) -> dt.timezone:
     import re
     if not re.fullmatch(r"[+-]\d\d:\d\d", value):
@@ -497,10 +647,14 @@ def domain_report(path, start, end, granularity, zone, now, domain=None, limit=2
           chosen_params + [limit]).fetchall() if exists else []
         totals = db.execute(f"SELECT COALESCE(SUM(upload),0),COALESCE(SUM(download),0) FROM domain_buckets WHERE {selected}",
                             chosen_params).fetchone() if exists else (0, 0)
-        specials = dict(db.execute(f"SELECT domain,SUM(upload)+SUM(download) FROM domain_buckets WHERE {where} AND domain IN (?,?,?) GROUP BY domain",
+        specials = dict(db.execute(f"SELECT domain,SUM(upload)+SUM(download) FROM domain_buckets WHERE {where} AND domain IN (?,?,?,?) GROUP BY domain",
                                   params + list(DOMAIN_SPECIAL)).fetchall()) if exists else {}
         all_bytes = db.execute(f"SELECT COALESCE(SUM(upload+download),0) FROM domain_buckets WHERE {where}", params).fetchone()[0] if exists else 0
         sampling = db.execute(f"SELECT * FROM domain_sampling WHERE {where} ORDER BY start", params).fetchall() if exists else []
+        has_kernel = db.execute("SELECT 1 FROM sqlite_master WHERE name='accounting_meta'").fetchone()
+        kernel = db.execute("SELECT value FROM accounting_meta WHERE key='kernel_started'").fetchone() if has_kernel else None
+        kernel_start = int(kernel[0]) if kernel else None
+        losses = db.execute("SELECT at FROM kernel_epochs WHERE possible_tail_loss=1 ORDER BY at").fetchall() if has_kernel else []
         width = {"15m": 900, "hour": 3600, "day": 86400}[granularity]
         offset = int(zone.utcoffset(None).total_seconds())
         bucket_totals = db.execute(f"""SELECT ((start+?)/?)*?-?,SUM(upload),SUM(download)
@@ -528,7 +682,12 @@ def domain_report(path, start, end, granularity, zone, now, domain=None, limit=2
                for host, up, down in ranking]
     identified = all_bytes - sum(specials.values())
     return {"scope": "gateway-domains", "unit": "bytes", "granularity": granularity,
-            "attribution_method": "sampled-active-connections", "domain_filter": domain,
+            "attribution_method": ("kernel-byte-counters" if kernel_start is not None and start >= kernel_start else
+                                   "mixed-sampled-and-kernel" if kernel_start is not None and end > kernel_start else
+                                   "sampled-active-connections"), "domain_filter": domain,
+            "kernel_tracking_started": dt.datetime.fromtimestamp(kernel_start, dt.timezone.utc).isoformat() if kernel_start is not None else None,
+            "possible_tail_loss_restarts": len(losses),
+            "domain_limit_bytes": specials.get(DOMAIN_LIMIT, 0),
             "tracking_started": dt.datetime.fromtimestamp(state[1], dt.timezone.utc).isoformat() if state else None,
             "last_sample": dt.datetime.fromtimestamp(state[0], dt.timezone.utc).isoformat() if state else None,
             "sample_age_seconds": max(0, now-state[0]) if state else None,
@@ -564,6 +723,7 @@ def main(argv=None) -> int:
     ingest.add_argument("--controller", default="http://127.0.0.1:9090")
     ingest.add_argument("--secret-file", type=Path)
     ingest.add_argument("--interval", type=int, default=60)
+    ingest.add_argument("--engine-spool", type=Path, help="import durable engine batches instead of polling")
     ingest.add_argument("--domains", action="store_true", help="persist sampled domain traffic")
     ingest.add_argument("--domain-interval", type=int, default=2, help="domain snapshot interval, 1..60 seconds")
     ingest.add_argument("--once", action="store_true")
@@ -590,7 +750,7 @@ def main(argv=None) -> int:
         if args.command == "collect":
             if not 10 <= args.interval <= 300 or not 1 <= args.domain_interval <= 60 or (args.pid is not None and args.pid <= 0):
                 raise ValueError("interval must be 10..300 seconds and PID must be positive")
-            collect(args)
+            collect_engine(args) if args.engine_spool else collect(args)
         elif args.command == "health":
             if args.max_age <= 0:
                 raise ValueError("max age must be positive")

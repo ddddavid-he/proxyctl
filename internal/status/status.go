@@ -59,8 +59,8 @@ func Collect(opts Options) (*Report, error) {
 		BuildTime:  BuildTime,
 		Restricted: true,
 		Restrictions: []string{
-			"no external command execution",
-			"no network listeners",
+			"status command: no external command execution",
+			"status command: no network listeners",
 			"no secrets in output (redacted centrally)",
 			"fail-closed: no DIRECT fallback",
 		},

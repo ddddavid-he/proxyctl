@@ -1,0 +1,153 @@
+diff --git a/main.go b/main.go
+index 972caf8..0c7e4b6 100644
+--- a/main.go
++++ b/main.go
+@@ -27,6 +27,7 @@ import (
+ 	"github.com/metacubex/mihomo/hub/executor"
+ 	"github.com/metacubex/mihomo/log"
+ 	"github.com/metacubex/mihomo/rules/provider"
++	"github.com/metacubex/mihomo/tunnel/statistic"
+ 
+ 	"go.uber.org/automaxprocs/maxprocs"
+ )
+@@ -190,6 +191,12 @@ func main() {
+ 		return
+ 	}
+ 
++	if err := statistic.StartDomainAccounting(os.Getenv("PROXYCTL_ACCOUNTING_DIR")); err != nil {
++		fmt.Fprintln(os.Stderr, "cannot initialize domain accounting")
++		os.Exit(1)
++	}
++	defer statistic.StopDomainAccounting()
++
+ 	var options []hub.Option
+ 	if externalUI != "" {
+ 		options = append(options, hub.WithExternalUI(externalUI))
+diff --git a/tunnel/statistic/tracker.go b/tunnel/statistic/tracker.go
+index 2fbb1cf..56bdbe9 100644
+--- a/tunnel/statistic/tracker.go
++++ b/tunnel/statistic/tracker.go
+@@ -39,6 +39,7 @@ type tcpTracker struct {
+ 	manager *Manager
+ 
+ 	pushToManager bool `json:"-"`
++	domain        string
+ }
+ 
+ func (tt *tcpTracker) ID() string {
+@@ -54,6 +55,7 @@ func (tt *tcpTracker) Read(b []byte) (int, error) {
+ 	download := int64(n)
+ 	if tt.pushToManager {
+ 		tt.manager.PushDownloaded(download)
++		recordDomain(tt.domain, 0, download)
+ 	}
+ 	tt.DownloadTotal.Add(download)
+ 	return n, err
+@@ -64,6 +66,7 @@ func (tt *tcpTracker) ReadBuffer(buffer *buf.Buffer) (err error) {
+ 	download := int64(buffer.Len())
+ 	if tt.pushToManager {
+ 		tt.manager.PushDownloaded(download)
++		recordDomain(tt.domain, 0, download)
+ 	}
+ 	tt.DownloadTotal.Add(download)
+ 	return
+@@ -73,6 +76,7 @@ func (tt *tcpTracker) UnwrapReader() (io.Reader, []N.CountFunc) {
+ 	return tt.Conn, []N.CountFunc{func(download int64) {
+ 		if tt.pushToManager {
+ 			tt.manager.PushDownloaded(download)
++			recordDomain(tt.domain, 0, download)
+ 		}
+ 		tt.DownloadTotal.Add(download)
+ 	}}
+@@ -83,6 +87,7 @@ func (tt *tcpTracker) Write(b []byte) (int, error) {
+ 	upload := int64(n)
+ 	if tt.pushToManager {
+ 		tt.manager.PushUploaded(upload)
++		recordDomain(tt.domain, upload, 0)
+ 	}
+ 	tt.UploadTotal.Add(upload)
+ 	return n, err
+@@ -93,6 +98,7 @@ func (tt *tcpTracker) WriteBuffer(buffer *buf.Buffer) (err error) {
+ 	err = tt.Conn.WriteBuffer(buffer)
+ 	if tt.pushToManager {
+ 		tt.manager.PushUploaded(upload)
++		recordDomain(tt.domain, upload, 0)
+ 	}
+ 	tt.UploadTotal.Add(upload)
+ 	return
+@@ -102,6 +108,7 @@ func (tt *tcpTracker) UnwrapWriter() (io.Writer, []N.CountFunc) {
+ 	return tt.Conn, []N.CountFunc{func(upload int64) {
+ 		if tt.pushToManager {
+ 			tt.manager.PushUploaded(upload)
++			recordDomain(tt.domain, upload, 0)
+ 		}
+ 		tt.UploadTotal.Add(upload)
+ 	}}
+@@ -133,14 +140,17 @@ func NewTCPTracker(conn C.Conn, manager *Manager, metadata *C.Metadata, rule C.R
+ 			DownloadTotal: atomic.NewInt64(downloadTotal),
+ 		},
+ 		pushToManager: pushToManager,
++		domain:        accountingDomain(metadata),
+ 	}
+ 
+ 	if pushToManager {
+ 		if uploadTotal > 0 {
+ 			manager.PushUploaded(uploadTotal)
++			recordDomain(accountingDomain(metadata), uploadTotal, 0)
+ 		}
+ 		if downloadTotal > 0 {
+ 			manager.PushDownloaded(downloadTotal)
++			recordDomain(accountingDomain(metadata), 0, downloadTotal)
+ 		}
+ 	}
+ 
+@@ -159,6 +169,7 @@ type udpTracker struct {
+ 	manager *Manager
+ 
+ 	pushToManager bool `json:"-"`
++	domain        string
+ }
+ 
+ func (ut *udpTracker) ID() string {
+@@ -174,6 +185,7 @@ func (ut *udpTracker) ReadFrom(b []byte) (int, net.Addr, error) {
+ 	download := int64(n)
+ 	if ut.pushToManager {
+ 		ut.manager.PushDownloaded(download)
++		recordDomain(ut.domain, 0, download)
+ 	}
+ 	ut.DownloadTotal.Add(download)
+ 	return n, addr, err
+@@ -184,6 +196,7 @@ func (ut *udpTracker) WaitReadFrom() (data []byte, put func(), addr net.Addr, er
+ 	download := int64(len(data))
+ 	if ut.pushToManager {
+ 		ut.manager.PushDownloaded(download)
++		recordDomain(ut.domain, 0, download)
+ 	}
+ 	ut.DownloadTotal.Add(download)
+ 	return
+@@ -194,6 +207,7 @@ func (ut *udpTracker) WriteTo(b []byte, addr net.Addr) (int, error) {
+ 	upload := int64(n)
+ 	if ut.pushToManager {
+ 		ut.manager.PushUploaded(upload)
++		recordDomain(ut.domain, upload, 0)
+ 	}
+ 	ut.UploadTotal.Add(upload)
+ 	return n, err
+@@ -225,14 +239,17 @@ func NewUDPTracker(conn C.PacketConn, manager *Manager, metadata *C.Metadata, ru
+ 			DownloadTotal: atomic.NewInt64(downloadTotal),
+ 		},
+ 		pushToManager: pushToManager,
++		domain:        accountingDomain(metadata),
+ 	}
+ 
+ 	if pushToManager {
+ 		if uploadTotal > 0 {
+ 			manager.PushUploaded(uploadTotal)
++			recordDomain(accountingDomain(metadata), uploadTotal, 0)
+ 		}
+ 		if downloadTotal > 0 {
+ 			manager.PushDownloaded(downloadTotal)
++			recordDomain(accountingDomain(metadata), 0, downloadTotal)
+ 		}
+ 	}
+ 

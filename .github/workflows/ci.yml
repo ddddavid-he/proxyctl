@@ -50,3 +50,20 @@ jobs:
           persist-credentials: false
       - name: Verify locked upstream assets
         run: python3 scripts/release/release.py fetch --cache-dir /tmp/prx02-upstreams
+
+  engine-accounting:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: 1.25.14
+          check-latest: false
+          cache: false
+      - name: Engine race and forwarding tests
+        run: |
+          python3 engine/mihomo/build.py --source /tmp/mihomo-source --output /tmp/engine/mihomo --goarch amd64 --test
+          python3 tools/verify_engine_accounting.py /tmp/engine/mihomo

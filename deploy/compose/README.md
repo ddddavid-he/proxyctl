@@ -82,3 +82,13 @@ resource estimates, domain-attribution coverage and limitations. Domain snapshot
 poll every 2 seconds; unassignable bytes remain visible as `[unattributed]`.
 Preserve the data directory across upgrades and back it up with SQLite
 backup or after stopping collection.
+
+## Integrated domain accounting
+
+New gateway releases require `PRIVATE_PROXY_ACCOUNTING_DIR` on persistent disk.
+Create it as UID/GID `10001:10001`, mode `2770`, before activation. Both the
+gateway and traffic collector mount it read/write. Start the `traffic` profile
+together with the gateway so batches are acknowledged promptly. This uses
+`proxyctl gateway` and `proxyctl traffic` with the bundled custom engine. The
+older traffic overlay is only for sampling a stock engine. See
+[accounting migration](../../docs/traffic-accounting.md#integrated-engine-accounting-schema-3).
