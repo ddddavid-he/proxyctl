@@ -343,7 +343,7 @@ while discarding newer acknowledged batches. Rollback to the old collector
 requires an explicit migration/backup choice because it only accepts schema 2.
 
 For Compose, provision `PRIVATE_PROXY_ACCOUNTING_DIR` on persistent disk with
-owner/group `10001:10001`, mode `2770`. The privileged gateway inherits that
+owner/group `0:10001`, mode `2770`. The privileged gateway inherits that
 group on batch files (mode `0640`); the collector runs as UID/GID 10001. The spool
 must not be a tmpfs. systemd uses a private shared state directory owned by
 `privateproxy`. The legacy Compose overlay remains for stock-engine sampling.
