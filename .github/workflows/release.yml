@@ -64,10 +64,11 @@ jobs:
             --cache-dir /tmp/prx02-upstreams \
             --output-dir dist
           python3 scripts/release/release.py verify "dist/proxyctl-${TARGET_ROLE}-linux-${TARGET_ARCH}.tar.gz" --role "${TARGET_ROLE}"
+          mkdir -p /tmp/bundle-check
+          tar -xzf "dist/proxyctl-${TARGET_ROLE}-linux-${TARGET_ARCH}.tar.gz" -C /tmp/bundle-check
+          /tmp/bundle-check/proxyctl preflight --role "${TARGET_ROLE}" --offline
           if [[ "${TARGET_ROLE}" == gateway ]]; then
-            mkdir -p /tmp/gateway-check
-            tar -xzf "dist/proxyctl-${TARGET_ROLE}-linux-${TARGET_ARCH}.tar.gz" -C /tmp/gateway-check
-            python3 tools/verify_engine_accounting.py /tmp/gateway-check/mihomo
+            python3 tools/verify_engine_accounting.py /tmp/bundle-check/mihomo
           fi
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:

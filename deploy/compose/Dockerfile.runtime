@@ -1,4 +1,5 @@
-FROM debian@sha256:7215f78f35ffe58fe13f244fac9c4f21326d55187271fbb3e1a8aa5cc7e387ab
+FROM debian@sha256:f324c7ff54321e8d9c588493a20244965938ce0aa50bbd1022d38010e9ffc4b1
+# Debian trixie-20260824 multi-architecture OCI index (amd64 and arm64).
 
 ARG STRONGSWAN_VERSION=6.0.1-6+deb13u7
 ARG DEBIAN_FRONTEND=noninteractive

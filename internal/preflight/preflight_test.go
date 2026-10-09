@@ -447,3 +447,20 @@ func TestPreflightConfigRejectsRealSecret(t *testing.T) {
 		t.Error("result marked OK despite failed check")
 	}
 }
+
+func TestBothRolesSupportBothReleaseArchitectures(t *testing.T) {
+	for _, role := range []string{"gateway", "egress"} {
+		for _, arch := range []string{"amd64", "arm64"} {
+			t.Run(role+"/"+arch, func(t *testing.T) {
+				res, err := Run(Options{Role: role, Offline: true, arch: arch})
+				if err != nil || !res.OK {
+					t.Fatalf("supported release rejected: result=%+v error=%v", res, err)
+				}
+			})
+		}
+		res, err := Run(Options{Role: role, Offline: true, arch: "386"})
+		if err != nil || res.OK {
+			t.Fatalf("unsupported architecture accepted: result=%+v error=%v", res, err)
+		}
+	}
+}

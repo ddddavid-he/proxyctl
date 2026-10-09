@@ -54,7 +54,9 @@ deployment.
 
 `candidate-release` builds all four role/architecture combinations on native
 Ubuntu runners (`ubuntu-24.04` for amd64, `ubuntu-24.04-arm` for arm64), plus the
-two matching runtime image archives. Gateway bundles build the customized
+two matching runtime image archives. The runtime Dockerfile pins the Debian
+trixie-20260824 multi-architecture OCI index; native builds select the matching
+Linux base image. Gateway bundles build the customized
 Mihomo from pinned source and include its complete modified source and build
 manifest. Each native gateway binary runs the TCP/UDP forwarding and SQLite
 integration check before upload. CI also runs engine race tests on both targets.

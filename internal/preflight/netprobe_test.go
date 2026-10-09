@@ -213,8 +213,8 @@ func TestOfflineMakesZeroDNSAndCertificateProbeCalls(t *testing.T) {
 			t.Errorf("role %s: offline marker does not mention certificates: %q", role, c.Detail)
 		}
 		// The run may still be non-OK for an unrelated reason: the arch
-		// check compares GOARCH against the role's expectation, which
-		// fails on any host that is not the role's target architecture.
+		// check rejects architectures outside the supported amd64/arm64
+		// set for either role.
 		// Only require OK when the evidence-independent checks passed.
 		arch := findCheck(res, "arch")
 		if arch != nil && arch.Status == "pass" && !res.OK {

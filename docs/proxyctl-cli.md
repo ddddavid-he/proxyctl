@@ -36,7 +36,7 @@ Errors on stderr are safe JSON: `{"error": {"code": "...", "message": "..."}}`.
 
 Read-only checks; **no DNS resolution or network access is performed**
 in any mode (`--offline` additionally marks the run and skips all
-probing). Checks: architecture expectation (arm64 for gateway, amd64 for egress),
+probing). Checks: supported architecture (amd64 or arm64 for either role),
 reserved port documentation, credential placeholder posture (when
 `--config` is given; the config path must be a regular file — symlinks,
 directories and raw `..` traversal components are refused), fail-closed

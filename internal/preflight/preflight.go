@@ -251,20 +251,13 @@ func (r *Result) check(name string, c Check) {
 }
 
 func checkArch(role, goarch string) Check {
-	expect := "arm64"
-	if role == "egress" {
-		expect = "amd64"
-	}
 	if goarch == "" {
 		goarch = runtime.GOARCH
 	}
-	if goarch == expect {
-		return Check{Status: "pass", Detail: fmt.Sprintf("GOARCH=%s matches role expectation", goarch)}
+	if goarch == "amd64" || goarch == "arm64" {
+		return Check{Status: "pass", Detail: fmt.Sprintf("GOARCH=%s is supported for role %s", goarch, role)}
 	}
-	return Check{
-		Status: "fail",
-		Detail: fmt.Sprintf("GOARCH=%s does not match role %s expectation %s (cross-compiled binary or wrong host)", goarch, role, expect),
-	}
+	return Check{Status: "fail", Detail: fmt.Sprintf("GOARCH=%s is unsupported for role %s; requires amd64 or arm64", goarch, role)}
 }
 
 // reservation is one exact protocol+port pair the role intends to
