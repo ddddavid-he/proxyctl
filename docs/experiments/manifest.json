@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "files": {
+    "README.md": "2fd949b4b1419241a4e9a367792180bbf7769e83a4e93ba89f610fc027d4458b",
+    "adaptive-controller.md": "fbecb72696afd7d5850ab3d31062f721b6cd4075009363f9ecb0956d2c08c875",
+    "client-transports.md": "c48167083bc01ea8132324f9770998a410b4b5c16234cd67ec40f46e6cd70088",
+    "coded-transport.md": "0b9d5c1d5b787b5b9d2df57f5832694105b3d1351908b9ec47e52c84f0a5c0f7",
+    "data/adaptive-controller.json": "df0719eed5f290924c9b3e1f08b8f88a7affa9ad0094ec99abbf0c44b1b0ca38",
+    "data/client-transports.json": "5b98579e17326b49dd6bc67e05c0de5dc838fed1a994466589dca5f823a972c1",
+    "data/coded-transport.json": "ee1ab8069947ec400eb75bf857141cdf503b9da684ea00dd56345f5c38b6577e",
+    "data/full-chain.json": "bf61d739f3b04f66590689e7fe9e4ceff0c80e6d7bdfc7ff1d7f05b31687e54c",
+    "data/integration-checks.json": "6ad53b1d1e63669960cecbe1a797c5fc95fccbbcfc6f3330dbe2d37bd442f1c4",
+    "data/metering-observation.json": "0667346fcebf62b58a0b571adf0d6fe0ecdb873ce5112b125e5cff6ff11a9d10",
+    "data/path-diagnostics.json": "7e540175d76ba38626f2ff99daa8439a3292f4d334f7701651407dbd4b7f0a56",
+    "data/transport-baselines.json": "9df469f5c74e9fdea28c6c5bdcfe7389f1d9e49aecd75ab84f9810e6e3ae61d5",
+    "full-chain.md": "ce8bca07491ae6fc618b7e10566564e81c63f9779439c3ae058361db0a389002",
+    "integration-checks.md": "9d6c1cdec9ac295ecca82f0f9baabadccc0334d45bc860f7716e0bdb9076d6aa",
+    "metering-and-path.md": "f3728c6b511974c13c46748036d08b95350ac87c0b6e9d75d2d71a0f5c33ba1f",
+    "methodology.md": "f040a21fa43ca717f1f5a752b7801234c557db6afaa9a82a24918766382a177c",
+    "provenance.json": "b6ee1e582b4dfeff3427e57a50d8b4235a6537599d1d6032f389ce0ce70c73cc",
+    "publication-policy.md": "5c43bff0a71e7e95127a99792e7cade9d2e29abc18c9a8fd8c25572e3b112480",
+    "summary.json": "5912396263298df1825476860533d2c517d451848f5e7f49c880560f00659b61",
+    "transport-baselines.md": "cc22f117efe923d0ee8aa7bd8a5106445fe7d51c6d4650b78ba2b70da2823695"
+  }
+}

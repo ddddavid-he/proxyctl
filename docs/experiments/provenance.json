@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "publication_kind": "privacy-curated historical observations",
+  "collection_period": "2026-10",
+  "format": "Markdown and JSON",
+  "audience": "technical",
+  "sources": [
+    {
+      "id": "source-01",
+      "description": "fixed-mode case aggregates",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-02",
+      "description": "fixed-mode per-phase counters",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-03",
+      "description": "controller requests and aggregates",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-04",
+      "description": "controller independent acceptance record",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-05",
+      "description": "coded transport stratum aggregates",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-06",
+      "description": "coded followup aggregates",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-07",
+      "description": "HY2 client observations",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-08",
+      "description": "HY2 default-mode observations",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-09",
+      "description": "Trojan client observations",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-10",
+      "description": "Trojan transit observations",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-11",
+      "description": "full-chain transfer records",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-12",
+      "description": "sequence packet probe counts",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-13",
+      "description": "TCP controller and port trials",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-14",
+      "description": "pacing and runtime-option trials",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-15",
+      "description": "early two-hop protocol observations",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-16",
+      "description": "integration path A record",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-17",
+      "description": "integration path B record",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-18",
+      "description": "integration path C record",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-19",
+      "description": "isolated-client fallback record",
+      "raw_evidence_public": false
+    },
+    {
+      "id": "source-20",
+      "description": "aggregate metering observation",
+      "raw_evidence_public": false
+    }
+  ],
+  "datasets": {
+    "adaptive-controller.json": {
+      "source_ids": [
+        "source-03",
+        "source-04"
+      ]
+    },
+    "client-transports.json": {
+      "source_ids": [
+        "source-07",
+        "source-08",
+        "source-09",
+        "source-10"
+      ]
+    },
+    "coded-transport.json": {
+      "source_ids": [
+        "source-05",
+        "source-06"
+      ]
+    },
+    "full-chain.json": {
+      "source_ids": [
+        "source-11"
+      ]
+    },
+    "integration-checks.json": {
+      "source_ids": [
+        "source-16",
+        "source-17",
+        "source-18",
+        "source-19"
+      ]
+    },
+    "metering-observation.json": {
+      "source_ids": [
+        "source-20"
+      ]
+    },
+    "path-diagnostics.json": {
+      "source_ids": [
+        "source-12",
+        "source-13",
+        "source-14",
+        "source-15"
+      ]
+    },
+    "transport-baselines.json": {
+      "source_ids": [
+        "source-01",
+        "source-02"
+      ]
+    }
+  },
+  "limits": [
+    "Only exported records can be independently recomputed from this repository.",
+    "Original private packet evidence and execution environment are not distributed.",
+    "Historic test logs are not new executions or current deployment verification."
+  ],
+  "presentation_notes": [
+    "Exact audit tables preserve small-sample counts and measurement denominators.",
+    "Only anonymized observations and logical source identifiers are included.",
+    "Technical summary, metrics, methods, limitations and next questions are covered per topic and in methodology.md."
+  ]
+}

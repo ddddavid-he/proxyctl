@@ -33,3 +33,23 @@ secrets/
 *.sqlite3-wal
 *.sqlite3-shm
 *.sqlite3.lock
+
+# Private operator evidence and deployment helpers (local use only).
+# Public examples belong in templates/ or tests/fixtures/ with reserved values.
+/operations/
+/experiments/
+/docs/incidents/
+# Per-window operator snapshots are exported as anonymized experiment datasets.
+/docs/reports/traffic/
+/docs/traffic-audit.md
+/docs/wire-traffic-diagnostics.md
+/tools/incident/
+# These local analysis tests depend on the private incident helper directory.
+/tests/test_path_probe_summary.py
+/tests/test_quic_trace_summary.py
+/tests/test_tcp_info_metrics.py
+/tests/test_tcp_sequence_summary.py
+
+# Python bytecode can retain local source paths and literal values.
+__pycache__/
+*.py[cod]

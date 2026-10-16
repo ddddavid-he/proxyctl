@@ -33,6 +33,7 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_*.py'
           python3 tools/secret_scan.py --self-test
           python3 tools/secret_scan.py
+          python3 tools/verify_experiment_results.py
           python3 scripts/release/release.py validate-lock
           python3 scripts/release/release.py lint-workflows
       - name: Vulnerability scan

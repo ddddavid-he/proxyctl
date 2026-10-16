@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "kind": "anonymized-observation",
+  "source_ids": [
+    "source-16",
+    "source-17",
+    "source-18",
+    "source-19"
+  ],
+  "collection_period": "2026-10",
+  "raw_evidence_public": false,
+  "historical_record_only": true,
+  "gateways": [
+    {
+      "gateway": "gateway-A",
+      "same_egress_canary_active_restart": true,
+      "udp_dns_canary": true,
+      "udp_dns_active": true,
+      "udp_dns_after_service_restart": true,
+      "file_checks": [
+        {
+          "phase": "canary",
+          "direction": "download",
+          "verified": true,
+          "body_bytes": 20971520
+        },
+        {
+          "phase": "canary",
+          "direction": "upload",
+          "verified": true,
+          "body_bytes": 20971520
+        },
+        {
+          "phase": "active",
+          "direction": "download",
+          "verified": true,
+          "body_bytes": 20971520
+        },
+        {
+          "phase": "active",
+          "direction": "upload",
+          "verified": true,
+          "body_bytes": 20971520
+        }
+      ]
+    },
+    {
+      "gateway": "gateway-B",
+      "same_egress_canary_active_restart": true,
+      "udp_dns_canary": true,
+      "udp_dns_active": true,
+      "udp_dns_after_service_restart": true,
+      "file_checks": [
+        {
+          "phase": "canary",
+          "direction": "download",
+          "verified": true,
+          "body_bytes": 20971520
+        },
+        {
+          "phase": "canary",
+          "direction": "upload",
+          "verified": true,
+          "body_bytes": 20971520
+        },
+        {
+          "phase": "active",
+          "direction": "download",
+          "verified": true,
+          "body_bytes": 20971520
+        },
+        {
+          "phase": "active",
+          "direction": "upload",
+          "verified": true,
+          "body_bytes": 20971520
+        }
+      ]
+    },
+    {
+      "gateway": "gateway-C",
+      "same_egress_canary_active_restart": true,
+      "udp_dns_canary": true,
+      "udp_dns_active": true,
+      "udp_dns_after_service_restart": true,
+      "file_checks": [
+        {
+          "phase": "canary",
+          "direction": "download",
+          "verified": true,
+          "body_bytes": 20971520
+        },
+        {
+          "phase": "canary",
+          "direction": "upload",
+          "verified": true,
+          "body_bytes": 20971520
+        },
+        {
+          "phase": "active",
+          "direction": "download",
+          "verified": true,
+          "body_bytes": 20971520
+        },
+        {
+          "phase": "active",
+          "direction": "upload",
+          "verified": true,
+          "body_bytes": 20971520
+        }
+      ]
+    }
+  ],
+  "client_fallback": {
+    "group_type": "fallback",
+    "primary_selected_in_normal_client": true,
+    "secondary_selected_after_isolated_primary_failure": true,
+    "same_egress_in_both_client_scenarios": true,
+    "temporary_clients_cleaned": true,
+    "shared_nodes_untouched": true,
+    "original_readback_status": 200,
+    "cache_busted_readback_status": 200,
+    "readback_content_equal": true
+  }
+}

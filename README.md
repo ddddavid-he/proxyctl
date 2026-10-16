@@ -6,6 +6,9 @@ a Mihomo gateway and a Hysteria2 egress while keeping credentials out of Git.
 It provides a unified gateway and traffic command interface, with a separately
 maintained Mihomo forwarding engine and durable domain accounting.
 
+[Anonymized experiment results](docs/experiments/README.md) include transport
+comparisons, failed attempts, measurement definitions, and offline verification.
+
 ## Architecture
 
 The tool separates a local control plane from the upstream data plane:

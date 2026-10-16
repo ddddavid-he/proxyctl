@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "kind": "anonymized-observation",
+  "source_ids": [
+    "source-20"
+  ],
+  "collection_period": "2026-10",
+  "raw_evidence_public": false,
+  "interval_seconds": 10800,
+  "bucket_seconds": 900,
+  "nodes": [
+    {
+      "gateway": "gateway-A",
+      "payload": {
+        "upload_bytes": 0,
+        "download_bytes": 0,
+        "total_bytes": 0
+      },
+      "device": {
+        "rx": 113189433,
+        "tx": 143919701,
+        "nft_in": 104326782,
+        "nft_out": 125596775,
+        "sample_count": 618
+      },
+      "quality": {
+        "proxy_complete_buckets": 12,
+        "device_gaps": 4,
+        "device_counter_resets": 0
+      },
+      "ip_only_payload_bytes": 0,
+      "ratios": {
+        "tx_per_payload": null,
+        "both_per_payload": null,
+        "relay_reference": null
+      }
+    },
+    {
+      "gateway": "gateway-B",
+      "payload": {
+        "upload_bytes": 55565165,
+        "download_bytes": 274150032,
+        "total_bytes": 329715197
+      },
+      "device": {
+        "rx": 448915482,
+        "tx": 406113830,
+        "nft_in": 439224987,
+        "nft_out": 392120196,
+        "sample_count": 675
+      },
+      "quality": {
+        "proxy_complete_buckets": 12,
+        "device_gaps": 0,
+        "device_counter_resets": 0
+      },
+      "ip_only_payload_bytes": 159073508,
+      "ratios": {
+        "tx_per_payload": 1.231710984798799,
+        "both_per_payload": 2.5932359799600015,
+        "relay_reference": 1.2966179899800008
+      }
+    },
+    {
+      "gateway": "gateway-C",
+      "payload": {
+        "upload_bytes": 18819673,
+        "download_bytes": 54927373,
+        "total_bytes": 73747046
+      },
+      "device": {
+        "rx": 134255590,
+        "tx": 112852496,
+        "nft_in": 128677052,
+        "nft_out": 106753308,
+        "sample_count": 634
+      },
+      "quality": {
+        "proxy_complete_buckets": 12,
+        "device_gaps": 4,
+        "device_counter_resets": 0
+      },
+      "ip_only_payload_bytes": 0,
+      "ratios": {
+        "tx_per_payload": 1.530264629175791,
+        "both_per_payload": 3.35075232708304,
+        "relay_reference": 1.67537616354152
+      }
+    }
+  ],
+  "historical_bill_attribution_verified": false
+}

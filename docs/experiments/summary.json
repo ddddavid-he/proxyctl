@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "full_chain": {
+    "TT": {
+      "attempts": 24,
+      "successful": 24,
+      "verified_body_bytes": 503316480,
+      "gateway_tx_including_failures": 526773022,
+      "failed_transfer_tx_bytes": 0,
+      "gateway_tx_per_verified_body": 1.0466039617856344,
+      "setup_records": 0,
+      "setup_tx_bytes": 0
+    },
+    "TTc": {
+      "attempts": 24,
+      "successful": 23,
+      "verified_body_bytes": 482344960,
+      "gateway_tx_including_failures": 494174353,
+      "failed_transfer_tx_bytes": 47642,
+      "gateway_tx_per_verified_body": 1.0245247571364693,
+      "setup_records": 0,
+      "setup_tx_bytes": 0
+    },
+    "TH": {
+      "attempts": 24,
+      "successful": 24,
+      "verified_body_bytes": 503316480,
+      "gateway_tx_including_failures": 666986567,
+      "failed_transfer_tx_bytes": 0,
+      "gateway_tx_per_verified_body": 1.325183246533076,
+      "setup_records": 0,
+      "setup_tx_bytes": 0
+    },
+    "HT": {
+      "attempts": 24,
+      "successful": 21,
+      "verified_body_bytes": 440401920,
+      "gateway_tx_including_failures": 573675727,
+      "failed_transfer_tx_bytes": 38203543,
+      "gateway_tx_per_verified_body": 1.3026185875847227,
+      "setup_records": 2,
+      "setup_tx_bytes": 0
+    },
+    "HH": {
+      "attempts": 24,
+      "successful": 19,
+      "verified_body_bytes": 398458880,
+      "gateway_tx_including_failures": 682062411,
+      "failed_transfer_tx_bytes": 85802989,
+      "gateway_tx_per_verified_body": 1.7117510619916414,
+      "setup_records": 0,
+      "setup_tx_bytes": 0
+    }
+  },
+  "controller_primary": {
+    "tcp": {
+      "requests": 268,
+      "verified_requests": 263,
+      "sessions": 134,
+      "both_verified_sessions": 129,
+      "both_ge20_sessions": 9,
+      "download": {
+        "attempts": 134,
+        "verified": 134,
+        "verified_body_bytes": 1124073472,
+        "gateway_tx_including_failures": 22645943,
+        "gateway_tx_per_verified_body": 0.020146319225652895,
+        "ge20": 42,
+        "median_mbps": 16.35906009036554,
+        "p10_mbps": 6.793624095236285
+      },
+      "upload": {
+        "attempts": 134,
+        "verified": 129,
+        "verified_body_bytes": 541065216,
+        "gateway_tx_including_failures": 569874075,
+        "gateway_tx_per_verified_body": 1.0532447071962578,
+        "ge20": 11,
+        "median_mbps": 16.950275910026004,
+        "p10_mbps": 11.329318175295251
+      }
+    },
+    "split": {
+      "requests": 374,
+      "verified_requests": 367,
+      "sessions": 187,
+      "both_verified_sessions": 180,
+      "both_ge20_sessions": 0,
+      "download": {
+        "attempts": 187,
+        "verified": 187,
+        "verified_body_bytes": 1568669696,
+        "gateway_tx_including_failures": 85658188,
+        "gateway_tx_per_verified_body": 0.054605624255012065,
+        "ge20": 168,
+        "median_mbps": 32.656062417500976,
+        "p10_mbps": 20.008710779966574
+      },
+      "upload": {
+        "attempts": 187,
+        "verified": 180,
+        "verified_body_bytes": 754974720,
+        "gateway_tx_including_failures": 797735643,
+        "gateway_tx_per_verified_body": 1.0566388805707296,
+        "ge20": 0,
+        "median_mbps": 14.309424826332995,
+        "p10_mbps": 8.895185645332097
+      }
+    },
+    "controller": {
+      "requests": 306,
+      "verified_requests": 304,
+      "sessions": 153,
+      "both_verified_sessions": 151,
+      "both_ge20_sessions": 4,
+      "download": {
+        "attempts": 153,
+        "verified": 153,
+        "verified_body_bytes": 1283457024,
+        "gateway_tx_including_failures": 27737674,
+        "gateway_tx_per_verified_body": 0.021611688962948867,
+        "ge20": 65,
+        "median_mbps": 18.776149627088706,
+        "p10_mbps": 7.116874899887353
+      },
+      "upload": {
+        "attempts": 153,
+        "verified": 151,
+        "verified_body_bytes": 633339904,
+        "gateway_tx_including_failures": 657981676,
+        "gateway_tx_per_verified_body": 1.038907657395925,
+        "ge20": 11,
+        "median_mbps": 16.41864264708749,
+        "p10_mbps": 10.423842126960997
+      }
+    }
+  },
+  "controller_all": {
+    "requests": 1232,
+    "verified_requests": 1209,
+    "sessions": 616,
+    "both_verified_sessions": 593,
+    "both_ge20_sessions": 13,
+    "download": {
+      "attempts": 616,
+      "verified": 616,
+      "verified_body_bytes": 5167382528,
+      "gateway_tx_including_failures": 188319587,
+      "gateway_tx_per_verified_body": 0.036443902881114515,
+      "ge20": 370,
+      "median_mbps": 21.664619085245256,
+      "p10_mbps": 10.526137525702053
+    },
+    "upload": {
+      "attempts": 616,
+      "verified": 593,
+      "verified_body_bytes": 2487222272,
+      "gateway_tx_including_failures": 2633076741,
+      "gateway_tx_per_verified_body": 1.058641509704204,
+      "ge20": 22,
+      "median_mbps": 15.97239556169986,
+      "p10_mbps": 9.772869010298452
+    }
+  },
+  "packet_probes": {
+    "gateway-B": {
+      "sent": 28729,
+      "missing": 0,
+      "missing_fraction": 0.0
+    },
+    "origin": {
+      "sent": 28729,
+      "missing": 3186,
+      "missing_fraction": 0.1108983953496467
+    }
+  },
+  "client_families": {
+    "hy2-client": {
+      "attempts": 41,
+      "successful": 35
+    },
+    "hy2-default": {
+      "attempts": 5,
+      "successful": 5
+    },
+    "trojan-client": {
+      "attempts": 8,
+      "successful": 8
+    },
+    "trojan-transit": {
+      "attempts": 6,
+      "successful": 4
+    }
+  }
+}

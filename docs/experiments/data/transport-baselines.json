@@ -1,0 +1,5282 @@
+{
+  "schema_version": 1,
+  "kind": "anonymized-observation",
+  "source_ids": [
+    "source-01",
+    "source-02"
+  ],
+  "collection_period": "2026-10",
+  "raw_evidence_public": false,
+  "cases": [
+    {
+      "complete": true,
+      "download_mbps": [
+        8.352635882624778
+      ],
+      "upload_mbps": [
+        0.5191691194190372
+      ],
+      "verified_payload": 2654306,
+      "gateway_tx": 796473,
+      "origin_tx": 2543750,
+      "observed_rx_tx": 6373457,
+      "egress_ratio": 1.2584167010133722,
+      "gateway_upload_egress_ratio": [
+        1.3483409881591797
+      ],
+      "source_repeat_fraction": 0.12944728885173745,
+      "case_id": "baseline-001",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "smoke",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        9.427741984931433
+      ],
+      "upload_mbps": [
+        2.3827307307814327
+      ],
+      "verified_payload": 2654306,
+      "gateway_tx": 889174,
+      "origin_tx": 2425078,
+      "observed_rx_tx": 6406725,
+      "egress_ratio": 1.2486322225093867,
+      "gateway_upload_egress_ratio": [
+        1.5847320556640625
+      ],
+      "source_repeat_fraction": 0.08457309483344153,
+      "case_id": "baseline-002",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "smoke",
+      "has_error": false
+    },
+    {
+      "complete": false,
+      "download_mbps": [],
+      "upload_mbps": [],
+      "verified_payload": 0,
+      "gateway_tx": 0,
+      "origin_tx": 0,
+      "observed_rx_tx": 0,
+      "egress_ratio": null,
+      "gateway_upload_egress_ratio": [],
+      "source_repeat_fraction": null,
+      "case_id": "baseline-003",
+      "gateway": "gateway-B",
+      "candidate": "native-standard",
+      "stage": "smoke",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        9.206403253960724
+      ],
+      "upload_mbps": [
+        3.9178621026260667
+      ],
+      "verified_payload": 2654306,
+      "gateway_tx": 602639,
+      "origin_tx": 2381608,
+      "observed_rx_tx": 5843740,
+      "egress_ratio": 1.1243040553726662,
+      "gateway_upload_egress_ratio": [
+        1.0382976531982422
+      ],
+      "source_repeat_fraction": 0.0669669361821858,
+      "case_id": "baseline-004",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "smoke",
+      "has_error": false
+    },
+    {
+      "complete": false,
+      "download_mbps": [],
+      "upload_mbps": [],
+      "verified_payload": 0,
+      "gateway_tx": 0,
+      "origin_tx": 0,
+      "observed_rx_tx": 0,
+      "egress_ratio": null,
+      "gateway_upload_egress_ratio": [],
+      "source_repeat_fraction": null,
+      "case_id": "baseline-005",
+      "gateway": "gateway-B",
+      "candidate": "native-conservative",
+      "stage": "smoke",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        7.284787251817577
+      ],
+      "upload_mbps": [
+        1.062905478092892
+      ],
+      "verified_payload": 2654306,
+      "gateway_tx": 924539,
+      "origin_tx": 2515849,
+      "observed_rx_tx": 6596104,
+      "egress_ratio": 1.2961534954899698,
+      "gateway_upload_egress_ratio": [
+        1.5815849304199219
+      ],
+      "source_repeat_fraction": 0.11422079189336674,
+      "case_id": "baseline-006",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "smoke",
+      "has_error": false
+    },
+    {
+      "complete": false,
+      "download_mbps": [],
+      "upload_mbps": [],
+      "verified_payload": 0,
+      "gateway_tx": 0,
+      "origin_tx": 0,
+      "observed_rx_tx": 0,
+      "egress_ratio": null,
+      "gateway_upload_egress_ratio": [],
+      "source_repeat_fraction": null,
+      "case_id": "baseline-007",
+      "gateway": "gateway-B",
+      "candidate": "brutal25",
+      "stage": "smoke",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        11.967779067425825
+      ],
+      "upload_mbps": [
+        7.901048681407643
+      ],
+      "verified_payload": 2654306,
+      "gateway_tx": 615797,
+      "origin_tx": 2342324,
+      "observed_rx_tx": 5833149,
+      "egress_ratio": 1.1144611811901115,
+      "gateway_upload_egress_ratio": [
+        1.0346431732177734
+      ],
+      "source_repeat_fraction": 0.04973760246607043,
+      "case_id": "baseline-008",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "smoke",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        7.497782161843377
+      ],
+      "upload_mbps": [
+        3.4929381236480777
+      ],
+      "verified_payload": 2654306,
+      "gateway_tx": 590557,
+      "origin_tx": 2329968,
+      "observed_rx_tx": 5715038,
+      "egress_ratio": 1.1002970267934442,
+      "gateway_upload_egress_ratio": [
+        1.0250606536865234
+      ],
+      "source_repeat_fraction": 0.06068046483565489,
+      "case_id": "baseline-009",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "smoke",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        3.496020752878125
+      ],
+      "upload_mbps": [
+        1.5205464944358016
+      ],
+      "verified_payload": 2654306,
+      "gateway_tx": 629373,
+      "origin_tx": 2535328,
+      "observed_rx_tx": 6009907,
+      "egress_ratio": 1.1922894346017376,
+      "gateway_upload_egress_ratio": [
+        1.0252819061279297
+      ],
+      "source_repeat_fraction": 0.13310998707211694,
+      "case_id": "baseline-010",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "smoke",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        39.43281657003155
+      ],
+      "upload_mbps": [
+        9.542166652715062
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 6976965,
+      "origin_tx": 19382121,
+      "observed_rx_tx": 51029852,
+      "egress_ratio": 1.2549324100722388,
+      "gateway_upload_egress_ratio": [
+        1.573071002960205
+      ],
+      "source_repeat_fraction": 0.09783080342940803,
+      "case_id": "baseline-011",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        43.38022171615693
+      ],
+      "upload_mbps": [
+        1.8656742947850924
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 6153382,
+      "origin_tx": 19790143,
+      "observed_rx_tx": 49774853,
+      "egress_ratio": 1.2351479240979515,
+      "gateway_upload_egress_ratio": [
+        1.3829588890075684
+      ],
+      "source_repeat_fraction": 0.12458148428367666,
+      "case_id": "baseline-012",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        47.25860083510982
+      ],
+      "upload_mbps": [
+        5.558794746102398
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 7186641,
+      "origin_tx": 18844083,
+      "observed_rx_tx": 50685355,
+      "egress_ratio": 1.2392993901702536,
+      "gateway_upload_egress_ratio": [
+        1.6174869537353516
+      ],
+      "source_repeat_fraction": 0.07767979430691692,
+      "case_id": "baseline-013",
+      "gateway": "gateway-B",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        35.09287306835201
+      ],
+      "upload_mbps": [
+        1.7218940685516166
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 6386006,
+      "origin_tx": 19044570,
+      "observed_rx_tx": 49254119,
+      "egress_ratio": 1.210726882912603,
+      "gateway_upload_egress_ratio": [
+        1.4028382301330566
+      ],
+      "source_repeat_fraction": 0.08942058242523686,
+      "case_id": "baseline-014",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        29.36993134631838
+      ],
+      "upload_mbps": [
+        16.785698241370994
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4665847,
+      "origin_tx": 21157656,
+      "observed_rx_tx": 49274498,
+      "egress_ratio": 1.2294337844755956,
+      "gateway_upload_egress_ratio": [
+        1.0286309719085693
+      ],
+      "source_repeat_fraction": 0.18183160804674742,
+      "case_id": "baseline-015",
+      "gateway": "gateway-B",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        33.381281282850175
+      ],
+      "upload_mbps": [
+        1.8332020289584663
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 6275715,
+      "origin_tx": 19021701,
+      "observed_rx_tx": 49004384,
+      "egress_ratio": 1.204387254910129,
+      "gateway_upload_egress_ratio": [
+        1.4051063060760498
+      ],
+      "source_repeat_fraction": 0.08631265587520107,
+      "case_id": "baseline-016",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        21.49857238296986
+      ],
+      "upload_mbps": [
+        12.667215817415793
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 8003370,
+      "origin_tx": 19138625,
+      "observed_rx_tx": 52567983,
+      "egress_ratio": 1.2922060043932726,
+      "gateway_upload_egress_ratio": [
+        1.7699699401855469
+      ],
+      "source_repeat_fraction": 0.07766778385009579,
+      "case_id": "baseline-017",
+      "gateway": "gateway-B",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        20.540338636289196
+      ],
+      "upload_mbps": [
+        4.967668373887974
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 21184292,
+      "origin_tx": 20580358,
+      "observed_rx_tx": 78763883,
+      "egress_ratio": 1.988377475619736,
+      "gateway_upload_egress_ratio": [
+        4.833257436752319
+      ],
+      "source_repeat_fraction": 0.12289432497936487,
+      "case_id": "baseline-018",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        23.10151977081509
+      ],
+      "upload_mbps": [
+        9.314647984712828
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4494674,
+      "origin_tx": 18658390,
+      "observed_rx_tx": 44926316,
+      "egress_ratio": 1.1022965821378172,
+      "gateway_upload_egress_ratio": [
+        1.0100181102752686
+      ],
+      "source_repeat_fraction": 0.08925720190435603,
+      "case_id": "baseline-019",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        8.70619394325562
+      ],
+      "upload_mbps": [
+        12.306556093325094
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4830494,
+      "origin_tx": 19556336,
+      "observed_rx_tx": 46589685,
+      "egress_ratio": 1.1610350732920698,
+      "gateway_upload_egress_ratio": [
+        1.009037733078003
+      ],
+      "source_repeat_fraction": 0.11995641430169175,
+      "case_id": "baseline-020",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        16.920581848007913
+      ],
+      "upload_mbps": [
+        9.490426818273058
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4637744,
+      "origin_tx": 19420054,
+      "observed_rx_tx": 45767212,
+      "egress_ratio": 1.1453701552918445,
+      "gateway_upload_egress_ratio": [
+        1.0582449436187744
+      ],
+      "source_repeat_fraction": 0.12448493902307846,
+      "case_id": "baseline-021",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        13.980629885428694
+      ],
+      "upload_mbps": [
+        11.910288847016625
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4640470,
+      "origin_tx": 20074395,
+      "observed_rx_tx": 46775390,
+      "egress_ratio": 1.17665252501775,
+      "gateway_upload_egress_ratio": [
+        1.0088860988616943
+      ],
+      "source_repeat_fraction": 0.14244454996329942,
+      "case_id": "baseline-022",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        21.4108275230277
+      ],
+      "upload_mbps": [
+        6.033979857722619
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 18124769,
+      "origin_tx": 19233564,
+      "observed_rx_tx": 71316384,
+      "egress_ratio": 1.7785966807791154,
+      "gateway_upload_egress_ratio": [
+        4.165712594985962
+      ],
+      "source_repeat_fraction": 0.0791451699485119,
+      "case_id": "baseline-023",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        21.334526416976914
+      ],
+      "upload_mbps": [
+        7.760879882490856
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 9572668,
+      "origin_tx": 20900512,
+      "observed_rx_tx": 57456935,
+      "egress_ratio": 1.450800730342666,
+      "gateway_upload_egress_ratio": [
+        2.0622127056121826
+      ],
+      "source_repeat_fraction": 0.15797978659129427,
+      "case_id": "baseline-024",
+      "gateway": "gateway-B",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        31.061196438801442
+      ],
+      "upload_mbps": [
+        1.4321965118359947
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 6511565,
+      "origin_tx": 19611476,
+      "observed_rx_tx": 50157800,
+      "egress_ratio": 1.2436945196258287,
+      "gateway_upload_egress_ratio": [
+        1.420107126235962
+      ],
+      "source_repeat_fraction": 0.11385050554907171,
+      "case_id": "baseline-025",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        4.357729428130035
+      ],
+      "upload_mbps": [
+        3.9370760427642995
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 6513269,
+      "origin_tx": 20716809,
+      "observed_rx_tx": 51401756,
+      "egress_ratio": 1.296399556911611,
+      "gateway_upload_egress_ratio": [
+        1.4093613624572754
+      ],
+      "source_repeat_fraction": 0.1455123643351008,
+      "case_id": "baseline-026",
+      "gateway": "gateway-B",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        34.8408703220916
+      ],
+      "upload_mbps": [
+        1.9230886337877064
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 6061107,
+      "origin_tx": 19787912,
+      "observed_rx_tx": 49591914,
+      "egress_ratio": 1.2306485783184247,
+      "gateway_upload_egress_ratio": [
+        1.3427917957305908
+      ],
+      "source_repeat_fraction": 0.12295308482972085,
+      "case_id": "baseline-027",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        31.816294191157183
+      ],
+      "upload_mbps": [
+        6.686071584204407
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 6985120,
+      "origin_tx": 25989327,
+      "observed_rx_tx": 61362194,
+      "egress_ratio": 1.5698838057021136,
+      "gateway_upload_egress_ratio": [
+        1.5037195682525635
+      ],
+      "source_repeat_fraction": 0.33177545790973095,
+      "case_id": "baseline-028",
+      "gateway": "gateway-B",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        36.277018403918994
+      ],
+      "upload_mbps": [
+        1.8986490728230645
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 6063848,
+      "origin_tx": 20006212,
+      "observed_rx_tx": 49697509,
+      "egress_ratio": 1.241172141800663,
+      "gateway_upload_egress_ratio": [
+        1.3528125286102295
+      ],
+      "source_repeat_fraction": 0.13448574703336139,
+      "case_id": "baseline-029",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        41.9402959903069
+      ],
+      "upload_mbps": [
+        3.6734458932838425
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 6252627,
+      "origin_tx": 18878594,
+      "observed_rx_tx": 48877742,
+      "egress_ratio": 1.1964748602280086,
+      "gateway_upload_egress_ratio": [
+        1.3795125484466553
+      ],
+      "source_repeat_fraction": 0.08274644237364367,
+      "case_id": "baseline-030",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        28.804053813476436
+      ],
+      "upload_mbps": [
+        5.730555954520377
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 7294928,
+      "origin_tx": 20970153,
+      "observed_rx_tx": 53048344,
+      "egress_ratio": 1.345675120154661,
+      "gateway_upload_egress_ratio": [
+        1.5281851291656494
+      ],
+      "source_repeat_fraction": 0.1748769688830866,
+      "case_id": "baseline-031",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": false,
+      "download_mbps": [
+        43.07056104041123
+      ],
+      "upload_mbps": [],
+      "verified_payload": 16809984,
+      "gateway_tx": 4137698,
+      "origin_tx": 18707420,
+      "observed_rx_tx": 44660912,
+      "egress_ratio": null,
+      "gateway_upload_egress_ratio": [],
+      "source_repeat_fraction": 0.07821230581741533,
+      "case_id": "baseline-032",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "has_error": true
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        28.57738535118582
+      ],
+      "upload_mbps": [
+        8.067610361153193
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 7690848,
+      "origin_tx": 24786973,
+      "observed_rx_tx": 59238922,
+      "egress_ratio": 1.5462398878862782,
+      "gateway_upload_egress_ratio": [
+        1.6963469982147217
+      ],
+      "source_repeat_fraction": 0.2966737491877598,
+      "case_id": "baseline-033",
+      "gateway": "gateway-B",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        32.68682832684888
+      ],
+      "upload_mbps": [
+        17.175511561386415
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4892998,
+      "origin_tx": 19475928,
+      "observed_rx_tx": 46820865,
+      "egress_ratio": 1.1601826799325303,
+      "gateway_upload_egress_ratio": [
+        1.0466697216033936
+      ],
+      "source_repeat_fraction": 0.11228818781673883,
+      "case_id": "baseline-034",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        5.476501811385876
+      ],
+      "upload_mbps": [
+        5.304693209481138
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 6126335,
+      "origin_tx": 20308566,
+      "observed_rx_tx": 50383436,
+      "egress_ratio": 1.2585418941290694,
+      "gateway_upload_egress_ratio": [
+        1.321070671081543
+      ],
+      "source_repeat_fraction": 0.1328088803850331,
+      "case_id": "baseline-035",
+      "gateway": "gateway-B",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        28.40525324909179
+      ],
+      "upload_mbps": [
+        1.6850460757141248
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 6557085,
+      "origin_tx": 19583939,
+      "observed_rx_tx": 50090982,
+      "egress_ratio": 1.2445506741044146,
+      "gateway_upload_egress_ratio": [
+        1.4369149208068848
+      ],
+      "source_repeat_fraction": 0.11345646034647605,
+      "case_id": "baseline-036",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        17.837559183769685
+      ],
+      "upload_mbps": [
+        14.405271204550667
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 7878706,
+      "origin_tx": 25008517,
+      "observed_rx_tx": 60317842,
+      "egress_ratio": 1.5657311494022654,
+      "gateway_upload_egress_ratio": [
+        1.5889310836791992
+      ],
+      "source_repeat_fraction": 0.29857662085406916,
+      "case_id": "baseline-037",
+      "gateway": "gateway-B",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        20.139381391255874
+      ],
+      "upload_mbps": [
+        6.688549090093464
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 16477406,
+      "origin_tx": 19747473,
+      "observed_rx_tx": 68669942,
+      "egress_ratio": 1.7246339538497362,
+      "gateway_upload_egress_ratio": [
+        3.7563557624816895
+      ],
+      "source_repeat_fraction": 0.10088027980761623,
+      "case_id": "baseline-038",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        28.010932652159777
+      ],
+      "upload_mbps": [
+        10.764427559622634
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4466650,
+      "origin_tx": 17977539,
+      "observed_rx_tx": 44090082,
+      "egress_ratio": 1.0685476800632172,
+      "gateway_upload_egress_ratio": [
+        1.0331475734710693
+      ],
+      "source_repeat_fraction": 0.05620106761615674,
+      "case_id": "baseline-039",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": false,
+      "download_mbps": [
+        23.19645031504989
+      ],
+      "upload_mbps": [],
+      "verified_payload": 16809984,
+      "gateway_tx": 3587236,
+      "origin_tx": 19270691,
+      "observed_rx_tx": 43752326,
+      "egress_ratio": null,
+      "gateway_upload_egress_ratio": [],
+      "source_repeat_fraction": null,
+      "case_id": "baseline-040",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": true
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        6.146141605869421
+      ],
+      "upload_mbps": [
+        13.774351712579419
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 5016774,
+      "origin_tx": 20821011,
+      "observed_rx_tx": 48675802,
+      "egress_ratio": 1.230113737668231,
+      "gateway_upload_egress_ratio": [
+        1.0484483242034912
+      ],
+      "source_repeat_fraction": 0.15659028441141762,
+      "case_id": "baseline-041",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        29.784059078039476
+      ],
+      "upload_mbps": [
+        13.06214888822438
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 5328683,
+      "origin_tx": 19388744,
+      "observed_rx_tx": 47277255,
+      "egress_ratio": 1.176774499536692,
+      "gateway_upload_egress_ratio": [
+        1.1827876567840576
+      ],
+      "source_repeat_fraction": 0.10814589792006767,
+      "case_id": "baseline-042",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        40.67350279991249
+      ],
+      "upload_mbps": [
+        15.704199965901553
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 10271639,
+      "origin_tx": 18536935,
+      "observed_rx_tx": 56129175,
+      "egress_ratio": 1.3715503337469452,
+      "gateway_upload_egress_ratio": [
+        2.3222439289093018
+      ],
+      "source_repeat_fraction": 0.05724407419143334,
+      "case_id": "baseline-043",
+      "gateway": "gateway-B",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        37.18861358369748
+      ],
+      "upload_mbps": [
+        9.680671551811493
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 18334946,
+      "origin_tx": 19392798,
+      "observed_rx_tx": 71739895,
+      "egress_ratio": 1.7961840067029806,
+      "gateway_upload_egress_ratio": [
+        4.190176248550415
+      ],
+      "source_repeat_fraction": 0.09540824896215733,
+      "case_id": "baseline-044",
+      "gateway": "gateway-C",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        7.465983950615663
+      ],
+      "upload_mbps": [
+        9.977998475493665
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4802410,
+      "origin_tx": 19758355,
+      "observed_rx_tx": 46789746,
+      "egress_ratio": 1.1693159624225167,
+      "gateway_upload_egress_ratio": [
+        1.0096509456634521
+      ],
+      "source_repeat_fraction": 0.12847668176686552,
+      "case_id": "baseline-045",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        7.312073060734451
+      ],
+      "upload_mbps": [
+        14.963314364556348
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4824366,
+      "origin_tx": 18543500,
+      "observed_rx_tx": 45501780,
+      "egress_ratio": 1.1125231124336072,
+      "gateway_upload_egress_ratio": [
+        1.0269553661346436
+      ],
+      "source_repeat_fraction": 0.07275936104110067,
+      "case_id": "baseline-046",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        24.540456248072672
+      ],
+      "upload_mbps": [
+        13.839026187459616
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4564902,
+      "origin_tx": 19003786,
+      "observed_rx_tx": 45461096,
+      "egress_ratio": 1.122084067485521,
+      "gateway_upload_egress_ratio": [
+        1.0189321041107178
+      ],
+      "source_repeat_fraction": 0.10361844922935615,
+      "case_id": "baseline-047",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        14.731461762785395
+      ],
+      "upload_mbps": [
+        13.365511603706654
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 5013086,
+      "origin_tx": 19897187,
+      "observed_rx_tx": 46903673,
+      "egress_ratio": 1.1859557243922425,
+      "gateway_upload_egress_ratio": [
+        1.1168038845062256
+      ],
+      "source_repeat_fraction": 0.13508215946112703,
+      "case_id": "baseline-048",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        43.428893763955955
+      ],
+      "upload_mbps": [
+        7.25544780489993
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 18690284,
+      "origin_tx": 18792984,
+      "observed_rx_tx": 71805365,
+      "egress_ratio": 1.7845447239188652,
+      "gateway_upload_egress_ratio": [
+        4.309261798858643
+      ],
+      "source_repeat_fraction": 0.06485587481400631,
+      "case_id": "baseline-049",
+      "gateway": "gateway-C",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        38.39209349723062
+      ],
+      "upload_mbps": [
+        10.375617971113698
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 9377652,
+      "origin_tx": 18896518,
+      "observed_rx_tx": 54718538,
+      "egress_ratio": 1.3461078392813843,
+      "gateway_upload_egress_ratio": [
+        2.07491397857666
+      ],
+      "source_repeat_fraction": 0.07576476824849797,
+      "case_id": "baseline-050",
+      "gateway": "gateway-B",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        36.71170652190612
+      ],
+      "upload_mbps": [
+        16.21091869643406
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4542429,
+      "origin_tx": 18307502,
+      "observed_rx_tx": 44973947,
+      "egress_ratio": 1.08786469226643,
+      "gateway_upload_egress_ratio": [
+        1.009634256362915
+      ],
+      "source_repeat_fraction": 0.05599904182271004,
+      "case_id": "baseline-051",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        24.035061657948003
+      ],
+      "upload_mbps": [
+        11.343769429252102
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 5184577,
+      "origin_tx": 21719646,
+      "observed_rx_tx": 50192412,
+      "egress_ratio": 1.280885893027966,
+      "gateway_upload_egress_ratio": [
+        1.060086727142334
+      ],
+      "source_repeat_fraction": 0.20391249503202133,
+      "case_id": "baseline-052",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        8.670938548764374
+      ],
+      "upload_mbps": [
+        11.124778255695022
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4640476,
+      "origin_tx": 19351236,
+      "observed_rx_tx": 46036033,
+      "egress_ratio": 1.142223860186922,
+      "gateway_upload_egress_ratio": [
+        1.0129168033599854
+      ],
+      "source_repeat_fraction": 0.11348900705060536,
+      "case_id": "baseline-053",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        27.298895917567847
+      ],
+      "upload_mbps": [
+        17.813432062788948
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4482650,
+      "origin_tx": 19024071,
+      "observed_rx_tx": 45322950,
+      "egress_ratio": 1.1191338742711225,
+      "gateway_upload_egress_ratio": [
+        1.0141189098358154
+      ],
+      "source_repeat_fraction": 0.10345345662142949,
+      "case_id": "baseline-054",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        10.515483953350959
+      ],
+      "upload_mbps": [
+        17.955051554698354
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4743882,
+      "origin_tx": 20018281,
+      "observed_rx_tx": 46925462,
+      "egress_ratio": 1.1789043403170967,
+      "gateway_upload_egress_ratio": [
+        1.0093553066253662
+      ],
+      "source_repeat_fraction": 0.1399776023830354,
+      "case_id": "baseline-055",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        11.914565658383667
+      ],
+      "upload_mbps": [
+        16.71971322806156
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4730504,
+      "origin_tx": 19134798,
+      "observed_rx_tx": 45965316,
+      "egress_ratio": 1.136205593621942,
+      "gateway_upload_egress_ratio": [
+        1.009573221206665
+      ],
+      "source_repeat_fraction": 0.10065441715835051,
+      "case_id": "baseline-056",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        22.17502476559126
+      ],
+      "upload_mbps": [
+        16.49355071155115
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4456308,
+      "origin_tx": 18936947,
+      "observed_rx_tx": 45132170,
+      "egress_ratio": 1.1137318599205013,
+      "gateway_upload_egress_ratio": [
+        1.0168230533599854
+      ],
+      "source_repeat_fraction": 0.1022493577750817,
+      "case_id": "baseline-057",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        24.210073008109777
+      ],
+      "upload_mbps": [
+        14.940321317850849
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4453558,
+      "origin_tx": 18210516,
+      "observed_rx_tx": 44408152,
+      "egress_ratio": 1.0790162074237157,
+      "gateway_upload_egress_ratio": [
+        1.0086324214935303
+      ],
+      "source_repeat_fraction": 0.06643292398442395,
+      "case_id": "baseline-058",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        28.038257958668193
+      ],
+      "upload_mbps": [
+        13.465263111292899
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4572210,
+      "origin_tx": 18962214,
+      "observed_rx_tx": 45440572,
+      "egress_ratio": 1.1204527892196996,
+      "gateway_upload_egress_ratio": [
+        1.015441656112671
+      ],
+      "source_repeat_fraction": 0.09945357396534736,
+      "case_id": "baseline-059",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        26.963287505144887
+      ],
+      "upload_mbps": [
+        20.496792532575476
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4578634,
+      "origin_tx": 19610122,
+      "observed_rx_tx": 46116704,
+      "egress_ratio": 1.1516049480520427,
+      "gateway_upload_egress_ratio": [
+        1.013976812362671
+      ],
+      "source_repeat_fraction": 0.1297293415649876,
+      "case_id": "baseline-060",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        23.529519251564363
+      ],
+      "upload_mbps": [
+        16.07056913022013
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4529108,
+      "origin_tx": 19845648,
+      "observed_rx_tx": 46304104,
+      "egress_ratio": 1.1604602409963214,
+      "gateway_upload_egress_ratio": [
+        1.0131657123565674
+      ],
+      "source_repeat_fraction": 0.13718538364644514,
+      "case_id": "baseline-061",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        7.924420299887796
+      ],
+      "upload_mbps": [
+        18.73023882078708
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4966946,
+      "origin_tx": 18989245,
+      "observed_rx_tx": 46210202,
+      "egress_ratio": 1.140532737280074,
+      "gateway_upload_egress_ratio": [
+        1.0437161922454834
+      ],
+      "source_repeat_fraction": 0.09189687655114548,
+      "case_id": "baseline-062",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        28.24241112869403
+      ],
+      "upload_mbps": [
+        18.578305260710025
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4899856,
+      "origin_tx": 18208931,
+      "observed_rx_tx": 44800294,
+      "egress_ratio": 1.100188593935162,
+      "gateway_upload_egress_ratio": [
+        1.1332123279571533
+      ],
+      "source_repeat_fraction": 0.06781151323322523,
+      "case_id": "baseline-063",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        28.88731113462545
+      ],
+      "upload_mbps": [
+        6.620344334498331
+      ],
+      "verified_payload": 21004387,
+      "gateway_tx": 4875542,
+      "origin_tx": 18203804,
+      "observed_rx_tx": 44743076,
+      "egress_ratio": 1.098786934367568,
+      "gateway_upload_egress_ratio": [
+        1.1224181652069092
+      ],
+      "source_repeat_fraction": 0.06752003903424772,
+      "case_id": "baseline-064",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        12.06569762414564,
+        31.013923197665903,
+        31.970349293886397
+      ],
+      "upload_mbps": [
+        24.246603553765055,
+        25.889737273887754,
+        25.35036683106203
+      ],
+      "verified_payload": 226525481,
+      "gateway_tx": 30373230,
+      "origin_tx": 232735973,
+      "observed_rx_tx": 499537684,
+      "egress_ratio": 1.161499367923205,
+      "gateway_upload_egress_ratio": [
+        1.113287329673767,
+        1.0978022813796997,
+        1.0062671899795532
+      ],
+      "source_repeat_fraction": 0.12146264396336671,
+      "case_id": "baseline-065",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        28.407655035963398,
+        40.519306654756406,
+        32.69391148188002
+      ],
+      "upload_mbps": [
+        25.10223602934621,
+        23.332815383302542,
+        21.91603186951757
+      ],
+      "verified_payload": 226525481,
+      "gateway_tx": 30327702,
+      "origin_tx": 225367608,
+      "observed_rx_tx": 490540589,
+      "egress_ratio": 1.1287706304439984,
+      "gateway_upload_egress_ratio": [
+        1.1019703149795532,
+        1.0975452661514282,
+        1.139504313468933
+      ],
+      "source_repeat_fraction": 0.09628175077838924,
+      "case_id": "baseline-066",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        51.85675139788494,
+        37.75123576656742,
+        16.499383883822443
+      ],
+      "upload_mbps": [
+        31.08108031496917,
+        18.351280685597658,
+        14.768810298445553
+      ],
+      "verified_payload": 226525481,
+      "gateway_tx": 30135376,
+      "origin_tx": 230581820,
+      "observed_rx_tx": 497278198,
+      "egress_ratio": 1.1509398185540107,
+      "gateway_upload_egress_ratio": [
+        1.010011076927185,
+        1.0605778694152832,
+        1.1089859008789062
+      ],
+      "source_repeat_fraction": 0.11329181225113445,
+      "case_id": "baseline-067",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        54.08198520077615,
+        16.470077655638427,
+        55.29002408760247
+      ],
+      "upload_mbps": [
+        18.336368507671423,
+        18.041954949137523,
+        33.63424475094346
+      ],
+      "verified_payload": 226525481,
+      "gateway_tx": 29166427,
+      "origin_tx": 227109571,
+      "observed_rx_tx": 491977173,
+      "egress_ratio": 1.131334085987439,
+      "gateway_upload_egress_ratio": [
+        1.018923044204712,
+        1.0785444974899292,
+        1.0097039937973022
+      ],
+      "source_repeat_fraction": 0.10165597775772228,
+      "case_id": "baseline-068",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        23.316125852480862,
+        13.781843846602802,
+        17.194710057100153
+      ],
+      "upload_mbps": [
+        22.747856671862042,
+        25.03155598843872,
+        27.062957859767803
+      ],
+      "verified_payload": 226525481,
+      "gateway_tx": 40389238,
+      "origin_tx": 267204398,
+      "observed_rx_tx": 569068479,
+      "egress_ratio": 1.3578765384014349,
+      "gateway_upload_egress_ratio": [
+        1.159672737121582,
+        1.0865260362625122,
+        1.0847347974777222
+      ],
+      "source_repeat_fraction": null,
+      "case_id": "baseline-069",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        51.394447584197586,
+        72.97343153856013,
+        69.35956309554558
+      ],
+      "upload_mbps": [
+        23.49000486457939,
+        13.438356280003516,
+        21.720588795972365
+      ],
+      "verified_payload": 226525481,
+      "gateway_tx": 40791685,
+      "origin_tx": 229093694,
+      "observed_rx_tx": 517580012,
+      "egress_ratio": 1.19141289451671,
+      "gateway_upload_egress_ratio": [
+        1.1311800479888916,
+        1.1701234579086304,
+        1.1239322423934937
+      ],
+      "source_repeat_fraction": null,
+      "case_id": "baseline-070",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        71.68417222379063,
+        71.89338228705935,
+        70.59353798638371
+      ],
+      "upload_mbps": [
+        18.71260771823313,
+        24.107551638439524,
+        25.19140933980046
+      ],
+      "verified_payload": 226525481,
+      "gateway_tx": 36971862,
+      "origin_tx": 222799178,
+      "observed_rx_tx": 505707079,
+      "egress_ratio": 1.1467629992583483,
+      "gateway_upload_egress_ratio": [
+        1.0580369234085083,
+        1.106259822845459,
+        1.0134040117263794
+      ],
+      "source_repeat_fraction": null,
+      "case_id": "baseline-071",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        12.60466326650509,
+        11.31571710960679,
+        11.773938064556265
+      ],
+      "upload_mbps": [
+        24.45656345568554,
+        28.31633404126684,
+        28.699566887030265
+      ],
+      "verified_payload": 226525481,
+      "gateway_tx": 37828782,
+      "origin_tx": 263874468,
+      "observed_rx_tx": 564549512,
+      "egress_ratio": 1.3318733445267465,
+      "gateway_upload_egress_ratio": [
+        1.036306619644165,
+        1.110938310623169,
+        1.0061273574829102
+      ],
+      "source_repeat_fraction": null,
+      "case_id": "baseline-072",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        28.76220611782484,
+        15.52834544724466,
+        58.81575708575878
+      ],
+      "upload_mbps": [
+        28.685879749356502,
+        22.007974658674488,
+        24.20010624568374
+      ],
+      "verified_payload": 226525481,
+      "gateway_tx": 30545414,
+      "origin_tx": 228946507,
+      "observed_rx_tx": 495955928,
+      "egress_ratio": 1.145530824410875,
+      "gateway_upload_egress_ratio": [
+        1.1437321901321411,
+        1.0551294088363647,
+        1.0099574327468872
+      ],
+      "source_repeat_fraction": 0.10632665441495048,
+      "case_id": "baseline-073",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        42.21576839193242,
+        29.115050321569782,
+        20.623955564662847
+      ],
+      "upload_mbps": [
+        33.506096089271914,
+        29.932305738260943,
+        26.351881574547676
+      ],
+      "verified_payload": 226525481,
+      "gateway_tx": 29973211,
+      "origin_tx": 223694700,
+      "observed_rx_tx": 490229669,
+      "egress_ratio": 1.1198206483446338,
+      "gateway_upload_egress_ratio": [
+        1.057174563407898,
+        1.0744755268096924,
+        1.0095688104629517
+      ],
+      "source_repeat_fraction": 0.08495243949621548,
+      "case_id": "baseline-074",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        41.35947615434573,
+        30.780914083196997,
+        24.952026134935682
+      ],
+      "upload_mbps": [
+        23.701313861470794,
+        23.835383281414405,
+        30.59683708604132
+      ],
+      "verified_payload": 226525481,
+      "gateway_tx": 30062653,
+      "origin_tx": 226726419,
+      "observed_rx_tx": 491993795,
+      "egress_ratio": 1.1335990585535938,
+      "gateway_upload_egress_ratio": [
+        1.1507023572921753,
+        1.1108771562576294,
+        1.0060235261917114
+      ],
+      "source_repeat_fraction": 0.09982950551313834,
+      "case_id": "baseline-075",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "has_error": false
+    },
+    {
+      "complete": true,
+      "download_mbps": [
+        40.07859847498659,
+        48.033801843315736,
+        24.715623833974142
+      ],
+      "upload_mbps": [
+        27.412407810116434,
+        17.386214861830275,
+        26.917688629043983
+      ],
+      "verified_payload": 226525481,
+      "gateway_tx": 29232884,
+      "origin_tx": 215427848,
+      "observed_rx_tx": 478849704,
+      "egress_ratio": 1.0800583268599262,
+      "gateway_upload_egress_ratio": [
+        1.0368572473526,
+        1.0631946325302124,
+        1.1443852186203003
+      ],
+      "source_repeat_fraction": 0.05565533362419808,
+      "case_id": "baseline-076",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "has_error": false
+    }
+  ],
+  "phases": [
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 7101,
+      "gateway_tx_per_body": 0.216705322265625,
+      "mbps": 0.3625061893822176,
+      "phase_id": "phase-001",
+      "case_id": "baseline-001",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "smoke",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 2097152,
+      "gateway_tx": 82453,
+      "gateway_tx_per_body": 0.039316654205322266,
+      "mbps": 8.352635882624778,
+      "phase_id": "phase-002",
+      "case_id": "baseline-001",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "smoke",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 524288,
+      "gateway_tx": 706919,
+      "gateway_tx_per_body": 1.3483409881591797,
+      "mbps": 0.5191691194190372,
+      "phase_id": "phase-003",
+      "case_id": "baseline-001",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "smoke",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 7746,
+      "gateway_tx_per_body": 0.23638916015625,
+      "mbps": 0.29655566519971677,
+      "phase_id": "phase-004",
+      "case_id": "baseline-002",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "smoke",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 2097152,
+      "gateway_tx": 50572,
+      "gateway_tx_per_body": 0.024114608764648438,
+      "mbps": 9.427741984931433,
+      "phase_id": "phase-005",
+      "case_id": "baseline-002",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "smoke",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 524288,
+      "gateway_tx": 830856,
+      "gateway_tx_per_body": 1.5847320556640625,
+      "mbps": 2.3827307307814327,
+      "phase_id": "phase-006",
+      "case_id": "baseline-002",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "smoke",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3302,
+      "gateway_tx_per_body": 0.10076904296875,
+      "mbps": 0.5850599001091378,
+      "phase_id": "phase-007",
+      "case_id": "baseline-004",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "smoke",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 2097152,
+      "gateway_tx": 49242,
+      "gateway_tx_per_body": 0.02348041534423828,
+      "mbps": 9.206403253960724,
+      "phase_id": "phase-008",
+      "case_id": "baseline-004",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "smoke",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 524288,
+      "gateway_tx": 544367,
+      "gateway_tx_per_body": 1.0382976531982422,
+      "mbps": 3.9178621026260667,
+      "phase_id": "phase-009",
+      "case_id": "baseline-004",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "smoke",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 4649,
+      "gateway_tx_per_body": 0.141876220703125,
+      "mbps": 0.43633479250205215,
+      "phase_id": "phase-010",
+      "case_id": "baseline-006",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "smoke",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 2097152,
+      "gateway_tx": 86018,
+      "gateway_tx_per_body": 0.041016578674316406,
+      "mbps": 7.284787251817577,
+      "phase_id": "phase-011",
+      "case_id": "baseline-006",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "smoke",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 524288,
+      "gateway_tx": 829206,
+      "gateway_tx_per_body": 1.5815849304199219,
+      "mbps": 1.062905478092892,
+      "phase_id": "phase-012",
+      "case_id": "baseline-006",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "smoke",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3621,
+      "gateway_tx_per_body": 0.110504150390625,
+      "mbps": 0.4802597327100646,
+      "phase_id": "phase-013",
+      "case_id": "baseline-008",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "smoke",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 2097152,
+      "gateway_tx": 60961,
+      "gateway_tx_per_body": 0.029068470001220703,
+      "mbps": 11.967779067425825,
+      "phase_id": "phase-014",
+      "case_id": "baseline-008",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "smoke",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 524288,
+      "gateway_tx": 542451,
+      "gateway_tx_per_body": 1.0346431732177734,
+      "mbps": 7.901048681407643,
+      "phase_id": "phase-015",
+      "case_id": "baseline-008",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "smoke",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3542,
+      "gateway_tx_per_body": 0.10809326171875,
+      "mbps": 0.19499956166956064,
+      "phase_id": "phase-016",
+      "case_id": "baseline-009",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "smoke",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 2097152,
+      "gateway_tx": 49588,
+      "gateway_tx_per_body": 0.023645401000976562,
+      "mbps": 7.497782161843377,
+      "phase_id": "phase-017",
+      "case_id": "baseline-009",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "smoke",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 524288,
+      "gateway_tx": 537427,
+      "gateway_tx_per_body": 1.0250606536865234,
+      "mbps": 3.4929381236480777,
+      "phase_id": "phase-018",
+      "case_id": "baseline-009",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "smoke",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3286,
+      "gateway_tx_per_body": 0.10028076171875,
+      "mbps": 0.309399168324311,
+      "phase_id": "phase-019",
+      "case_id": "baseline-010",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "smoke",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 2097152,
+      "gateway_tx": 88544,
+      "gateway_tx_per_body": 0.0422210693359375,
+      "mbps": 3.496020752878125,
+      "phase_id": "phase-020",
+      "case_id": "baseline-010",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "smoke",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 524288,
+      "gateway_tx": 537543,
+      "gateway_tx_per_body": 1.0252819061279297,
+      "mbps": 1.5205464944358016,
+      "phase_id": "phase-021",
+      "case_id": "baseline-010",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "smoke",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 8044,
+      "gateway_tx_per_body": 0.2454833984375,
+      "mbps": 0.32325552207361796,
+      "phase_id": "phase-022",
+      "case_id": "baseline-011",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 370983,
+      "gateway_tx_per_body": 0.02211230993270874,
+      "mbps": 39.43281657003155,
+      "phase_id": "phase-023",
+      "case_id": "baseline-011",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 6597938,
+      "gateway_tx_per_body": 1.573071002960205,
+      "mbps": 9.542166652715062,
+      "phase_id": "phase-024",
+      "case_id": "baseline-011",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 7285,
+      "gateway_tx_per_body": 0.222320556640625,
+      "mbps": 0.2807380220321565,
+      "phase_id": "phase-025",
+      "case_id": "baseline-012",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 345547,
+      "gateway_tx_per_body": 0.020596206188201904,
+      "mbps": 43.38022171615693,
+      "phase_id": "phase-026",
+      "case_id": "baseline-012",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 5800550,
+      "gateway_tx_per_body": 1.3829588890075684,
+      "mbps": 1.8656742947850924,
+      "phase_id": "phase-027",
+      "case_id": "baseline-012",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 4901,
+      "gateway_tx_per_body": 0.149566650390625,
+      "mbps": 0.47725048868238984,
+      "phase_id": "phase-028",
+      "case_id": "baseline-013",
+      "gateway": "gateway-B",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 392530,
+      "gateway_tx_per_body": 0.023396611213684082,
+      "mbps": 47.25860083510982,
+      "phase_id": "phase-029",
+      "case_id": "baseline-013",
+      "gateway": "gateway-B",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 6784232,
+      "gateway_tx_per_body": 1.6174869537353516,
+      "mbps": 5.558794746102398,
+      "phase_id": "phase-030",
+      "case_id": "baseline-013",
+      "gateway": "gateway-B",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5100,
+      "gateway_tx_per_body": 0.1556396484375,
+      "mbps": 0.45621132887624727,
+      "phase_id": "phase-031",
+      "case_id": "baseline-014",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 491837,
+      "gateway_tx_per_body": 0.0293157696723938,
+      "mbps": 35.09287306835201,
+      "phase_id": "phase-032",
+      "case_id": "baseline-014",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 5883930,
+      "gateway_tx_per_body": 1.4028382301330566,
+      "mbps": 1.7218940685516166,
+      "phase_id": "phase-033",
+      "case_id": "baseline-014",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 4975,
+      "gateway_tx_per_body": 0.151824951171875,
+      "mbps": 0.4500770168695474,
+      "phase_id": "phase-034",
+      "case_id": "baseline-015",
+      "gateway": "gateway-B",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 340598,
+      "gateway_tx_per_body": 0.020301222801208496,
+      "mbps": 29.36993134631838,
+      "phase_id": "phase-035",
+      "case_id": "baseline-015",
+      "gateway": "gateway-B",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4314391,
+      "gateway_tx_per_body": 1.0286309719085693,
+      "mbps": 16.785698241370994,
+      "phase_id": "phase-036",
+      "case_id": "baseline-015",
+      "gateway": "gateway-B",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3624,
+      "gateway_tx_per_body": 0.110595703125,
+      "mbps": 0.41221601233719024,
+      "phase_id": "phase-037",
+      "case_id": "baseline-016",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 372534,
+      "gateway_tx_per_body": 0.02220475673675537,
+      "mbps": 33.381281282850175,
+      "phase_id": "phase-038",
+      "case_id": "baseline-016",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 5893443,
+      "gateway_tx_per_body": 1.4051063060760498,
+      "mbps": 1.8332020289584663,
+      "phase_id": "phase-039",
+      "case_id": "baseline-016",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5144,
+      "gateway_tx_per_body": 0.156982421875,
+      "mbps": 0.5264041478265935,
+      "phase_id": "phase-040",
+      "case_id": "baseline-017",
+      "gateway": "gateway-B",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 568947,
+      "gateway_tx_per_body": 0.03391188383102417,
+      "mbps": 21.49857238296986,
+      "phase_id": "phase-041",
+      "case_id": "baseline-017",
+      "gateway": "gateway-B",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 7423792,
+      "gateway_tx_per_body": 1.7699699401855469,
+      "mbps": 12.667215817415793,
+      "phase_id": "phase-042",
+      "case_id": "baseline-017",
+      "gateway": "gateway-B",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 4952,
+      "gateway_tx_per_body": 0.151123046875,
+      "mbps": 0.20141771907246478,
+      "phase_id": "phase-043",
+      "case_id": "baseline-018",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 902391,
+      "gateway_tx_per_body": 0.05378669500350952,
+      "mbps": 20.540338636289196,
+      "phase_id": "phase-044",
+      "case_id": "baseline-018",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 20272151,
+      "gateway_tx_per_body": 4.833257436752319,
+      "mbps": 4.967668373887974,
+      "phase_id": "phase-045",
+      "case_id": "baseline-018",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3330,
+      "gateway_tx_per_body": 0.10162353515625,
+      "mbps": 0.32152688769831034,
+      "phase_id": "phase-046",
+      "case_id": "baseline-019",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 255021,
+      "gateway_tx_per_body": 0.015200436115264893,
+      "mbps": 23.10151977081509,
+      "phase_id": "phase-047",
+      "case_id": "baseline-019",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4236323,
+      "gateway_tx_per_body": 1.0100181102752686,
+      "mbps": 9.314647984712828,
+      "phase_id": "phase-048",
+      "case_id": "baseline-019",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3706,
+      "gateway_tx_per_body": 0.11309814453125,
+      "mbps": 0.2529513207523427,
+      "phase_id": "phase-049",
+      "case_id": "baseline-020",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 594577,
+      "gateway_tx_per_body": 0.03543955087661743,
+      "mbps": 8.70619394325562,
+      "phase_id": "phase-050",
+      "case_id": "baseline-020",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4232211,
+      "gateway_tx_per_body": 1.009037733078003,
+      "mbps": 12.306556093325094,
+      "phase_id": "phase-051",
+      "case_id": "baseline-020",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3070,
+      "gateway_tx_per_body": 0.09368896484375,
+      "mbps": 0.37161105325253646,
+      "phase_id": "phase-052",
+      "case_id": "baseline-021",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 196021,
+      "gateway_tx_per_body": 0.011683762073516846,
+      "mbps": 16.920581848007913,
+      "phase_id": "phase-053",
+      "case_id": "baseline-021",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4438601,
+      "gateway_tx_per_body": 1.0582449436187744,
+      "mbps": 9.490426818273058,
+      "phase_id": "phase-054",
+      "case_id": "baseline-021",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3542,
+      "gateway_tx_per_body": 0.10809326171875,
+      "mbps": 0.33205387970124695,
+      "phase_id": "phase-055",
+      "case_id": "baseline-022",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 405353,
+      "gateway_tx_per_body": 0.024160921573638916,
+      "mbps": 13.980629885428694,
+      "phase_id": "phase-056",
+      "case_id": "baseline-022",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4231575,
+      "gateway_tx_per_body": 1.0088860988616943,
+      "mbps": 11.910288847016625,
+      "phase_id": "phase-057",
+      "case_id": "baseline-022",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 4843,
+      "gateway_tx_per_body": 0.147796630859375,
+      "mbps": 0.5056062319775618,
+      "phase_id": "phase-058",
+      "case_id": "baseline-023",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 641296,
+      "gateway_tx_per_body": 0.038224220275878906,
+      "mbps": 21.4108275230277,
+      "phase_id": "phase-059",
+      "case_id": "baseline-023",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 17472265,
+      "gateway_tx_per_body": 4.165712594985962,
+      "mbps": 6.033979857722619,
+      "phase_id": "phase-060",
+      "case_id": "baseline-023",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5043,
+      "gateway_tx_per_body": 0.153900146484375,
+      "mbps": 0.32524169876777503,
+      "phase_id": "phase-061",
+      "case_id": "baseline-024",
+      "gateway": "gateway-B",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 912837,
+      "gateway_tx_per_body": 0.05440932512283325,
+      "mbps": 21.334526416976914,
+      "phase_id": "phase-062",
+      "case_id": "baseline-024",
+      "gateway": "gateway-B",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 8649547,
+      "gateway_tx_per_body": 2.0622127056121826,
+      "mbps": 7.760879882490856,
+      "phase_id": "phase-063",
+      "case_id": "baseline-024",
+      "gateway": "gateway-B",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3312,
+      "gateway_tx_per_body": 0.10107421875,
+      "mbps": 0.5931882374523085,
+      "phase_id": "phase-064",
+      "case_id": "baseline-025",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 546187,
+      "gateway_tx_per_body": 0.03255528211593628,
+      "mbps": 31.061196438801442,
+      "phase_id": "phase-065",
+      "case_id": "baseline-025",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 5956361,
+      "gateway_tx_per_body": 1.420107126235962,
+      "mbps": 1.4321965118359947,
+      "phase_id": "phase-066",
+      "case_id": "baseline-025",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 4936,
+      "gateway_tx_per_body": 0.150634765625,
+      "mbps": 0.3232314308650851,
+      "phase_id": "phase-067",
+      "case_id": "baseline-026",
+      "gateway": "gateway-B",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 591076,
+      "gateway_tx_per_body": 0.03523087501525879,
+      "mbps": 4.357729428130035,
+      "phase_id": "phase-068",
+      "case_id": "baseline-026",
+      "gateway": "gateway-B",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 5911290,
+      "gateway_tx_per_body": 1.4093613624572754,
+      "mbps": 3.9370760427642995,
+      "phase_id": "phase-069",
+      "case_id": "baseline-026",
+      "gateway": "gateway-B",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5358,
+      "gateway_tx_per_body": 0.16351318359375,
+      "mbps": 0.4572305533296658,
+      "phase_id": "phase-070",
+      "case_id": "baseline-027",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 414426,
+      "gateway_tx_per_body": 0.024701714515686035,
+      "mbps": 34.8408703220916,
+      "phase_id": "phase-071",
+      "case_id": "baseline-027",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 5632077,
+      "gateway_tx_per_body": 1.3427917957305908,
+      "mbps": 1.9230886337877064,
+      "phase_id": "phase-072",
+      "case_id": "baseline-027",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 4985,
+      "gateway_tx_per_body": 0.152130126953125,
+      "mbps": 0.44480558428762607,
+      "phase_id": "phase-073",
+      "case_id": "baseline-028",
+      "gateway": "gateway-B",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 667794,
+      "gateway_tx_per_body": 0.03980362415313721,
+      "mbps": 31.816294191157183,
+      "phase_id": "phase-074",
+      "case_id": "baseline-028",
+      "gateway": "gateway-B",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 6307057,
+      "gateway_tx_per_body": 1.5037195682525635,
+      "mbps": 6.686071584204407,
+      "phase_id": "phase-075",
+      "case_id": "baseline-028",
+      "gateway": "gateway-B",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 8218,
+      "gateway_tx_per_body": 0.25079345703125,
+      "mbps": 0.24518794823706874,
+      "phase_id": "phase-076",
+      "case_id": "baseline-029",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 381523,
+      "gateway_tx_per_body": 0.022740542888641357,
+      "mbps": 36.277018403918994,
+      "phase_id": "phase-077",
+      "case_id": "baseline-029",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 5674107,
+      "gateway_tx_per_body": 1.3528125286102295,
+      "mbps": 1.8986490728230645,
+      "phase_id": "phase-078",
+      "case_id": "baseline-029",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 7458,
+      "gateway_tx_per_body": 0.22760009765625,
+      "mbps": 0.4054131859033046,
+      "phase_id": "phase-079",
+      "case_id": "baseline-030",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 459074,
+      "gateway_tx_per_body": 0.027362942695617676,
+      "mbps": 41.9402959903069,
+      "phase_id": "phase-080",
+      "case_id": "baseline-030",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 5786095,
+      "gateway_tx_per_body": 1.3795125484466553,
+      "mbps": 3.6734458932838425,
+      "phase_id": "phase-081",
+      "case_id": "baseline-030",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 6456,
+      "gateway_tx_per_body": 0.197021484375,
+      "mbps": 0.374242794475746,
+      "phase_id": "phase-082",
+      "case_id": "baseline-031",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 878799,
+      "gateway_tx_per_body": 0.052380502223968506,
+      "mbps": 28.804053813476436,
+      "phase_id": "phase-083",
+      "case_id": "baseline-031",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 6409673,
+      "gateway_tx_per_body": 1.5281851291656494,
+      "mbps": 5.730555954520377,
+      "phase_id": "phase-084",
+      "case_id": "baseline-031",
+      "gateway": "gateway-B",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 6128,
+      "gateway_tx_per_body": 0.18701171875,
+      "mbps": 0.2671482999609833,
+      "phase_id": "phase-085",
+      "case_id": "baseline-032",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 461160,
+      "gateway_tx_per_body": 0.02748727798461914,
+      "mbps": 43.07056104041123,
+      "phase_id": "phase-086",
+      "case_id": "baseline-032",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": false,
+      "payload_bytes": 4063232,
+      "gateway_tx": 3670410,
+      "gateway_tx_per_body": null,
+      "mbps": null,
+      "phase_id": "phase-087",
+      "case_id": "baseline-032",
+      "gateway": "gateway-C",
+      "candidate": "mihomo-auto",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5090,
+      "gateway_tx_per_body": 0.15533447265625,
+      "mbps": 0.5022099111751613,
+      "phase_id": "phase-088",
+      "case_id": "baseline-033",
+      "gateway": "gateway-B",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 564839,
+      "gateway_tx_per_body": 0.033667027950286865,
+      "mbps": 28.57738535118582,
+      "phase_id": "phase-089",
+      "case_id": "baseline-033",
+      "gateway": "gateway-B",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 7114995,
+      "gateway_tx_per_body": 1.6963469982147217,
+      "mbps": 8.067610361153193,
+      "phase_id": "phase-090",
+      "case_id": "baseline-033",
+      "gateway": "gateway-B",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 6275,
+      "gateway_tx_per_body": 0.191497802734375,
+      "mbps": 0.2679293559878995,
+      "phase_id": "phase-091",
+      "case_id": "baseline-034",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 491252,
+      "gateway_tx_per_body": 0.029280900955200195,
+      "mbps": 32.68682832684888,
+      "phase_id": "phase-092",
+      "case_id": "baseline-034",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4390051,
+      "gateway_tx_per_body": 1.0466697216033936,
+      "mbps": 17.175511561386415,
+      "phase_id": "phase-093",
+      "case_id": "baseline-034",
+      "gateway": "gateway-C",
+      "candidate": "native-standard",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5016,
+      "gateway_tx_per_body": 0.153076171875,
+      "mbps": 0.47318749102121666,
+      "phase_id": "phase-094",
+      "case_id": "baseline-035",
+      "gateway": "gateway-B",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 574414,
+      "gateway_tx_per_body": 0.03423774242401123,
+      "mbps": 5.476501811385876,
+      "phase_id": "phase-095",
+      "case_id": "baseline-035",
+      "gateway": "gateway-B",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 5540972,
+      "gateway_tx_per_body": 1.321070671081543,
+      "mbps": 5.304693209481138,
+      "phase_id": "phase-096",
+      "case_id": "baseline-035",
+      "gateway": "gateway-B",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5027,
+      "gateway_tx_per_body": 0.153411865234375,
+      "mbps": 0.42813860147060284,
+      "phase_id": "phase-097",
+      "case_id": "baseline-036",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 519055,
+      "gateway_tx_per_body": 0.03093808889389038,
+      "mbps": 28.40525324909179,
+      "phase_id": "phase-098",
+      "case_id": "baseline-036",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 6026858,
+      "gateway_tx_per_body": 1.4369149208068848,
+      "mbps": 1.6850460757141248,
+      "phase_id": "phase-099",
+      "case_id": "baseline-036",
+      "gateway": "gateway-C",
+      "candidate": "native-conservative",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5086,
+      "gateway_tx_per_body": 0.15521240234375,
+      "mbps": 0.55706549057297,
+      "phase_id": "phase-100",
+      "case_id": "baseline-037",
+      "gateway": "gateway-B",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 1203642,
+      "gateway_tx_per_body": 0.07174265384674072,
+      "mbps": 17.837559183769685,
+      "phase_id": "phase-101",
+      "case_id": "baseline-037",
+      "gateway": "gateway-B",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 6664460,
+      "gateway_tx_per_body": 1.5889310836791992,
+      "mbps": 14.405271204550667,
+      "phase_id": "phase-102",
+      "case_id": "baseline-037",
+      "gateway": "gateway-B",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 4849,
+      "gateway_tx_per_body": 0.147979736328125,
+      "mbps": 0.4997851551072855,
+      "phase_id": "phase-103",
+      "case_id": "baseline-038",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 712212,
+      "gateway_tx_per_body": 0.04245114326477051,
+      "mbps": 20.139381391255874,
+      "phase_id": "phase-104",
+      "case_id": "baseline-038",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 15755298,
+      "gateway_tx_per_body": 3.7563557624816895,
+      "mbps": 6.688549090093464,
+      "phase_id": "phase-105",
+      "case_id": "baseline-038",
+      "gateway": "gateway-C",
+      "candidate": "brutal25",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3522,
+      "gateway_tx_per_body": 0.10748291015625,
+      "mbps": 0.2646944920967733,
+      "phase_id": "phase-106",
+      "case_id": "baseline-039",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 129741,
+      "gateway_tx_per_body": 0.007733166217803955,
+      "mbps": 28.010932652159777,
+      "phase_id": "phase-107",
+      "case_id": "baseline-039",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4333335,
+      "gateway_tx_per_body": 1.0331475734710693,
+      "mbps": 10.764427559622634,
+      "phase_id": "phase-108",
+      "case_id": "baseline-039",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3262,
+      "gateway_tx_per_body": 0.09954833984375,
+      "mbps": 0.30038109946524383,
+      "phase_id": "phase-109",
+      "case_id": "baseline-040",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 268809,
+      "gateway_tx_per_body": 0.01602226495742798,
+      "mbps": 23.19645031504989,
+      "phase_id": "phase-110",
+      "case_id": "baseline-040",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": false,
+      "payload_bytes": 4194304,
+      "gateway_tx": 3259005,
+      "gateway_tx_per_body": null,
+      "mbps": null,
+      "phase_id": "phase-111",
+      "case_id": "baseline-040",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 7778,
+      "gateway_tx_per_body": 0.23736572265625,
+      "mbps": 0.1332328996706894,
+      "phase_id": "phase-112",
+      "case_id": "baseline-041",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 606710,
+      "gateway_tx_per_body": 0.036162734031677246,
+      "mbps": 6.146141605869421,
+      "phase_id": "phase-113",
+      "case_id": "baseline-041",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4397511,
+      "gateway_tx_per_body": 1.0484483242034912,
+      "mbps": 13.774351712579419,
+      "phase_id": "phase-114",
+      "case_id": "baseline-041",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 7821,
+      "gateway_tx_per_body": 0.238677978515625,
+      "mbps": 0.2889752556746352,
+      "phase_id": "phase-115",
+      "case_id": "baseline-042",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 354628,
+      "gateway_tx_per_body": 0.021137475967407227,
+      "mbps": 29.784059078039476,
+      "phase_id": "phase-116",
+      "case_id": "baseline-042",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4960971,
+      "gateway_tx_per_body": 1.1827876567840576,
+      "mbps": 13.06214888822438,
+      "phase_id": "phase-117",
+      "case_id": "baseline-042",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 7178,
+      "gateway_tx_per_body": 0.21905517578125,
+      "mbps": 0.3393179411662993,
+      "phase_id": "phase-118",
+      "case_id": "baseline-043",
+      "gateway": "gateway-B",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 524264,
+      "gateway_tx_per_body": 0.03124856948852539,
+      "mbps": 40.67350279991249,
+      "phase_id": "phase-119",
+      "case_id": "baseline-043",
+      "gateway": "gateway-B",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 9740197,
+      "gateway_tx_per_body": 2.3222439289093018,
+      "mbps": 15.704199965901553,
+      "phase_id": "phase-120",
+      "case_id": "baseline-043",
+      "gateway": "gateway-B",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 6600,
+      "gateway_tx_per_body": 0.201416015625,
+      "mbps": 0.38015668478224673,
+      "phase_id": "phase-121",
+      "case_id": "baseline-044",
+      "gateway": "gateway-C",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 753473,
+      "gateway_tx_per_body": 0.0449104905128479,
+      "mbps": 37.18861358369748,
+      "phase_id": "phase-122",
+      "case_id": "baseline-044",
+      "gateway": "gateway-C",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 17574873,
+      "gateway_tx_per_body": 4.190176248550415,
+      "mbps": 9.680671551811493,
+      "phase_id": "phase-123",
+      "case_id": "baseline-044",
+      "gateway": "gateway-C",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3122,
+      "gateway_tx_per_body": 0.09527587890625,
+      "mbps": 0.37124507022207637,
+      "phase_id": "phase-124",
+      "case_id": "baseline-045",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 564505,
+      "gateway_tx_per_body": 0.033647119998931885,
+      "mbps": 7.465983950615663,
+      "phase_id": "phase-125",
+      "case_id": "baseline-045",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4234783,
+      "gateway_tx_per_body": 1.0096509456634521,
+      "mbps": 9.977998475493665,
+      "phase_id": "phase-126",
+      "case_id": "baseline-045",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3454,
+      "gateway_tx_per_body": 0.10540771484375,
+      "mbps": 0.30246881376524526,
+      "phase_id": "phase-127",
+      "case_id": "baseline-046",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 513549,
+      "gateway_tx_per_body": 0.03060990571975708,
+      "mbps": 7.312073060734451,
+      "phase_id": "phase-128",
+      "case_id": "baseline-046",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4307363,
+      "gateway_tx_per_body": 1.0269553661346436,
+      "mbps": 14.963314364556348,
+      "phase_id": "phase-129",
+      "case_id": "baseline-046",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3534,
+      "gateway_tx_per_body": 0.10784912109375,
+      "mbps": 0.29931852923175484,
+      "phase_id": "phase-130",
+      "case_id": "baseline-047",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 287605,
+      "gateway_tx_per_body": 0.01714259386062622,
+      "mbps": 24.540456248072672,
+      "phase_id": "phase-131",
+      "case_id": "baseline-047",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4273711,
+      "gateway_tx_per_body": 1.0189321041107178,
+      "mbps": 13.839026187459616,
+      "phase_id": "phase-132",
+      "case_id": "baseline-047",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3434,
+      "gateway_tx_per_body": 0.10479736328125,
+      "mbps": 0.17385119971309582,
+      "phase_id": "phase-133",
+      "case_id": "baseline-048",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 325437,
+      "gateway_tx_per_body": 0.0193975567817688,
+      "mbps": 14.731461762785395,
+      "phase_id": "phase-134",
+      "case_id": "baseline-048",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4684215,
+      "gateway_tx_per_body": 1.1168038845062256,
+      "mbps": 13.365511603706654,
+      "phase_id": "phase-135",
+      "case_id": "baseline-048",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 9109,
+      "gateway_tx_per_body": 0.277984619140625,
+      "mbps": 0.2109705663412127,
+      "phase_id": "phase-136",
+      "case_id": "baseline-049",
+      "gateway": "gateway-C",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 606821,
+      "gateway_tx_per_body": 0.036169350147247314,
+      "mbps": 43.428893763955955,
+      "phase_id": "phase-137",
+      "case_id": "baseline-049",
+      "gateway": "gateway-C",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 18074354,
+      "gateway_tx_per_body": 4.309261798858643,
+      "mbps": 7.25544780489993,
+      "phase_id": "phase-138",
+      "case_id": "baseline-049",
+      "gateway": "gateway-C",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5580,
+      "gateway_tx_per_body": 0.1702880859375,
+      "mbps": 0.24868626965395735,
+      "phase_id": "phase-139",
+      "case_id": "baseline-050",
+      "gateway": "gateway-B",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 669252,
+      "gateway_tx_per_body": 0.03989052772521973,
+      "mbps": 38.39209349723062,
+      "phase_id": "phase-140",
+      "case_id": "baseline-050",
+      "gateway": "gateway-B",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 8702820,
+      "gateway_tx_per_body": 2.07491397857666,
+      "mbps": 10.375617971113698,
+      "phase_id": "phase-141",
+      "case_id": "baseline-050",
+      "gateway": "gateway-B",
+      "candidate": "fixed50_120",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 7556,
+      "gateway_tx_per_body": 0.2305908203125,
+      "mbps": 0.2976664672105857,
+      "phase_id": "phase-142",
+      "case_id": "baseline-051",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 294742,
+      "gateway_tx_per_body": 0.017567992210388184,
+      "mbps": 36.71170652190612,
+      "phase_id": "phase-143",
+      "case_id": "baseline-051",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4234713,
+      "gateway_tx_per_body": 1.009634256362915,
+      "mbps": 16.21091869643406,
+      "phase_id": "phase-144",
+      "case_id": "baseline-051",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 7920,
+      "gateway_tx_per_body": 0.24169921875,
+      "mbps": 0.2938710134389904,
+      "phase_id": "phase-145",
+      "case_id": "baseline-052",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 724568,
+      "gateway_tx_per_body": 0.043187618255615234,
+      "mbps": 24.035061657948003,
+      "phase_id": "phase-146",
+      "case_id": "baseline-052",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4446326,
+      "gateway_tx_per_body": 1.060086727142334,
+      "mbps": 11.343769429252102,
+      "phase_id": "phase-147",
+      "case_id": "baseline-052",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 6220,
+      "gateway_tx_per_body": 0.1898193359375,
+      "mbps": 0.3579960795319137,
+      "phase_id": "phase-148",
+      "case_id": "baseline-053",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 385775,
+      "gateway_tx_per_body": 0.02299398183822632,
+      "mbps": 8.670938548764374,
+      "phase_id": "phase-149",
+      "case_id": "baseline-053",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4248481,
+      "gateway_tx_per_body": 1.0129168033599854,
+      "mbps": 11.124778255695022,
+      "phase_id": "phase-150",
+      "case_id": "baseline-053",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5988,
+      "gateway_tx_per_body": 0.1827392578125,
+      "mbps": 0.13592273527702414,
+      "phase_id": "phase-151",
+      "case_id": "baseline-054",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 223139,
+      "gateway_tx_per_body": 0.013300120830535889,
+      "mbps": 27.298895917567847,
+      "phase_id": "phase-152",
+      "case_id": "baseline-054",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4253523,
+      "gateway_tx_per_body": 1.0141189098358154,
+      "mbps": 17.813432062788948,
+      "phase_id": "phase-153",
+      "case_id": "baseline-054",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3730,
+      "gateway_tx_per_body": 0.11383056640625,
+      "mbps": 0.30889483294641157,
+      "phase_id": "phase-154",
+      "case_id": "baseline-055",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 506609,
+      "gateway_tx_per_body": 0.03019624948501587,
+      "mbps": 10.515483953350959,
+      "phase_id": "phase-155",
+      "case_id": "baseline-055",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4233543,
+      "gateway_tx_per_body": 1.0093553066253662,
+      "mbps": 17.955051554698354,
+      "phase_id": "phase-156",
+      "case_id": "baseline-055",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3558,
+      "gateway_tx_per_body": 0.10858154296875,
+      "mbps": 0.2979761458479939,
+      "phase_id": "phase-157",
+      "case_id": "baseline-056",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 492489,
+      "gateway_tx_per_body": 0.029354631900787354,
+      "mbps": 11.914565658383667,
+      "phase_id": "phase-158",
+      "case_id": "baseline-056",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4234457,
+      "gateway_tx_per_body": 1.009573221206665,
+      "mbps": 16.71971322806156,
+      "phase_id": "phase-159",
+      "case_id": "baseline-056",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3398,
+      "gateway_tx_per_body": 0.10369873046875,
+      "mbps": 0.24111355161260462,
+      "phase_id": "phase-160",
+      "case_id": "baseline-057",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 188045,
+      "gateway_tx_per_body": 0.01120835542678833,
+      "mbps": 22.17502476559126,
+      "phase_id": "phase-161",
+      "case_id": "baseline-057",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4264865,
+      "gateway_tx_per_body": 1.0168230533599854,
+      "mbps": 16.49355071155115,
+      "phase_id": "phase-162",
+      "case_id": "baseline-057",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3246,
+      "gateway_tx_per_body": 0.09906005859375,
+      "mbps": 0.2827216794633261,
+      "phase_id": "phase-163",
+      "case_id": "baseline-058",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 219801,
+      "gateway_tx_per_body": 0.013101160526275635,
+      "mbps": 24.210073008109777,
+      "phase_id": "phase-164",
+      "case_id": "baseline-058",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4230511,
+      "gateway_tx_per_body": 1.0086324214935303,
+      "mbps": 14.940321317850849,
+      "phase_id": "phase-165",
+      "case_id": "baseline-058",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 7728,
+      "gateway_tx_per_body": 0.23583984375,
+      "mbps": 0.1737210292370428,
+      "phase_id": "phase-166",
+      "case_id": "baseline-059",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 305411,
+      "gateway_tx_per_body": 0.018203914165496826,
+      "mbps": 28.038257958668193,
+      "phase_id": "phase-167",
+      "case_id": "baseline-059",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4259071,
+      "gateway_tx_per_body": 1.015441656112671,
+      "mbps": 13.465263111292899,
+      "phase_id": "phase-168",
+      "case_id": "baseline-059",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5916,
+      "gateway_tx_per_body": 0.1805419921875,
+      "mbps": 0.1508098689709653,
+      "phase_id": "phase-169",
+      "case_id": "baseline-060",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 319791,
+      "gateway_tx_per_body": 0.019061028957366943,
+      "mbps": 26.963287505144887,
+      "phase_id": "phase-170",
+      "case_id": "baseline-060",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4252927,
+      "gateway_tx_per_body": 1.013976812362671,
+      "mbps": 20.496792532575476,
+      "phase_id": "phase-171",
+      "case_id": "baseline-060",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 6420,
+      "gateway_tx_per_body": 0.1959228515625,
+      "mbps": 0.15792392907967245,
+      "phase_id": "phase-172",
+      "case_id": "baseline-061",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 273111,
+      "gateway_tx_per_body": 0.01627868413925171,
+      "mbps": 23.529519251564363,
+      "phase_id": "phase-173",
+      "case_id": "baseline-061",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4249525,
+      "gateway_tx_per_body": 1.0131657123565674,
+      "mbps": 16.07056913022013,
+      "phase_id": "phase-174",
+      "case_id": "baseline-061",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5960,
+      "gateway_tx_per_body": 0.181884765625,
+      "mbps": 0.16442704792703575,
+      "phase_id": "phase-175",
+      "case_id": "baseline-062",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 583323,
+      "gateway_tx_per_body": 0.034768760204315186,
+      "mbps": 7.924420299887796,
+      "phase_id": "phase-176",
+      "case_id": "baseline-062",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4377663,
+      "gateway_tx_per_body": 1.0437161922454834,
+      "mbps": 18.73023882078708,
+      "phase_id": "phase-177",
+      "case_id": "baseline-062",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3134,
+      "gateway_tx_per_body": 0.09564208984375,
+      "mbps": 0.3147765872400445,
+      "phase_id": "phase-178",
+      "case_id": "baseline-063",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 143685,
+      "gateway_tx_per_body": 0.008564293384552002,
+      "mbps": 28.24241112869403,
+      "phase_id": "phase-179",
+      "case_id": "baseline-063",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4753037,
+      "gateway_tx_per_body": 1.1332123279571533,
+      "mbps": 18.578305260710025,
+      "phase_id": "phase-180",
+      "case_id": "baseline-063",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3270,
+      "gateway_tx_per_body": 0.09979248046875,
+      "mbps": 0.36297903411289056,
+      "phase_id": "phase-181",
+      "case_id": "baseline-064",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 16777216,
+      "gateway_tx": 164509,
+      "gateway_tx_per_body": 0.009805500507354736,
+      "mbps": 28.88731113462545,
+      "phase_id": "phase-182",
+      "case_id": "baseline-064",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 4194304,
+      "gateway_tx": 4707763,
+      "gateway_tx_per_body": 1.1224181652069092,
+      "mbps": 6.620344334498331,
+      "phase_id": "phase-183",
+      "case_id": "baseline-064",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "matrix",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3250,
+      "gateway_tx_per_body": 0.09918212890625,
+      "mbps": 0.33221309291888734,
+      "phase_id": "phase-184",
+      "case_id": "baseline-065",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 1897337,
+      "gateway_tx_per_body": 0.02827252447605133,
+      "mbps": 12.06569762414564,
+      "phase_id": "phase-185",
+      "case_id": "baseline-065",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9338931,
+      "gateway_tx_per_body": 1.113287329673767,
+      "mbps": 24.246603553765055,
+      "phase_id": "phase-186",
+      "case_id": "baseline-065",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 846145,
+      "gateway_tx_per_body": 0.012608543038368225,
+      "mbps": 31.013923197665903,
+      "phase_id": "phase-187",
+      "case_id": "baseline-065",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9209033,
+      "gateway_tx_per_body": 1.0978022813796997,
+      "mbps": 25.889737273887754,
+      "phase_id": "phase-188",
+      "case_id": "baseline-065",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 637353,
+      "gateway_tx_per_body": 0.009497299790382385,
+      "mbps": 31.970349293886397,
+      "phase_id": "phase-189",
+      "case_id": "baseline-065",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8441181,
+      "gateway_tx_per_body": 1.0062671899795532,
+      "mbps": 25.35036683106203,
+      "phase_id": "phase-190",
+      "case_id": "baseline-065",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3482,
+      "gateway_tx_per_body": 0.10626220703125,
+      "mbps": 0.23643842761849013,
+      "phase_id": "phase-191",
+      "case_id": "baseline-066",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 964041,
+      "gateway_tx_per_body": 0.014365330338478088,
+      "mbps": 28.407655035963398,
+      "phase_id": "phase-192",
+      "case_id": "baseline-066",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9243997,
+      "gateway_tx_per_body": 1.1019703149795532,
+      "mbps": 25.10223602934621,
+      "phase_id": "phase-193",
+      "case_id": "baseline-066",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 651245,
+      "gateway_tx_per_body": 0.009704306721687317,
+      "mbps": 40.519306654756406,
+      "phase_id": "phase-194",
+      "case_id": "baseline-066",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9206877,
+      "gateway_tx_per_body": 1.0975452661514282,
+      "mbps": 23.332815383302542,
+      "phase_id": "phase-195",
+      "case_id": "baseline-066",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 699205,
+      "gateway_tx_per_body": 0.01041896641254425,
+      "mbps": 32.69391148188002,
+      "phase_id": "phase-196",
+      "case_id": "baseline-066",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9558855,
+      "gateway_tx_per_body": 1.139504313468933,
+      "mbps": 21.91603186951757,
+      "phase_id": "phase-197",
+      "case_id": "baseline-066",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 6208,
+      "gateway_tx_per_body": 0.189453125,
+      "mbps": 0.13466544823890586,
+      "phase_id": "phase-198",
+      "case_id": "baseline-067",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 956975,
+      "gateway_tx_per_body": 0.01426003873348236,
+      "mbps": 51.85675139788494,
+      "phase_id": "phase-199",
+      "case_id": "baseline-067",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8472587,
+      "gateway_tx_per_body": 1.010011076927185,
+      "mbps": 31.08108031496917,
+      "phase_id": "phase-200",
+      "case_id": "baseline-067",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 1026247,
+      "gateway_tx_per_body": 0.015292271971702576,
+      "mbps": 37.75123576656742,
+      "phase_id": "phase-201",
+      "case_id": "baseline-067",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8896772,
+      "gateway_tx_per_body": 1.0605778694152832,
+      "mbps": 18.351280685597658,
+      "phase_id": "phase-202",
+      "case_id": "baseline-067",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 1473739,
+      "gateway_tx_per_body": 0.02196042239665985,
+      "mbps": 16.499383883822443,
+      "phase_id": "phase-203",
+      "case_id": "baseline-067",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9302848,
+      "gateway_tx_per_body": 1.1089859008789062,
+      "mbps": 14.768810298445553,
+      "phase_id": "phase-204",
+      "case_id": "baseline-067",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5796,
+      "gateway_tx_per_body": 0.1768798828125,
+      "mbps": 0.29956996400644476,
+      "phase_id": "phase-205",
+      "case_id": "baseline-068",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 667003,
+      "gateway_tx_per_body": 0.009939119219779968,
+      "mbps": 54.08198520077615,
+      "phase_id": "phase-206",
+      "case_id": "baseline-068",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8547346,
+      "gateway_tx_per_body": 1.018923044204712,
+      "mbps": 18.336368507671423,
+      "phase_id": "phase-207",
+      "case_id": "baseline-068",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 1606091,
+      "gateway_tx_per_body": 0.023932620882987976,
+      "mbps": 16.470077655638427,
+      "phase_id": "phase-208",
+      "case_id": "baseline-068",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9047487,
+      "gateway_tx_per_body": 1.0785444974899292,
+      "mbps": 18.041954949137523,
+      "phase_id": "phase-209",
+      "case_id": "baseline-068",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 822589,
+      "gateway_tx_per_body": 0.01225753128528595,
+      "mbps": 55.29002408760247,
+      "phase_id": "phase-210",
+      "case_id": "baseline-068",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8470011,
+      "gateway_tx_per_body": 1.0097039937973022,
+      "mbps": 33.63424475094346,
+      "phase_id": "phase-211",
+      "case_id": "baseline-068",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 6191,
+      "gateway_tx_per_body": 0.188934326171875,
+      "mbps": 0.2958965311632789,
+      "phase_id": "phase-212",
+      "case_id": "baseline-069",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 4509947,
+      "gateway_tx_per_body": 0.06720344722270966,
+      "mbps": 23.316125852480862,
+      "phase_id": "phase-213",
+      "case_id": "baseline-069",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9728040,
+      "gateway_tx_per_body": 1.159672737121582,
+      "mbps": 22.747856671862042,
+      "phase_id": "phase-214",
+      "case_id": "baseline-069",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 3868851,
+      "gateway_tx_per_body": 0.0576503723859787,
+      "mbps": 13.781843846602802,
+      "phase_id": "phase-215",
+      "case_id": "baseline-069",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9114441,
+      "gateway_tx_per_body": 1.0865260362625122,
+      "mbps": 25.03155598843872,
+      "phase_id": "phase-216",
+      "case_id": "baseline-069",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 4054401,
+      "gateway_tx_per_body": 0.06041528284549713,
+      "mbps": 17.194710057100153,
+      "phase_id": "phase-217",
+      "case_id": "baseline-069",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9099415,
+      "gateway_tx_per_body": 1.0847347974777222,
+      "mbps": 27.062957859767803,
+      "phase_id": "phase-218",
+      "case_id": "baseline-069",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 8989,
+      "gateway_tx_per_body": 0.274322509765625,
+      "mbps": 0.17363528333469586,
+      "phase_id": "phase-219",
+      "case_id": "baseline-070",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 4050488,
+      "gateway_tx_per_body": 0.060356974601745605,
+      "mbps": 51.394447584197586,
+      "phase_id": "phase-220",
+      "case_id": "baseline-070",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9489026,
+      "gateway_tx_per_body": 1.1311800479888916,
+      "mbps": 23.49000486457939,
+      "phase_id": "phase-221",
+      "case_id": "baseline-070",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 4010841,
+      "gateway_tx_per_body": 0.05976618826389313,
+      "mbps": 72.97343153856013,
+      "phase_id": "phase-222",
+      "case_id": "baseline-070",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9815707,
+      "gateway_tx_per_body": 1.1701234579086304,
+      "mbps": 13.438356280003516,
+      "phase_id": "phase-223",
+      "case_id": "baseline-070",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 3983416,
+      "gateway_tx_per_body": 0.059357523918151855,
+      "mbps": 69.35956309554558,
+      "phase_id": "phase-224",
+      "case_id": "baseline-070",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9428227,
+      "gateway_tx_per_body": 1.1239322423934937,
+      "mbps": 21.720588795972365,
+      "phase_id": "phase-225",
+      "case_id": "baseline-070",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 7697,
+      "gateway_tx_per_body": 0.234893798828125,
+      "mbps": 0.22613548731426303,
+      "phase_id": "phase-226",
+      "case_id": "baseline-071",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 3378909,
+      "gateway_tx_per_body": 0.05034966766834259,
+      "mbps": 71.68417222379063,
+      "phase_id": "phase-227",
+      "case_id": "baseline-071",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8875457,
+      "gateway_tx_per_body": 1.0580369234085083,
+      "mbps": 18.71260771823313,
+      "phase_id": "phase-228",
+      "case_id": "baseline-071",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 3667644,
+      "gateway_tx_per_body": 0.05465215444564819,
+      "mbps": 71.89338228705935,
+      "phase_id": "phase-229",
+      "case_id": "baseline-071",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9279980,
+      "gateway_tx_per_body": 1.106259822845459,
+      "mbps": 24.107551638439524,
+      "phase_id": "phase-230",
+      "case_id": "baseline-071",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 3255640,
+      "gateway_tx_per_body": 0.048512816429138184,
+      "mbps": 70.59353798638371,
+      "phase_id": "phase-231",
+      "case_id": "baseline-071",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8501049,
+      "gateway_tx_per_body": 1.0134040117263794,
+      "mbps": 25.19140933980046,
+      "phase_id": "phase-232",
+      "case_id": "baseline-071",
+      "gateway": "gateway-C",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5989,
+      "gateway_tx_per_body": 0.182769775390625,
+      "mbps": 0.17671154049277962,
+      "phase_id": "phase-233",
+      "case_id": "baseline-072",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 4151278,
+      "gateway_tx_per_body": 0.06185886263847351,
+      "mbps": 12.60466326650509,
+      "phase_id": "phase-234",
+      "case_id": "baseline-072",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8693170,
+      "gateway_tx_per_body": 1.036306619644165,
+      "mbps": 24.45656345568554,
+      "phase_id": "phase-235",
+      "case_id": "baseline-072",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 3489488,
+      "gateway_tx_per_body": 0.05199742317199707,
+      "mbps": 11.31571710960679,
+      "phase_id": "phase-236",
+      "case_id": "baseline-072",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9319226,
+      "gateway_tx_per_body": 1.110938310623169,
+      "mbps": 28.31633404126684,
+      "phase_id": "phase-237",
+      "case_id": "baseline-072",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 3723226,
+      "gateway_tx_per_body": 0.055480390787124634,
+      "mbps": 11.773938064556265,
+      "phase_id": "phase-238",
+      "case_id": "baseline-072",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8440008,
+      "gateway_tx_per_body": 1.0061273574829102,
+      "mbps": 28.699566887030265,
+      "phase_id": "phase-239",
+      "case_id": "baseline-072",
+      "gateway": "gateway-B",
+      "candidate": "split",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 6352,
+      "gateway_tx_per_body": 0.19384765625,
+      "mbps": 0.29030153526985825,
+      "phase_id": "phase-240",
+      "case_id": "baseline-073",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 1411675,
+      "gateway_tx_per_body": 0.02103559672832489,
+      "mbps": 28.76220611782484,
+      "phase_id": "phase-241",
+      "case_id": "baseline-073",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9594321,
+      "gateway_tx_per_body": 1.1437321901321411,
+      "mbps": 28.685879749356502,
+      "phase_id": "phase-242",
+      "case_id": "baseline-073",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 1536207,
+      "gateway_tx_per_body": 0.022891268134117126,
+      "mbps": 15.52834544724466,
+      "phase_id": "phase-243",
+      "case_id": "baseline-073",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8851067,
+      "gateway_tx_per_body": 1.0551294088363647,
+      "mbps": 22.007974658674488,
+      "phase_id": "phase-244",
+      "case_id": "baseline-073",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 673655,
+      "gateway_tx_per_body": 0.010038241744041443,
+      "mbps": 58.81575708575878,
+      "phase_id": "phase-245",
+      "case_id": "baseline-073",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8472137,
+      "gateway_tx_per_body": 1.0099574327468872,
+      "mbps": 24.20010624568374,
+      "phase_id": "phase-246",
+      "case_id": "baseline-073",
+      "gateway": "gateway-C",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 5820,
+      "gateway_tx_per_body": 0.1776123046875,
+      "mbps": 0.32325713326501554,
+      "phase_id": "phase-247",
+      "case_id": "baseline-074",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 884967,
+      "gateway_tx_per_body": 0.013187035918235779,
+      "mbps": 42.21576839193242,
+      "phase_id": "phase-248",
+      "case_id": "baseline-074",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8868223,
+      "gateway_tx_per_body": 1.057174563407898,
+      "mbps": 33.506096089271914,
+      "phase_id": "phase-249",
+      "case_id": "baseline-074",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 1172591,
+      "gateway_tx_per_body": 0.017472967505455017,
+      "mbps": 29.115050321569782,
+      "phase_id": "phase-250",
+      "case_id": "baseline-074",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9013354,
+      "gateway_tx_per_body": 1.0744755268096924,
+      "mbps": 29.932305738260943,
+      "phase_id": "phase-251",
+      "case_id": "baseline-074",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 1559379,
+      "gateway_tx_per_body": 0.023236557841300964,
+      "mbps": 20.623955564662847,
+      "phase_id": "phase-252",
+      "case_id": "baseline-074",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8468877,
+      "gateway_tx_per_body": 1.0095688104629517,
+      "mbps": 26.351881574547676,
+      "phase_id": "phase-253",
+      "case_id": "baseline-074",
+      "gateway": "gateway-B",
+      "candidate": "stripe2",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3310,
+      "gateway_tx_per_body": 0.10101318359375,
+      "mbps": 0.19288767449431984,
+      "phase_id": "phase-254",
+      "case_id": "baseline-075",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 619709,
+      "gateway_tx_per_body": 0.009234383702278137,
+      "mbps": 41.35947615434573,
+      "phase_id": "phase-255",
+      "case_id": "baseline-075",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9652791,
+      "gateway_tx_per_body": 1.1507023572921753,
+      "mbps": 23.701313861470794,
+      "phase_id": "phase-256",
+      "case_id": "baseline-075",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 958909,
+      "gateway_tx_per_body": 0.014288857579231262,
+      "mbps": 30.780914083196997,
+      "phase_id": "phase-257",
+      "case_id": "baseline-075",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9318713,
+      "gateway_tx_per_body": 1.1108771562576294,
+      "mbps": 23.835383281414405,
+      "phase_id": "phase-258",
+      "case_id": "baseline-075",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 1070084,
+      "gateway_tx_per_body": 0.015945494174957275,
+      "mbps": 24.952026134935682,
+      "phase_id": "phase-259",
+      "case_id": "baseline-075",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8439137,
+      "gateway_tx_per_body": 1.0060235261917114,
+      "mbps": 30.59683708604132,
+      "phase_id": "phase-260",
+      "case_id": "baseline-075",
+      "gateway": "gateway-C",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 32768,
+      "gateway_tx": 3410,
+      "gateway_tx_per_body": 0.10406494140625,
+      "mbps": 0.3187063498443429,
+      "phase_id": "phase-261",
+      "case_id": "baseline-076",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "warmup"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 514745,
+      "gateway_tx_per_body": 0.007670298218727112,
+      "mbps": 40.07859847498659,
+      "phase_id": "phase-262",
+      "case_id": "baseline-076",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8697789,
+      "gateway_tx_per_body": 1.0368572473526,
+      "mbps": 27.412407810116434,
+      "phase_id": "phase-263",
+      "case_id": "baseline-076",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 496541,
+      "gateway_tx_per_body": 0.007399037480354309,
+      "mbps": 48.033801843315736,
+      "phase_id": "phase-264",
+      "case_id": "baseline-076",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 8918723,
+      "gateway_tx_per_body": 1.0631946325302124,
+      "mbps": 17.386214861830275,
+      "phase_id": "phase-265",
+      "case_id": "baseline-076",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "upload"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 67108864,
+      "gateway_tx": 1001877,
+      "gateway_tx_per_body": 0.014929130673408508,
+      "mbps": 24.715623833974142,
+      "phase_id": "phase-266",
+      "case_id": "baseline-076",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "download"
+    },
+    {
+      "verified": true,
+      "payload_bytes": 8388608,
+      "gateway_tx": 9599799,
+      "gateway_tx_per_body": 1.1443852186203003,
+      "mbps": 26.917688629043983,
+      "phase_id": "phase-267",
+      "case_id": "baseline-076",
+      "gateway": "gateway-B",
+      "candidate": "trojan-bbr",
+      "stage": "soak",
+      "phase": "upload"
+    }
+  ],
+  "gateway_tx_final_audit_bytes": 773358953,
+  "gateway_tx_case_windows_bytes": 773358901,
+  "gateway_tx_phase_windows_bytes": 773133032
+}

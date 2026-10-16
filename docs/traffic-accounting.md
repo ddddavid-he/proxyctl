@@ -118,7 +118,7 @@ docker exec private-proxy-traffic-1 python3 /accounting/traffic.py query \
   --from 2026-10-09 --to 2026-10-10 --granularity day --group-by domain --json
 ```
 
-For one exact hostname's hourly curve, append `--domain chatgpt.com` and use
+For one exact hostname's hourly curve, append `--domain example.com` and use
 `--granularity hour`. `domains` contains the ranking, `buckets` the selected
 scope's time series, and `other_domains_bytes` the bytes outside the ranking
 limit. `gateway_totals` also includes periods before domain activation; compare
